@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
+from .exceptions import (LineOutOfFileBoundsError)
+
 #
 # Functions on reading and writing files by line.
 #
 
-from .exceptions import (LineOutOfFileBoundsError)
 
-def get_line_matches(input_file, pattern, number_of_occurrencies):
+def get_line_matches(input_file,
+                     pattern,
+                     number_of_occurrencies,
+                     loose_matching=True):
     """ Get the line numbers for the matched patterns.
         A match exists if a pattern corresponds exactly to the
         content of a line of the input file.
@@ -23,22 +27,33 @@ def get_line_matches(input_file, pattern, number_of_occurrencies):
     occurrency_counter = 0
     occurrency_matches = dict()
 
+    # 1. Strip all whitespaces from pattern if requested.
+    if loose_matching:
+        pattern = pattern.strip()
+
     line_number = 1
-    with open(input_file,'r') as f:
-        # 1. Read the first line.
+    with open(input_file, 'r') as f:
+        # 2. Read the first line.
         line = f.readline()
         while line:
-            # 2.1. Check if line corresponds to the pattern.
-            if line.strip() == pattern:
+            # 3.1. Strip all whitespaces from line if requested.
+            if loose_matching:
+                line = line.strip()
+            # 3.2. Check if line corresponds to the pattern.
+            if line == pattern:
                 occurrency_counter += 1
                 occurrency_matches[occurrency_counter] = line_number
-            # 2.2. Go to the next line.
+            # 3.3. Go to the next line.
             line = f.readline()
             line_number += 1
 
     return occurrency_matches
 
-def insert_string_at_line(input_file, string_to_be_inserted, line_number, output_file):
+
+def insert_string_at_line(input_file,
+                          string_to_be_inserted,
+                          line_number,
+                          output_file):
     """ Put the string_to_be_inserted on the specified line number line_number.
         Since we are doing a rw operation, it is possbile that
         input and output are done on different files.
@@ -71,6 +86,7 @@ def insert_string_at_line(input_file, string_to_be_inserted, line_number, output
             f.write(line)
             line_counter += 1
 
+
 def remove_string_at_line(input_file, line_from, line_to, output_file):
     """ Remove the specified line interval from input_file and write the result
         to output_file.
@@ -91,11 +107,11 @@ def remove_string_at_line(input_file, line_from, line_to, output_file):
     # 3. Raise an exception if we are trying to delete an invalid line
     #    or we are dealing with wrong input.
     if (line_from > line_to
-        or line_from > total_lines
-        or line_to > total_lines
-        or line_from == line_to
-        or line_from <= 0
-        or line_to <= 0):
+            or line_from > total_lines
+            or line_to > total_lines
+            or line_from == line_to
+            or line_from <= 0
+            or line_to <= 0):
         raise LineOutOfFileBoundsError
 
     line_number = 1
@@ -109,6 +125,7 @@ def remove_string_at_line(input_file, line_from, line_to, output_file):
             else:
                 f.write(line)
             line_number += 1
+
 
 if __name__ == '__main__':
     pass
