@@ -1,6 +1,12 @@
 #!/usr/bin/env make
 
-default: test
+default: pep doc test
+
+pep:
+	flake8 fpyutils/*.py tests/*.py
+
+doc:
+	$(MAKE) -C docs html
 
 install:
 	python setup.py install

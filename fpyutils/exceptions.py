@@ -1,4 +1,11 @@
+#
+
+"""Exceptions file."""
+
+
 class LineOutOfFileBoundsError(Exception):
-    """ Raises an exception if someone tries to access
-        a non-existing line in a file.
+    """Line out of bounds.
+
+    Raises an exception if there was an attempt to access a non-existing line
+    in a file.
     """

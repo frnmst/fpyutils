@@ -7,20 +7,43 @@ from .exceptions import (LineOutOfFileBoundsError)
 
 def get_line_matches(input_file,
                      pattern,
-                     number_of_occurrencies,
+                     max_occurrencies,
                      loose_matching=True):
     """Get the line numbers of matched patterns.
 
-    Keyword arguments
-    input_file -- the file that needs to be read
-    pattern -- the pattern that needs to be searched
-    line_number -- the expected/wanted matches
-    loose_matching -- ignore leading and trailing whitespace characters
-    (default = True)
+    :parameter input_file: the file that needs to be read.
+    :parameter pattern: the pattern that needs to be searched.
+    :parameter max_occurrencies: the maximum number of expected occurrencies.
+    :parameter loose_matching: ignore leading and trailing whitespace
+      characters for both pattern and matched strings. Defaults to ``True``.
+    :type input_file: str
+    :type pattern: str
+    :type max_occurrencies: int or float
+    :type loose_matching: bool
+    :returns: A dictionary where each key corresponds to the number of
+      occurrency and each value to the matched line number.
+      If no match was found for that particular occurrency, the key is not
+      set.
+    :rtype: dict
+    :raises: LineOutOfFileBoundsError
+
+    .. warning:: The parameter max_occurrencies must be greater than
+        zero.
+
+    .. note:: To get all occurrencies of a pattern, the parameter
+        max_occurrencies must be set to ``float('inf')``.
+
+    :Example:
+
+    >>> import fpyutils
+    >>> fpyutils.get_line_matches('foo.txt','bar',5,'bar.txt')
+    ...s
     """
     assert isinstance(input_file, str)
     assert isinstance(pattern, str)
-    assert isinstance(number_of_occurrencies, int)
+    assert (isinstance(max_occurrencies, int)
+            or isinstance(max_occurrencies, float))
+    assert max_occurrencies > 0
 
     occurrency_counter = 0
     occurrency_matches = dict()
@@ -33,7 +56,8 @@ def get_line_matches(input_file,
     with open(input_file, 'r') as f:
         # 2. Read the first line.
         line = f.readline()
-        while line:
+        while (line
+                and float(occurrency_counter) < float(max_occurrencies)):
             # 3.1. Strip all whitespaces from line if requested.
             if loose_matching:
                 line = line.strip()

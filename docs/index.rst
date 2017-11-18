@@ -10,8 +10,7 @@ Welcome to fpyutils's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   filelines
-
+   api
 
 Indices and tables
 ==================
