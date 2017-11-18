@@ -1,25 +1,23 @@
-#!/usr/bin/env python3
+#
+
+"""Functions on reading and writing files by line."""
 
 from .exceptions import (LineOutOfFileBoundsError)
-
-#
-# Functions on reading and writing files by line.
-#
 
 
 def get_line_matches(input_file,
                      pattern,
                      number_of_occurrencies,
                      loose_matching=True):
-    """ Get the line numbers for the matched patterns.
-        A match exists if a pattern corresponds exactly to the
-        content of a line of the input file.
+    """Get the line numbers of matched patterns.
 
-        Returns: a dict corresponding to the matches. If no match is found for
-                 that particular occurrency, the function does not set the dict
-                 key.
+    Keyword arguments
+    input_file -- the file that needs to be read
+    pattern -- the pattern that needs to be searched
+    line_number -- the expected/wanted matches
+    loose_matching -- ignore leading and trailing whitespace characters
+    (default = True)
     """
-
     assert isinstance(input_file, str)
     assert isinstance(pattern, str)
     assert isinstance(number_of_occurrencies, int)
@@ -54,24 +52,26 @@ def insert_string_at_line(input_file,
                           string_to_be_inserted,
                           line_number,
                           output_file):
-    """ Put the string_to_be_inserted on the specified line number line_number.
-        Since we are doing a rw operation, it is possbile that
-        input and output are done on different files.
+    """Write a string at the specified line.
 
-        Returns: None
+    Keyword arguments
+    input_file -- the file that needs to be read
+    string_to_be_inserted -- the string that needs to be added
+    line_number -- the line number on which to append the string
+    output_file -- the file that needs to be written with the new content
     """
-
     assert isinstance(input_file, str)
     assert isinstance(string_to_be_inserted, str)
     assert isinstance(line_number, int)
     assert isinstance(output_file, str)
+    assert line_number > 0
 
     # 1. Read the whole file.
     with open(input_file, 'r') as f:
         lines = f.readlines()
 
     # 2. Raise an exception if we are trying to write on a non-existing line.
-    if line_number > len(lines) or line_number <= 0:
+    if line_number > len(lines):
         raise LineOutOfFileBoundsError
 
     line_counter = 1
@@ -87,15 +87,24 @@ def insert_string_at_line(input_file,
             line_counter += 1
 
 
-def remove_string_at_line(input_file, line_from, line_to, output_file):
-    """ Remove the specified line interval from input_file and write the result
-        to output_file.
-    """
+def remove_line_interval(input_file, line_from, line_to, output_file):
+    """Remove a line interval.
 
+    Keyword arguments
+    input_file -- the file that needs to be read
+    line_from -- the line number from which start deleting
+    line_to -- the line number to which stop deleting
+    output_file -- the file that needs to be written without the
+    selected lines
+    """
     assert isinstance(input_file, str)
     assert isinstance(line_from, int)
     assert isinstance(output_file, str)
     assert isinstance(line_to, int)
+    # At least one line must be deleted.
+    assert line_to - line_from >= 1
+    assert line_from > 0
+    assert line_to > 0
 
     # 1. Read the whole file.
     with open(input_file, 'r') as f:
@@ -104,14 +113,9 @@ def remove_string_at_line(input_file, line_from, line_to, output_file):
     # 2. Save the total lines.
     total_lines = len(lines)
 
-    # 3. Raise an exception if we are trying to delete an invalid line
-    #    or we are dealing with wrong input.
-    if (line_from > line_to
-            or line_from > total_lines
-            or line_to > total_lines
-            or line_from == line_to
-            or line_from <= 0
-            or line_to <= 0):
+    # 3. Raise an exception if we are trying to delete an invalid line.
+    if (line_from > total_lines
+            or line_to > total_lines):
         raise LineOutOfFileBoundsError
 
     line_number = 1
@@ -121,7 +125,7 @@ def remove_string_at_line(input_file, line_from, line_to, output_file):
             # Ignore the line interval where the toc lies.
             if line_number >= line_from and line_number <= line_to:
                 pass
-                # Write the rest of the file.
+            # Write the rest of the file.
             else:
                 f.write(line)
             line_number += 1
