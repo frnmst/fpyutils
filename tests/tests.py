@@ -42,7 +42,7 @@ End of toc\n\
                    ):
             matches = filelines.get_line_matches(input_file='foo.md',
                                                  pattern='[](TOC)',
-                                                 number_of_occurrencies=1)
+                                                 max_occurrencies=1)
 
         self.assertTrue(1 not in matches)
 
@@ -55,7 +55,7 @@ End of toc\n\
                    ):
             matches = filelines.get_line_matches(input_file='foo.md',
                                                  pattern='[](TOC)',
-                                                 number_of_occurrencies=2**32)
+                                                 max_occurrencies=2**32)
 
         self.assertEqual(matches[1], 4)
         self.assertEqual(matches[2], 10)
@@ -67,7 +67,7 @@ End of toc\n\
         with patch('builtins.open', mock_open(read_data=self.generate_fake_file_with_matches_as_string())):
             matches = filelines.get_line_matches(input_file='foo.md',
                                                  pattern='[](TOC)',
-                                                 number_of_occurrencies=2**32,
+                                                 max_occurrencies=2**32,
                                                  loose_matching=False)
 
         self.assertTrue(1 not in matches)
@@ -78,7 +78,7 @@ End of toc\n\
         with patch('builtins.open', mock_open(read_data=self.generate_fake_file_with_matches_as_string())):
             matches = filelines.get_line_matches(input_file='foo.md',
                                                  pattern='[](TOC)\n',
-                                                 number_of_occurrencies=2**32,
+                                                 max_occurrencies=2**32,
                                                  loose_matching=False)
 
         self.assertEqual(matches[1], 4)

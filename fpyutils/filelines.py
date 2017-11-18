@@ -25,7 +25,7 @@ def get_line_matches(input_file,
       If no match was found for that particular occurrency, the key is not
       set.
     :rtype: dict
-    :raises: LineOutOfFileBoundsError
+    :raises: LineOutOfFileBoundsError or FileNotFoundError
 
     .. warning:: The parameter max_occurrencies must be greater than
         zero.
@@ -36,8 +36,8 @@ def get_line_matches(input_file,
     :Example:
 
     >>> import fpyutils
-    >>> fpyutils.get_line_matches('foo.txt','bar',5,'bar.txt')
-    ...s
+    >>> fpyutils.get_line_matches('foo.txt','bar',5)
+    {1: 8, 2: 17}
     """
     assert isinstance(input_file, str)
     assert isinstance(pattern, str)
