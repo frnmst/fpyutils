@@ -3,7 +3,7 @@
 default: pep doc test
 
 pep:
-	flake8 fpyutils/*.py tests/*.py
+	flake8 --ignore=F401 fpyutils/*.py tests/*.py
 
 doc:
 	$(MAKE) -C docs html

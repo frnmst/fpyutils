@@ -41,8 +41,8 @@ def get_line_matches(input_file,
     """
     assert isinstance(input_file, str)
     assert isinstance(pattern, str)
-    assert (isinstance(max_occurrencies, int)
-            or isinstance(max_occurrencies, float))
+    assert (isinstance(max_occurrencies, int) or
+            isinstance(max_occurrencies, float))
     assert max_occurrencies > 0
 
     occurrency_counter = 0
@@ -56,8 +56,8 @@ def get_line_matches(input_file,
     with open(input_file, 'r') as f:
         # 2. Read the first line.
         line = f.readline()
-        while (line
-                and float(occurrency_counter) < float(max_occurrencies)):
+        while (line and
+               float(occurrency_counter) < float(max_occurrencies)):
             # 3.1. Strip all whitespaces from line if requested.
             if loose_matching:
                 line = line.strip()
@@ -138,8 +138,7 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
     total_lines = len(lines)
 
     # 3. Raise an exception if we are trying to delete an invalid line.
-    if (line_from > total_lines
-            or line_to > total_lines):
+    if (line_from > total_lines or line_to > total_lines):
         raise LineOutOfFileBoundsError
 
     line_number = 1
