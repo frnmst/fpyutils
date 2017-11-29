@@ -9,7 +9,7 @@ def get_line_matches(input_file,
                      pattern,
                      max_occurrencies,
                      loose_matching=True):
-    """Get the line numbers of matched patterns.
+    r"""Get the line numbers of matched patterns.
 
     :parameter input_file: the file that needs to be read.
     :parameter pattern: the pattern that needs to be searched.
@@ -25,7 +25,7 @@ def get_line_matches(input_file,
       If no match was found for that particular occurrency, the key is not
       set.
     :rtype: dict
-    :raises: LineOutOfFileBoundsError or FileNotFoundError
+    :raises: LineOutOfFileBoundsError or the built-in exceptions.
 
     .. warning:: The parameter max_occurrencies must be greater than
         zero.
@@ -35,9 +35,12 @@ def get_line_matches(input_file,
 
     :Example:
 
+    >>> f = open('foo.txt')
+    >>> f.read()
+    "This is\nfoo.\nfoo\nThis is\nnot\nbar.\nAnd it's\n    foo\n\nBye!\n"
     >>> import fpyutils
-    >>> fpyutils.get_line_matches('foo.txt','bar',5)
-    {1: 8, 2: 17}
+    >>> fpyutils.get_line_matches('foo.txt','foo',5)
+    {1: 3, 2: 8}
     """
     assert isinstance(input_file, str)
     assert isinstance(pattern, str)
@@ -76,13 +79,35 @@ def insert_string_at_line(input_file,
                           string_to_be_inserted,
                           line_number,
                           output_file):
-    """Write a string at the specified line.
+    r"""Write a string at the specified line.
 
-    Keyword arguments
-    input_file -- the file that needs to be read
-    string_to_be_inserted -- the string that needs to be added
-    line_number -- the line number on which to append the string
-    output_file -- the file that needs to be written with the new content
+    :parameter input_file: the file that needs to be read.
+    :parameter string_to_be_inserted: the string that needs to be added.
+    :parameter line_number: the line number on which to append the string.
+    :parameter output_file: the file that needs to be written with the new
+      content.
+    :type input_file: str
+    :type string_to_be_inserted: str
+    :type line_number: int
+    :type output_file: str
+    :returns: None
+    :raises: LineOutOfFileBoundsError or the built-in exceptions.
+
+    .. warning:: The parameter line_number must be greater than
+        zero.
+
+    .. note:: string_to_be_inserted will be appended to the selected line.
+
+    :Example:
+
+    >>> f = open('foo.txt', r)
+    >>> f.read()
+    'This is\nfoo.\nThis is\nnot\nbar.\n\nBye!\n'
+    >>> import fpyutils
+    >>> fpyutils.insert_string_at_line('foo.txt','bar',2,'bar.txt')
+    >>> f = open('bar.txt')
+    >>> f.read()
+    'This is\nfoo.\nbarThis is\nnot\nbar.\n\nBye!\n'
     """
     assert isinstance(input_file, str)
     assert isinstance(string_to_be_inserted, str)
@@ -112,14 +137,35 @@ def insert_string_at_line(input_file,
 
 
 def remove_line_interval(input_file, line_from, line_to, output_file):
-    """Remove a line interval.
+    r"""Remove a line interval.
 
-    Keyword arguments
-    input_file -- the file that needs to be read
-    line_from -- the line number from which start deleting
-    line_to -- the line number to which stop deleting
-    output_file -- the file that needs to be written without the
-    selected lines
+    :parameter input_file: the file that needs to be read.
+    :parameter line_from: the line number from which start deleting.
+    :parameter line_to: the line number to which stop deleting.
+    :parameter output_file: the file that needs to be written without the
+      selected lines.
+    :type input_file: str
+    :type line_from: int
+    :type line_number: int
+    :type output_file: str
+    :returns: None
+    :raises: LineOutOfFileBoundsError or the built-in exceptions.
+
+    .. warning:: The parameters line_number must be greater than
+        zero.
+
+    .. note:: string_to_be_inserted will be appended to the selected line.
+
+    :Example:
+
+    >>> f = open('foo.txt', r)
+    >>> f.read()
+    'This is\nfoo.\nThis is\nnot\nbar.\n\nBye!\n'
+    >>> import fpyutils
+    >>> fpyutils.insert_string_at_line('foo.txt','bar',2,'bar.txt')
+    >>> f = open('bar.txt')
+    >>> f.read()
+    'This is\nfoo.\nbarThis is\nnot\nbar.\n\nBye!\n'
     """
     assert isinstance(input_file, str)
     assert isinstance(line_from, int)
