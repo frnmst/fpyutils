@@ -1,5 +1,7 @@
 #
 
+"""Tests."""
+
 from fpyutils import (filelines, exceptions)
 import unittest
 from unittest.mock import patch, mock_open
@@ -48,7 +50,7 @@ End of toc\n\
     def test_get_line_matches_more_than_zero_pattern_matches(self):
         with patch('builtins.open',
                    mock_open(
-                       read_data=self.generate_fake_file_with_matches_as_string())
+                   read_data=self.generate_fake_file_with_matches_as_string())
                    ):
             matches = filelines.get_line_matches(input_file='foo.md',
                                                  pattern='[](TOC)',
@@ -59,7 +61,9 @@ End of toc\n\
         self.assertTrue(3 not in matches)
 
     def test_get_line_matches_zero_pattern_matches_with_loose_matching_disabled(self):
-        with patch('builtins.open', mock_open(read_data=self.generate_fake_file_with_matches_as_string())):
+        with patch('builtins.open',
+                   mock_open(
+                       read_data=self.generate_fake_file_with_matches_as_string())):
             matches = filelines.get_line_matches(input_file='foo.md',
                                                  pattern='[](TOC)',
                                                  max_occurrencies=2**32,
@@ -122,8 +126,11 @@ End of toc\n\
         line_no = 2 ** 32
 
         with self.assertRaises(exceptions.LineOutOfFileBoundsError):
-            with patch('builtins.open', mock_open(read_data=self.generate_fake_file_as_string())) as m:
-                filelines.insert_string_at_line('foo.md', string_to_be_inserted, line_no, 'foo.md')
+            with patch('builtins.open', mock_open(read_data=self.generate_fake_file_as_string())):
+                filelines.insert_string_at_line('foo.md',
+                                                string_to_be_inserted,
+                                                line_no,
+                                                'foo.md')
 
     def test_remove_line_interval_existing_interval(self):
         # Assert called with everything except the missing lines.
@@ -133,7 +140,10 @@ End of toc\n\
 
         with patch('builtins.open',
         mock_open(read_data=buff)) as m:
-            filelines.remove_line_interval('foo.md', line_from, line_to, 'foo.md')
+            filelines.remove_line_interval('foo.md',
+                                           line_from,
+                                           line_to,
+                                           'foo.md')
 
         handle = m()
 
@@ -161,8 +171,13 @@ End of toc\n\
         line_to = 4
 
         with self.assertRaises(exceptions.LineOutOfFileBoundsError):
-            with patch('builtins.open', mock_open(read_data=self.generate_fake_file_as_string())):
-                filelines.remove_line_interval('foo.md', line_from, line_to, 'foo.md')
+            with patch('builtins.open',
+                       mock_open(
+                        read_data=self.generate_fake_file_as_string())):
+                filelines.remove_line_interval('foo.md',
+                                               line_from,
+                                               line_to,
+                                               'foo.md')
 
 
 if __name__ == '__main__':
