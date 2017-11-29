@@ -12,6 +12,7 @@ Welcome to fpyutils's documentation!
 
    install
    api
+   test
 
 Indices and tables
 ==================
