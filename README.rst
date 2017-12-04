@@ -13,16 +13,20 @@ use, highly readable but not efficient.
     >>> fpyutils.get_line_matches('foo.txt','foo',5)
     {1: 3, 2: 8}
 
+Documentation
+-------------
+
+http://frnmst.github.io/fpyutils
 
 Conventions
 -----------
 
 - PEP.
 - For each module ``m.py`` it exists, if necessary, its utility file called ``_m.py``
+- 4 space indentation.
 
-
-New modules workflow
---------------------
+Workflow for implementing new modules
+-------------------------------------
 
 1. Write your idea
 2. Write a unit test class
@@ -31,3 +35,9 @@ New modules workflow
 5. Check if PEP standards are respected (run ```make pep```)
 6. Update the documentation
 7. Make a pull request
+
+TODO
+----
+
+- Fix all linter warnings.
+
