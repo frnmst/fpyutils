@@ -19,7 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with fpyutils.  If not, see <http://www.gnu.org/licenses/>.
 #
-
 """Functions on reading and writing files by line."""
 
 from .exceptions import (LineOutOfFileBoundsError)
@@ -79,8 +78,7 @@ def get_line_matches(input_file,
     with open(input_file, 'r') as f:
         # 2. Read the first line.
         line = f.readline()
-        while (line and
-               float(occurrency_counter) < float(max_occurrencies)):
+        while (line and float(occurrency_counter) < float(max_occurrencies)):
             # 3.1. Strip all whitespaces from line if requested.
             if loose_matching:
                 line = line.strip()
@@ -95,9 +93,7 @@ def get_line_matches(input_file,
     return occurrency_matches
 
 
-def insert_string_at_line(input_file,
-                          string_to_be_inserted,
-                          line_number,
+def insert_string_at_line(input_file, string_to_be_inserted, line_number,
                           output_file):
     r"""Write a string at the specified line.
 

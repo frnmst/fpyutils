@@ -25,16 +25,20 @@
 default: pep doc test
 
 pep:
+	yapf --style '{based_on_style: pep8; split_before_logical_operator: False}' -i fpyutils/*.py tests/*.py
 	flake8 --ignore=F401,E501 fpyutils/*.py tests/*.py
 
 doc:
 	$(MAKE) -C docs html
 
 install:
-	python setup.py install
+	pip install .
 
 test:
 	python setup.py test
+
+uninstall:
+	pip uninstall fpyutils
 
 .PHONY: test install
 

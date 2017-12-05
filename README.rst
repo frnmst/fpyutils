@@ -5,6 +5,8 @@ A collection of useful non-standard Python functions which aim to be simple to
 use, highly readable but not efficient.
 
 
+An example:
+
     >>> from fpyutils import filelines
     >>> f = open('foo.txt')
     >>> f.read()
@@ -39,7 +41,6 @@ Workflow for implementing new modules
 TODO
 ----
 
-- Fix all linter warnings.
 - Fix setup.py (check and correct all necessary fields).
 
 License

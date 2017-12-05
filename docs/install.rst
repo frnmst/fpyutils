@@ -6,7 +6,7 @@ your Python setup),
 
 ::
 
-    python setup.py install
+    pip install .
 
 or simply
 

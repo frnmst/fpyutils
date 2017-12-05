@@ -19,10 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with fpyutils.  If not, see <http://www.gnu.org/licenses/>.
 #
-
 """Exposed API."""
 
-from .filelines import (insert_string_at_line,
-                        remove_line_interval,
+from .filelines import (insert_string_at_line, remove_line_interval,
                         get_line_matches)
 from .exceptions import (LineOutOfFileBoundsError)
