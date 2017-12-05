@@ -162,12 +162,12 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
       selected lines.
     :type input_file: str
     :type line_from: int
-    :type line_number: int
+    :type line_to: int
     :type output_file: str
     :returns: None
     :raises: LineOutOfFileBoundsError or the built-in exceptions.
 
-    .. warning:: The parameters line_number must be greater than
+    .. warning:: The parameters line_from and line_to must be greater than
         zero.
 
     .. note:: string_to_be_inserted will be appended to the selected line.
