@@ -26,7 +26,7 @@ setup(
     name='fpyutils',
     version='0.0.1',
     packages=find_packages(),
-    license='MIT',
+    license='GPL',
     long_description=open('README.rst').read(),
     package_data={
         '': ['*.txt', '*.rst'],
@@ -37,19 +37,14 @@ setup(
     url='https://github.com/frnmst/fpyutils',
     python_requires='>=3',
     # This part was inspired by:
-    # https://chriswarrick.com/blog/2014/09/15/python-apps-the-right-way-entry_points-and-script$
+    # https://chriswarrick.com/blog/2014/09/15/python-apps-the-right-way-entry_points-and-scripts/
     test_suite='tests',
     classifiers=[
         'Development Status :: 3 - Alpha',
-
         'Intended Audience :: Developers',
-#        'Topic :: Software Development :: Build Tools',
-
-        'License :: OSI Approved :: MIT License',
+        'Topic :: Software Development :: Libraries',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
     ],
     install_requires=[],
 )

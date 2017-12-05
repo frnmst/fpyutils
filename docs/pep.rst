@@ -1,7 +1,7 @@
-Python PEP compilancy
+Python PEP compliancy
 =====================
 
-To be able to test PEP compilancy you need to install the following packages:
+To be able to test PEP compliancy you need to install the following packages:
 
 - flake8_
 - flake8-docstrings_

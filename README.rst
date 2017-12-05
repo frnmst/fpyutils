@@ -30,18 +30,13 @@ Conventions
 Workflow for implementing new modules
 -------------------------------------
 
-1. Write your idea
-2. Write a unit test class
-3. Implement it
-4. Test it
-5. Check if PEP standards are respected (run ```make pep```)
-6. Update the documentation
+1. Define your idea
+2. Implement a unit test class
+3. Write the code
+4. Test it (run ``make test``)
+5. PEP standards compliancy (run ``make pep``)
+6. Update the documentation (run ``make doc``)
 7. Make a pull request
-
-TODO
-----
-
-- Fix setup.py (check and correct all necessary fields).
 
 License
 -------
