@@ -170,8 +170,6 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
     .. warning:: The parameters line_from and line_to must be greater than
         zero.
 
-    .. note:: string_to_be_inserted will be appended to the selected line.
-
     :Example:
 
     >>> f = open('foo.txt', r)
