@@ -92,7 +92,7 @@ html_theme = 'alabaster'
 #
 html_theme_options = {
     'github_user': 'frnmst',
-    'github_repo': 'fputils',
+    'github_repo': 'fpyutils',
     'github_banner': True,
 }
 
