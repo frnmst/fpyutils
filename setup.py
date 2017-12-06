@@ -27,7 +27,7 @@ setup(
     version='0.0.1',
     packages=find_packages(),
     license='GPL',
-    description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.'
+    description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
     long_description=open('README.rst').read(),
     package_data={
         '': ['*.txt', '*.rst'],
