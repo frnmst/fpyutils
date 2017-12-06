@@ -40,6 +40,8 @@ test:
 uninstall:
 	pip uninstall fpyutils
 
+remove: uninstall
+
 dist:
 	python setup.py sdist
 	python setup.py bdist_wheel
