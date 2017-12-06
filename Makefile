@@ -40,5 +40,15 @@ test:
 uninstall:
 	pip uninstall fpyutils
 
+dist:
+	python setup.py sdist
+	python setup.py bdist_wheel
+
+upload:
+	twine upload dist/*
+
+clean:
+	rm -rf build dist *.egg-info
+
 .PHONY: test install
 
