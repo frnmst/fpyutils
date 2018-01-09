@@ -186,7 +186,8 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
     assert isinstance(output_file, str)
     assert isinstance(line_to, int)
     # At least one line must be deleted.
-    assert line_to - line_from >= 1
+    # Base case line_to - line_from == 0, corresponds to a single line.
+    assert line_to - line_from >= 0
     assert line_from > 0
     assert line_to > 0
 
@@ -205,7 +206,7 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
     # 3. Rewrite the file without the toc.
     with open(output_file, 'w') as f:
         for line in lines:
-            # Ignore the line interval where the toc lies.
+            # Ignore the line interval where the content to be deleted lies.
             if line_number >= line_from and line_number <= line_to:
                 pass
             # Write the rest of the file.

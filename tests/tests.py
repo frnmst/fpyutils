@@ -114,8 +114,6 @@ End of toc\n\
         self.assertEqual(matches[2], 10)
         self.assertTrue(3 not in matches)
 
-        # Test the max_line parameter.... TODO
-
     def test_insert_string_at_line_in_existing_line(self):
         """test_insert_string_at_line_in_existing_line."""
         string_to_be_inserted = "Some string_to_be_inserted"
