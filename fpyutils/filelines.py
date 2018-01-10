@@ -170,7 +170,7 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
     .. warning:: The parameters line_from and line_to must be greater than
         zero.
 
-    .. note:: It is possible to remove a songle line only. This happens when
+    .. note:: It is possible to remove a single line only. This happens when
         the parameters line_from and line_to are equal.
 
     :Example:
