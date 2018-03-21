@@ -26,6 +26,13 @@ code):
 All the necessary dependencies should be installed automatically along with the 
 program.
 
+Distribution packages
+---------------------
+
+- A ``PKGBUILD`` for Arch Linux like distributions is available under
+  the ``./packages/aur`` directories as well as on the AUR website.
+
+
 Dependencies
 ------------
 
