@@ -11,7 +11,7 @@ depends=('python')
 makedepends=('python-setuptools')
 options=(!emptydirs)
 source=("${pkgname}.tar.gz::https://github.com/frnmst/fpyutils/archive/${pkgver}.tar.gz")
-sha256sums=('b45a5bbce70c876bbbf5d4b881c5d4711ef06893827e46b7c56ca8132dbb1479')
+sha256sums=('SKIP')
 
 check() {
   cd "${srcdir}"/fpyutils-"${pkgver}"
