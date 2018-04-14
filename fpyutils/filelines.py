@@ -94,7 +94,7 @@ def get_line_matches(input_file,
 
 
 def insert_string_at_line(input_file, string_to_be_inserted, line_number,
-                          output_file):
+                          output_file, append=True):
     r"""Write a string at the specified line.
 
     :parameter input_file: the file that needs to be read.
@@ -102,10 +102,13 @@ def insert_string_at_line(input_file, string_to_be_inserted, line_number,
     :parameter line_number: the line number on which to append the string.
     :parameter output_file: the file that needs to be written with the new
       content.
+    :parameter append: decides whether to append or prepend the string at the
+      selected line. Defaults to ``True``.
     :type input_file: str
     :type string_to_be_inserted: str
     :type line_number: int
     :type output_file: str
+    :type append: bool
     :returns: None
     :raises: LineOutOfFileBoundsError or the built-in exceptions.
 
@@ -146,8 +149,12 @@ def insert_string_at_line(input_file, string_to_be_inserted, line_number,
             if line_counter == line_number:
                 # A very simple append operation: if the original line ends
                 # with a '\n' character, the string will be added on the next
-                # line.
-                line += string_to_be_inserted
+                # line...
+                if append:
+                    line = line + string_to_be_inserted
+                # ...otherwise prepend that string.
+                else:
+                    line = string_to_be_inserted + line
             f.write(line)
             line_counter += 1
 
