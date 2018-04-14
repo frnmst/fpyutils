@@ -140,12 +140,12 @@ def insert_string_at_line(input_file, string_to_be_inserted, line_number,
         raise LineOutOfFileBoundsError
 
     line_counter = 1
-    # 3. Rewrite the file with the toc.
+    # 3. Rewrite the file with the string.
     with open(output_file, 'w') as f:
         for line in lines:
             if line_counter == line_number:
                 # A very simple append operation: if the original line ends
-                # with a '\n' character, the toc will be added on the next
+                # with a '\n' character, the string will be added on the next
                 # line.
                 line += string_to_be_inserted
             f.write(line)
@@ -206,7 +206,7 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
         raise LineOutOfFileBoundsError
 
     line_number = 1
-    # 3. Rewrite the file without the toc.
+    # 3. Rewrite the file without the string.
     with open(output_file, 'w') as f:
         for line in lines:
             # Ignore the line interval where the content to be deleted lies.
