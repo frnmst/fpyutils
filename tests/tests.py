@@ -115,7 +115,6 @@ End of toc\n\
         self.assertTrue(3 not in matches)
 
     def _test_insert_string_at_line_in_existing_line(self, append):
-        """test_insert_string_at_line_in_existing_line."""
         string_to_be_inserted = "Some string_to_be_inserted"
 
         line_no = 2
@@ -155,6 +154,7 @@ End of toc\n\
             line_counter += 1
 
     def test_insert_string_at_line_in_existing_line(self):
+        """test_insert_string_at_line_in_existing_line."""
         self._test_insert_string_at_line_in_existing_line(append=True)
         self._test_insert_string_at_line_in_existing_line(append=False)
 

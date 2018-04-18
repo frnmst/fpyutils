@@ -93,8 +93,11 @@ def get_line_matches(input_file,
     return occurrency_matches
 
 
-def insert_string_at_line(input_file, string_to_be_inserted, line_number,
-                          output_file, append=True):
+def insert_string_at_line(input_file,
+                          string_to_be_inserted,
+                          line_number,
+                          output_file,
+                          append=True):
     r"""Write a string at the specified line.
 
     :parameter input_file: the file that needs to be read.
