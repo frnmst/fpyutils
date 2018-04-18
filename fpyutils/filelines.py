@@ -118,7 +118,8 @@ def insert_string_at_line(input_file,
     .. warning:: The parameter line_number must be greater than
         zero.
 
-    .. note:: string_to_be_inserted will be appended to the selected line.
+    .. note:: Depending on the value of append, string_to_be_inserted will
+              be either appended or prepended to the selected line.
 
     :Example:
 
