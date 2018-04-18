@@ -132,6 +132,7 @@ def insert_string_at_line(input_file, string_to_be_inserted, line_number,
     assert isinstance(string_to_be_inserted, str)
     assert isinstance(line_number, int)
     assert isinstance(output_file, str)
+    assert isinstance(append, bool)
     assert line_number > 0
 
     # 1. Read the whole file.
@@ -152,7 +153,7 @@ def insert_string_at_line(input_file, string_to_be_inserted, line_number,
                 # line...
                 if append:
                     line = line + string_to_be_inserted
-                # ...otherwise prepend that string.
+                # ...otherwise the string is prepended.
                 else:
                     line = string_to_be_inserted + line
             f.write(line)

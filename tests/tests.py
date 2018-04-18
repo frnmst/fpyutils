@@ -114,7 +114,7 @@ End of toc\n\
         self.assertEqual(matches[2], 10)
         self.assertTrue(3 not in matches)
 
-    def test_insert_string_at_line_in_existing_line(self):
+    def _test_insert_string_at_line_in_existing_line(self, append):
         """test_insert_string_at_line_in_existing_line."""
         string_to_be_inserted = "Some string_to_be_inserted"
 
@@ -123,14 +123,14 @@ End of toc\n\
 
         with patch('builtins.open', mock_open(read_data=buff)) as m:
             filelines.insert_string_at_line('foo.md', string_to_be_inserted,
-                                            line_no, 'foo_two.md')
+                                            line_no, 'foo_two.md', append)
 
         # Get a similar representation of what the readline function returns:
         # separate each line and place it into a list.
         lines = buff.split('\n')
 
         # Strip the last list element which would result in an extra newline
-        # character. This exsists because the resul of separating an empty
+        # character. This exists because it is the result of separating an empty
         # string. See
         # https://docs.python.org/3.6/library/stdtypes.html#str.split
         lines = lines[0:-1]
@@ -146,10 +146,17 @@ End of toc\n\
 
             if line_counter == line_no:
                 # At most one write operation must be done in this manner.
-                handle.write.assert_any_call(line + string_to_be_inserted)
+                if append:
+                    handle.write.assert_any_call(line + string_to_be_inserted)
+                else:
+                    handle.write.assert_any_call(string_to_be_inserted + line)
             else:
                 handle.write.assert_any_call(line)
             line_counter += 1
+
+    def test_insert_string_at_line_in_existing_line(self):
+        self._test_insert_string_at_line_in_existing_line(append=True)
+        self._test_insert_string_at_line_in_existing_line(append=False)
 
     def test_insert_string_at_line_in_non_existing_line(self):
         """test_insert_string_at_line_in_non_existing_line."""
