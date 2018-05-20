@@ -24,7 +24,7 @@ Conventions
 -----------
 
 - PEP.
-- For each module ``m.py`` it exists, if necessary, its utility file called ``_m.py``
+- For each module ``m.py`` it exists, if necessary, its utility file called ``_m.py``.
 - 4 space indentation.
 
 Workflow for implementing new modules
@@ -37,6 +37,9 @@ Workflow for implementing new modules
 5. PEP standards compliancy (run ``make pep``)
 6. Update the documentation (run ``make doc``)
 7. Make a pull request
+
+You can also import existing code and adapt it for this library,
+if you think it's useful.
 
 License
 -------
