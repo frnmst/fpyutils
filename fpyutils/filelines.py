@@ -24,10 +24,10 @@
 from .exceptions import (LineOutOfFileBoundsError)
 
 
-def get_line_matches(input_file,
-                     pattern,
-                     max_occurrencies,
-                     loose_matching=True):
+def get_line_matches(input_file: str,
+                     pattern: str,
+                     max_occurrencies: int,
+                     loose_matching: bool = True) -> dict:
     r"""Get the line numbers of matched patterns.
 
     :parameter input_file: the file that needs to be read.
@@ -37,56 +37,41 @@ def get_line_matches(input_file,
       characters for both pattern and matched strings. Defaults to ``True``.
     :type input_file: str
     :type pattern: str
-    :type max_occurrencies: int or float
+    :type max_occurrencies: float
     :type loose_matching: bool
-    :returns: A dictionary where each key corresponds to the number of
-      occurrency and each value to the matched line number.
+    :returns: occurrency_matches, A dictionary where each key corresponds
+      to the number of occurrencies and each value to the matched line number.
       If no match was found for that particular occurrency, the key is not
-      set.
+      set. This means means for example: if the first occurrency of pattern is at
+      line y then: x[1] = y.
     :rtype: dict
-    :raises: LineOutOfFileBoundsError or the built-in exceptions.
+    :raises: LineOutOfFileBoundsError or a built-in exception.
 
     .. warning:: The parameter max_occurrencies must be greater than
         zero.
 
     .. note:: To get all occurrencies of a pattern, the parameter
-        max_occurrencies must be set to ``float('inf')``.
-
-    :Example:
-
-    >>> f = open('foo.txt')
-    >>> f.read()
-    "This is\nfoo.\nfoo\nThis is\nnot\nbar.\nAnd it's\n    foo\n\nBye!\n"
-    >>> import fpyutils
-    >>> fpyutils.get_line_matches('foo.txt','foo',5)
-    {1: 3, 2: 8}
+        max_occurrencies must be set to ``0``.
     """
-    assert isinstance(input_file, str)
-    assert isinstance(pattern, str)
-    assert (isinstance(max_occurrencies, int) or
-            isinstance(max_occurrencies, float))
-    assert max_occurrencies > 0
+    assert max_occurrencies >= 0
 
-    occurrency_counter = 0
+    occurrency_counter = 0.0
     occurrency_matches = dict()
 
-    # 1. Strip all whitespaces from pattern if requested.
+    if max_occurrencies == 0:
+        max_occurrencies = float('inf')
     if loose_matching:
         pattern = pattern.strip()
 
     line_number = 1
     with open(input_file, 'r') as f:
-        # 2. Read the first line.
         line = f.readline()
-        while (line and float(occurrency_counter) < float(max_occurrencies)):
-            # 3.1. Strip all whitespaces from line if requested.
+        while line and occurrency_counter < max_occurrencies:
             if loose_matching:
                 line = line.strip()
-            # 3.2. Check if line corresponds to the pattern.
             if line == pattern:
-                occurrency_counter += 1
-                occurrency_matches[occurrency_counter] = line_number
-            # 3.3. Go to the next line.
+                occurrency_counter += 1.0
+                occurrency_matches[int(occurrency_counter)] = line_number
             line = f.readline()
             line_number += 1
 
