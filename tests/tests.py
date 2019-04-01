@@ -62,7 +62,7 @@ class TestFileLines(unittest.TestCase):
                 'builtins.open',
                 mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
             matches = filelines.get_line_matches(
-                input_file='foo.md', pattern='[](TOC)', max_occurrencies=2**32)
+                input_file='foo.md', pattern='[](TOC)', max_occurrencies=0)
         self.assertEqual(matches[1], 4)
         self.assertEqual(matches[2], 10)
         self.assertTrue(3 not in matches)
@@ -74,7 +74,7 @@ class TestFileLines(unittest.TestCase):
             matches = filelines.get_line_matches(
                 input_file='foo.md',
                 pattern='[](TOC)',
-                max_occurrencies=2**32,
+                max_occurrencies=0,
                 loose_matching=False)
 
         self.assertTrue(1 not in matches)
@@ -86,15 +86,12 @@ class TestFileLines(unittest.TestCase):
             matches = filelines.get_line_matches(
                 input_file='foo.md',
                 pattern='[](TOC)\n',
-                max_occurrencies=2**32,
+                max_occurrencies=0,
                 loose_matching=False)
 
         self.assertEqual(matches[1], 4)
         self.assertEqual(matches[2], 10)
         self.assertTrue(3 not in matches)
-
-        # Case with inf.
-        # TODO.
 
     def _test_insert_string_at_line_in_existing_line(self, append):
         """See the test_insert_string_at_line_in_existing_line function."""
