@@ -214,11 +214,11 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
     total_lines = len(lines)
 
     # 3. Raise an exception if we are trying to delete an invalid line.
-    if (line_from > total_lines or line_to > total_lines):
+    if line_from > total_lines or line_to > total_lines:
         raise LineOutOfFileBoundsError
 
     line_number = 1
-    # 3. Rewrite the file without the string.
+    # 4. Rewrite the file without the string.
     with open(output_file, 'w') as f:
         for line in lines:
             # Ignore the line interval where the content to be deleted lies.
