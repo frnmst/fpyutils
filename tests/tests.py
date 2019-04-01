@@ -76,7 +76,6 @@ class TestFileLines(unittest.TestCase):
                 pattern='[](TOC)',
                 max_occurrencies=0,
                 loose_matching=False)
-
         self.assertTrue(1 not in matches)
 
         # More than zero pattern matches with loose matching disabled.
@@ -88,7 +87,6 @@ class TestFileLines(unittest.TestCase):
                 pattern='[](TOC)\n',
                 max_occurrencies=0,
                 loose_matching=False)
-
         self.assertEqual(matches[1], 4)
         self.assertEqual(matches[2], 10)
         self.assertTrue(3 not in matches)
@@ -142,7 +140,6 @@ class TestFileLines(unittest.TestCase):
         # We simply have to check if the correct exception is raised.
         string_to_be_inserted = "Some string_to_be_inserted"
         line_no = 2**32
-
         with self.assertRaises(exceptions.LineOutOfFileBoundsError):
             with patch(
                     'builtins.open',

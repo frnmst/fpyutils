@@ -78,11 +78,11 @@ def get_line_matches(input_file: str,
     return occurrency_matches
 
 
-def insert_string_at_line(input_file,
-                          string_to_be_inserted,
-                          line_number,
-                          output_file,
-                          append=True):
+def insert_string_at_line(input_file: str,
+                          string_to_be_inserted: str,
+                          line_number: int,
+                          output_file: str,
+                          append: bool = True):
     r"""Write a string at the specified line.
 
     :parameter input_file: the file that needs to be read.
@@ -105,24 +105,8 @@ def insert_string_at_line(input_file,
 
     .. note:: Depending on the value of append, string_to_be_inserted will
               be either appended or prepended to the selected line.
-
-    :Example:
-
-    >>> f = open('foo.txt', r)
-    >>> f.read()
-    'This is\nfoo.\nThis is\nnot\nbar.\n\nBye!\n'
-    >>> import fpyutils
-    >>> fpyutils.insert_string_at_line('foo.txt','bar',2,'bar.txt')
-    >>> f = open('bar.txt')
-    >>> f.read()
-    'This is\nfoo.\nbarThis is\nnot\nbar.\n\nBye!\n'
     """
-    assert isinstance(input_file, str)
-    assert isinstance(string_to_be_inserted, str)
-    assert isinstance(line_number, int)
-    assert isinstance(output_file, str)
-    assert isinstance(append, bool)
-    assert line_number > 0
+    assert line_number >= 1
 
     # 1. Read the whole file.
     with open(input_file, 'r') as f:
@@ -132,8 +116,8 @@ def insert_string_at_line(input_file,
     if line_number > len(lines):
         raise LineOutOfFileBoundsError
 
-    line_counter = 1
     # 3. Rewrite the file with the string.
+    line_counter = 1
     with open(output_file, 'w') as f:
         for line in lines:
             if line_counter == line_number:
