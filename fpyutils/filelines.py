@@ -2,7 +2,6 @@
 # filelines.py
 #
 # Copyright (C) 2017 frnmst (Franco Masotti) <franco.masotti@live.com>
-#                                            <franco.masotti@student.unife.it>
 #
 # This file is part of fpyutils.
 #
@@ -123,16 +122,17 @@ def insert_string_at_line(input_file: str,
     extra_lines_done = False
     with open(output_file, 'w') as f:
         while loop:
-            if put_at_line_number > len(lines) and line_counter == len(lines) + 1:
+            line_number_after_eof = len(lines) + 1
+            if put_at_line_number > len(lines) and line_counter == line_number_after_eof:
                 # There are extra lines to write.
                 line = str()
             else:
                 line = lines[i]
             # It is ok if the position of line to be written is greater
-            # than the last line number of the file. We just need to add the
-            # appropriate number of new line characters which will fill
-            # the non existing lines of the file.
-            if put_at_line_number > len(lines) and line_counter == len(lines) + 1:
+            # than the last line number of the input file. We just need to add
+            # the appropriate number of new line characters which will fill
+            # the non existing lines of the output file.
+            if put_at_line_number > len(lines) and line_counter == line_number_after_eof:
                 for x in range(0, put_at_line_number-len(lines)):
                     # If we get here there must be at least 1 more line to write.
                     f.write(newline_character)
@@ -141,7 +141,7 @@ def insert_string_at_line(input_file: str,
                     extra_lines_done = True
 
                 # Necessary otherwise the next condition would never be
-                # satisifed. FIXME.
+                # satisifed.
                 line_counter -= 1
 
             if line_counter == put_at_line_number:

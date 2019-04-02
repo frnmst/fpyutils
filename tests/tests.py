@@ -91,11 +91,14 @@ class TestFileLines(unittest.TestCase):
         self.assertEqual(matches[2], 10)
         self.assertTrue(3 not in matches)
 
-    def _test_insert_string_at_line_in_existing_line(self, append):
+    def _test_insert_string_at_line_in_existing_line(self, append, extra_lines):
         """See the test_insert_string_at_line_in_existing_line function."""
         string_to_be_inserted = "Some string_to_be_inserted"
 
-        line_no = 2
+        if extra_lines:
+            line_no = 2**5
+        else:
+            line_no = 2
         buff = FAKE_FILE_AS_STRING
 
         with patch('builtins.open', mock_open(read_data=buff)) as m:
@@ -121,30 +124,30 @@ class TestFileLines(unittest.TestCase):
             # Put the newline character at the end of the line.
             line = line + '\n'
 
+            if extra_lines and line_counter == len(lines) + 1:
+                handle.write.assert_called_with('\n')
+
             if line_counter == line_no:
-                # At most one write operation must be done in this manner.
+                # At most one write operation can be done in this manner.
                 if append:
-                    handle.write.assert_any_call(line + string_to_be_inserted)
+                    handle.write.assert_called_with(line + string_to_be_inserted)
                 else:
-                    handle.write.assert_any_call(string_to_be_inserted + line)
+                    handle.write.assert_called_with(string_to_be_inserted + line)
             else:
+                # The mock might not refer to the order of the insructions
+                # inside this loop
                 handle.write.assert_any_call(line)
+
             line_counter += 1
 
     def test_insert_string_at_line(self):
         # insert_string_at_line in existing line.
-        self._test_insert_string_at_line_in_existing_line(append=True)
-        self._test_insert_string_at_line_in_existing_line(append=False)
+        self._test_insert_string_at_line_in_existing_line(append=False, extra_lines=False)
+        self._test_insert_string_at_line_in_existing_line(append=True, extra_lines=False)
 
         # insert_string_at_line in non existing line.
-        # TODO Test write mocks...
-        string_to_be_inserted = "Some string_to_be_inserted"
-        line_no = 2**16
-        with patch(
-           'builtins.open',
-                 mock_open(read_data=FAKE_FILE_AS_STRING)):
-                    filelines.insert_string_at_line(
-                    'foo.md', string_to_be_inserted, line_no, 'foo.md')
+        self._test_insert_string_at_line_in_existing_line(append=False, extra_lines=True)
+        self._test_insert_string_at_line_in_existing_line(append=True, extra_lines=True)
 
     def test_remove_line_interval(self):
         # test_remove_line_interval existing interval.

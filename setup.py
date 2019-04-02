@@ -2,7 +2,6 @@
 # setup.py
 #
 # Copyright (C) 2017 frnmst (Franco Masotti) <franco.masotti@live.com>
-#                                            <franco.masotti@student.unife.it>
 #
 # This file is part of fpyutils.
 #
@@ -24,7 +23,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fpyutils',
-    version='0.0.4',
+    version='1.0.0',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
