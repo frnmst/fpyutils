@@ -45,7 +45,7 @@ def get_line_matches(input_file: str,
       set. This means means for example: if the first occurrency of pattern is at
       line y then: x[1] = y.
     :rtype: dict
-    :raises: LineOutOfFileBoundsError or a built-in exception.
+    :raises: a built-in exception.
 
     .. warning:: The parameter max_occurrencies must be greater than
         zero.
@@ -63,7 +63,7 @@ def get_line_matches(input_file: str,
     if loose_matching:
         pattern = pattern.strip()
 
-    line_number = 1
+    put_at_line_number = 1
     with open(input_file, 'r') as f:
         line = f.readline()
         while line and occurrency_counter < max_occurrencies:
@@ -71,18 +71,19 @@ def get_line_matches(input_file: str,
                 line = line.strip()
             if line == pattern:
                 occurrency_counter += 1.0
-                occurrency_matches[int(occurrency_counter)] = line_number
+                occurrency_matches[int(occurrency_counter)] = put_at_line_number
             line = f.readline()
-            line_number += 1
+            put_at_line_number += 1
 
     return occurrency_matches
 
 
 def insert_string_at_line(input_file: str,
                           string_to_be_inserted: str,
-                          line_number: int,
+                          put_at_line_number: int,
                           output_file: str,
-                          append: bool = True):
+                          append: bool = True,
+                          newline_character: str = '\n'):
     r"""Write a string at the specified line.
 
     :parameter input_file: the file that needs to be read.
@@ -92,13 +93,17 @@ def insert_string_at_line(input_file: str,
       content.
     :parameter append: decides whether to append or prepend the string at the
       selected line. Defaults to ``True``.
+    :parameter newline_character: set the character used to fill the file
+      in case line_number is greater than the number of lines of
+      input_file. Defaults to ``\n``.
     :type input_file: str
     :type string_to_be_inserted: str
     :type line_number: int
     :type output_file: str
     :type append: bool
+    :type newline_character: str
     :returns: None
-    :raises: LineOutOfFileBoundsError or the built-in exceptions.
+    :raises: LineOutOfFileBoundsError or a built-in exception.
 
     .. warning:: The parameter line_number must be greater than
         zero.
@@ -106,21 +111,40 @@ def insert_string_at_line(input_file: str,
     .. note:: Depending on the value of append, string_to_be_inserted will
               be either appended or prepended to the selected line.
     """
-    assert line_number >= 1
+    assert put_at_line_number >= 1
 
-    # 1. Read the whole file.
     with open(input_file, 'r') as f:
         lines = f.readlines()
 
-    # 2. Raise an exception if we are trying to write on a non-existing line.
-    if line_number > len(lines):
-        raise LineOutOfFileBoundsError
-
-    # 3. Rewrite the file with the string.
+    # Rewrite the file with the new string.
     line_counter = 1
+    i = 0
+    loop = True
+    extra_lines_done = False
     with open(output_file, 'w') as f:
-        for line in lines:
-            if line_counter == line_number:
+        while loop:
+            if put_at_line_number > len(lines) and line_counter == len(lines) + 1:
+                # There are extra lines to write.
+                line = str()
+            else:
+                line = lines[i]
+            # It is ok if the position of line to be written is greater
+            # than the last line number of the file. We just need to add the
+            # appropriate number of new line characters which will fill
+            # the non existing lines of the file.
+            if put_at_line_number > len(lines) and line_counter == len(lines) + 1:
+                for x in range(0, put_at_line_number-len(lines)):
+                    # If we get here there must be at least 1 more line to write.
+                    f.write(newline_character)
+                    line_counter += 1
+                    i += 1
+                    extra_lines_done = True
+
+                # Necessary otherwise the next condition would never be
+                # satisifed. FIXME.
+                line_counter -= 1
+
+            if line_counter == put_at_line_number:
                 # A very simple append operation: if the original line ends
                 # with a '\n' character, the string will be added on the next
                 # line...
@@ -131,9 +155,16 @@ def insert_string_at_line(input_file: str,
                     line = string_to_be_inserted + line
             f.write(line)
             line_counter += 1
+            i += 1
+            # Quit the loop if there is nothing more to write.
+            if i >= len(lines):
+                loop = False
+            # Continue looping if there are still extra lines to write.
+            if put_at_line_number > len(lines) and not extra_lines_done:
+                loop = True
 
 
-def remove_line_interval(input_file, line_from, line_to, output_file):
+def remove_line_interval(input_file: str, line_from: int, line_to: int, output_file: str):
     r"""Remove a line interval.
 
     :parameter input_file: the file that needs to be read.
@@ -153,50 +184,33 @@ def remove_line_interval(input_file, line_from, line_to, output_file):
 
     .. note:: It is possible to remove a single line only. This happens when
         the parameters line_from and line_to are equal.
-
-    :Example:
-
-    >>> f = open('foo.txt', r)
-    >>> f.read()
-    'This is\nfoo.\nThis is\nnot\nbar.\n\nBye!\n'
-    >>> import fpyutils
-    >>> fpyutils.insert_string_at_line('foo.txt','bar',2,'bar.txt')
-    >>> f = open('bar.txt')
-    >>> f.read()
-    'This is\nfoo.\nbarThis is\nnot\nbar.\n\nBye!\n'
     """
-    assert isinstance(input_file, str)
-    assert isinstance(line_from, int)
-    assert isinstance(output_file, str)
-    assert isinstance(line_to, int)
     # At least one line must be deleted.
     # Base case line_to - line_from == 0, corresponds to a single line.
     assert line_to - line_from >= 0
     assert line_from > 0
     assert line_to > 0
 
-    # 1. Read the whole file.
     with open(input_file, 'r') as f:
         lines = f.readlines()
 
-    # 2. Save the total lines.
     total_lines = len(lines)
 
     # 3. Raise an exception if we are trying to delete an invalid line.
     if line_from > total_lines or line_to > total_lines:
         raise LineOutOfFileBoundsError
 
-    line_number = 1
+    put_at_line_number = 1
     # 4. Rewrite the file without the string.
     with open(output_file, 'w') as f:
         for line in lines:
             # Ignore the line interval where the content to be deleted lies.
-            if line_number >= line_from and line_number <= line_to:
+            if put_at_line_number >= line_from and put_at_line_number <= line_to:
                 pass
             # Write the rest of the file.
             else:
                 f.write(line)
-            line_number += 1
+            put_at_line_number += 1
 
 
 if __name__ == '__main__':

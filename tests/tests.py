@@ -132,19 +132,18 @@ class TestFileLines(unittest.TestCase):
             line_counter += 1
 
     def test_insert_string_at_line(self):
-        # test_insert_string_at_line in existing line.
+        # insert_string_at_line in existing line.
         self._test_insert_string_at_line_in_existing_line(append=True)
         self._test_insert_string_at_line_in_existing_line(append=False)
 
-        # test_insert_string_at_line in non existing line.
-        # We simply have to check if the correct exception is raised.
+        # insert_string_at_line in non existing line.
+        # TODO Test write mocks...
         string_to_be_inserted = "Some string_to_be_inserted"
-        line_no = 2**32
-        with self.assertRaises(exceptions.LineOutOfFileBoundsError):
-            with patch(
-                    'builtins.open',
-                    mock_open(read_data=FAKE_FILE_AS_STRING)):
-                filelines.insert_string_at_line(
+        line_no = 2**16
+        with patch(
+           'builtins.open',
+                 mock_open(read_data=FAKE_FILE_AS_STRING)):
+                    filelines.insert_string_at_line(
                     'foo.md', string_to_be_inserted, line_no, 'foo.md')
 
     def test_remove_line_interval(self):
@@ -178,7 +177,7 @@ class TestFileLines(unittest.TestCase):
 
             line_counter += 1
 
-        # test_remove_line_interval non existing interval.
+        # remove_line_interval non existing interval.
         # We simply have to check if the correct exception is raised.
         line_from = 1
         line_to = 4
