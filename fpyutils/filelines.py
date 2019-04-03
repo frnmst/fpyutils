@@ -159,8 +159,8 @@ def insert_string_at_line(input_file: str,
     # endwith
 
 
-def remove_line_interval(input_file: str, delete_line_from: int, delete_line_to: int,
-                         output_file: str):
+def remove_line_interval(input_file: str, delete_line_from: int,
+                         delete_line_to: int, output_file: str):
     r"""Remove a line interval.
 
     :parameter input_file: the file that needs to be read.
