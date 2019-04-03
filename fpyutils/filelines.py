@@ -109,9 +109,9 @@ def insert_string_at_line(input_file: str,
     i = 0
     loop = True
     extra_lines_done = False
+    line_number_after_eof = len(lines) + 1
     with open(output_file, 'w') as f:
         while loop:
-            line_number_after_eof = len(lines) + 1
             if put_at_line_number > len(
                     lines) and line_counter == line_number_after_eof:
                 # There are extra lines to write.
@@ -124,16 +124,14 @@ def insert_string_at_line(input_file: str,
             # the non existing lines of the output file.
             if put_at_line_number > len(
                     lines) and line_counter == line_number_after_eof:
-                for x in range(0, put_at_line_number - len(lines)):
-                    # If we get here there must be at least 1 more line to write.
+                for additional_newlines in range(
+                        0, put_at_line_number - len(lines) - 1):
+                    # Skip the newline in the line where we need to insert
+                    # the new string.
                     f.write(newline_character)
                     line_counter += 1
                     i += 1
-                    extra_lines_done = True
-
-                # Necessary otherwise the next condition would never be
-                # satisifed.
-                line_counter -= 1
+                extra_lines_done = True
 
             if line_counter == put_at_line_number:
                 # A very simple append operation: if the original line ends
