@@ -24,9 +24,12 @@
 
 default: pep doc test
 
+githook:
+	git config core.hooksPath .githooks
+
 pep:
 	yapf --style '{based_on_style: pep8; split_before_logical_operator: False}' -i fpyutils/*.py tests/*.py
-	flake8 --ignore=F401,E501 fpyutils/*.py tests/*.py
+	flake8 --ignore=F401,E501,W503,W504,W605,E125 fpyutils/*.py tests/*.py
 
 doc:
 	$(MAKE) -C docs html
@@ -40,8 +43,6 @@ test:
 uninstall:
 	pip uninstall fpyutils
 
-remove: uninstall
-
 dist:
 	python setup.py sdist
 	python setup.py bdist_wheel
@@ -52,5 +53,5 @@ upload:
 clean:
 	rm -rf build dist *.egg-info
 
-.PHONY: test install
+.PHONY:  default pep doc install test uninstall dist upload clean
 

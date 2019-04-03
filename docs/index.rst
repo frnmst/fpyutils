@@ -12,8 +12,7 @@ Welcome to fpyutils's documentation!
 
    install
    api
-   test
-   pep
+   contributing
    copyright_license
 
 Indices and tables

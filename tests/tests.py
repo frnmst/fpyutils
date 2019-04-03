@@ -25,7 +25,6 @@ from fpyutils import (filelines, exceptions)
 import unittest
 from unittest.mock import patch, mock_open
 
-
 # filelines module.
 FAKE_FILE_AS_STRING = '''\
 # One\n\
@@ -45,22 +44,21 @@ content.\n\
 End of toc\n\
 '''
 
+
 class TestFileLines(unittest.TestCase):
     """filelines modules test."""
 
     def test_get_line_matches(self):
+        """test_get_line_matches."""
         # Zero pattern matches.
-        with patch(
-                'builtins.open',
-                mock_open(read_data=FAKE_FILE_AS_STRING)):
+        with patch('builtins.open', mock_open(read_data=FAKE_FILE_AS_STRING)):
             matches = filelines.get_line_matches(
                 input_file='foo.md', pattern='[](TOC)', max_occurrencies=1)
         self.assertTrue(1 not in matches)
 
         # More than zero pattern matches.
-        with patch(
-                'builtins.open',
-                mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
+        with patch('builtins.open',
+                   mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
             matches = filelines.get_line_matches(
                 input_file='foo.md', pattern='[](TOC)', max_occurrencies=0)
         self.assertEqual(matches[1], 4)
@@ -68,9 +66,8 @@ class TestFileLines(unittest.TestCase):
         self.assertTrue(3 not in matches)
 
         # Zero pattern matches with loose matching disabled.
-        with patch(
-                'builtins.open',
-                mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
+        with patch('builtins.open',
+                   mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
             matches = filelines.get_line_matches(
                 input_file='foo.md',
                 pattern='[](TOC)',
@@ -79,9 +76,8 @@ class TestFileLines(unittest.TestCase):
         self.assertTrue(1 not in matches)
 
         # More than zero pattern matches with loose matching disabled.
-        with patch(
-                'builtins.open',
-                mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
+        with patch('builtins.open',
+                   mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
             matches = filelines.get_line_matches(
                 input_file='foo.md',
                 pattern='[](TOC)\n',
@@ -91,7 +87,8 @@ class TestFileLines(unittest.TestCase):
         self.assertEqual(matches[2], 10)
         self.assertTrue(3 not in matches)
 
-    def _test_insert_string_at_line_in_existing_line(self, append, extra_lines):
+    def _test_insert_string_at_line_in_existing_line(self, append,
+                                                     extra_lines):
         """See the test_insert_string_at_line_in_existing_line function."""
         string_to_be_inserted = "Some string_to_be_inserted"
 
@@ -130,9 +127,11 @@ class TestFileLines(unittest.TestCase):
             if line_counter == line_no:
                 # At most one write operation can be done in this manner.
                 if append:
-                    handle.write.assert_called_with(line + string_to_be_inserted)
+                    handle.write.assert_called_with(line +
+                                                    string_to_be_inserted)
                 else:
-                    handle.write.assert_called_with(string_to_be_inserted + line)
+                    handle.write.assert_called_with(string_to_be_inserted +
+                                                    line)
             else:
                 # The mock might not refer to the order of the insructions
                 # inside this loop
@@ -141,16 +140,22 @@ class TestFileLines(unittest.TestCase):
             line_counter += 1
 
     def test_insert_string_at_line(self):
+        """test_insert_string_at_line."""
         # insert_string_at_line in existing line.
-        self._test_insert_string_at_line_in_existing_line(append=False, extra_lines=False)
-        self._test_insert_string_at_line_in_existing_line(append=True, extra_lines=False)
+        self._test_insert_string_at_line_in_existing_line(
+            append=False, extra_lines=False)
+        self._test_insert_string_at_line_in_existing_line(
+            append=True, extra_lines=False)
 
         # insert_string_at_line in non existing line.
-        self._test_insert_string_at_line_in_existing_line(append=False, extra_lines=True)
-        self._test_insert_string_at_line_in_existing_line(append=True, extra_lines=True)
+        self._test_insert_string_at_line_in_existing_line(
+            append=False, extra_lines=True)
+        self._test_insert_string_at_line_in_existing_line(
+            append=True, extra_lines=True)
 
     def test_remove_line_interval(self):
-        # test_remove_line_interval existing interval.
+        """test_remove_line_interval."""
+        # remove_line_interval existing interval.
         # Assert called with everything except the missing lines.
         line_from = 5
         line_to = 9
@@ -186,9 +191,8 @@ class TestFileLines(unittest.TestCase):
         line_to = 4
 
         with self.assertRaises(exceptions.LineOutOfFileBoundsError):
-            with patch(
-                    'builtins.open',
-                    mock_open(read_data=FAKE_FILE_AS_STRING)):
+            with patch('builtins.open',
+                       mock_open(read_data=FAKE_FILE_AS_STRING)):
                 filelines.remove_line_interval('foo.md', line_from, line_to,
                                                'foo.md')
 

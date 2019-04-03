@@ -70,7 +70,8 @@ def get_line_matches(input_file: str,
                 line = line.strip()
             if line == pattern:
                 occurrency_counter += 1.0
-                occurrency_matches[int(occurrency_counter)] = put_at_line_number
+                occurrency_matches[int(
+                    occurrency_counter)] = put_at_line_number
             line = f.readline()
             put_at_line_number += 1
 
@@ -106,9 +107,6 @@ def insert_string_at_line(input_file: str,
 
     .. warning:: The parameter line_number must be greater than
         zero.
-
-    .. note:: Depending on the value of append, string_to_be_inserted will
-              be either appended or prepended to the selected line.
     """
     assert put_at_line_number >= 1
 
@@ -123,7 +121,8 @@ def insert_string_at_line(input_file: str,
     with open(output_file, 'w') as f:
         while loop:
             line_number_after_eof = len(lines) + 1
-            if put_at_line_number > len(lines) and line_counter == line_number_after_eof:
+            if put_at_line_number > len(
+                    lines) and line_counter == line_number_after_eof:
                 # There are extra lines to write.
                 line = str()
             else:
@@ -132,8 +131,9 @@ def insert_string_at_line(input_file: str,
             # than the last line number of the input file. We just need to add
             # the appropriate number of new line characters which will fill
             # the non existing lines of the output file.
-            if put_at_line_number > len(lines) and line_counter == line_number_after_eof:
-                for x in range(0, put_at_line_number-len(lines)):
+            if put_at_line_number > len(
+                    lines) and line_counter == line_number_after_eof:
+                for x in range(0, put_at_line_number - len(lines)):
                     # If we get here there must be at least 1 more line to write.
                     f.write(newline_character)
                     line_counter += 1
@@ -163,8 +163,13 @@ def insert_string_at_line(input_file: str,
             if put_at_line_number > len(lines) and not extra_lines_done:
                 loop = True
 
+        # endwhile
 
-def remove_line_interval(input_file: str, line_from: int, line_to: int, output_file: str):
+    # endwith
+
+
+def remove_line_interval(input_file: str, line_from: int, line_to: int,
+                         output_file: str):
     r"""Remove a line interval.
 
     :parameter input_file: the file that needs to be read.
@@ -196,12 +201,12 @@ def remove_line_interval(input_file: str, line_from: int, line_to: int, output_f
 
     total_lines = len(lines)
 
-    # 3. Raise an exception if we are trying to delete an invalid line.
+    # Raise an exception if we are trying to delete an invalid line.
     if line_from > total_lines or line_to > total_lines:
         raise LineOutOfFileBoundsError
 
     put_at_line_number = 1
-    # 4. Rewrite the file without the string.
+    # Rewrite the file without the string.
     with open(output_file, 'w') as f:
         for line in lines:
             # Ignore the line interval where the content to be deleted lies.
