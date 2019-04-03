@@ -105,7 +105,6 @@ def insert_string_at_line(input_file: str,
     with open(input_file, 'r') as f:
         lines = f.readlines()
 
-    # Rewrite the file with the new string.
     line_counter = 1
     i = 0
     loop = True
@@ -160,51 +159,49 @@ def insert_string_at_line(input_file: str,
     # endwith
 
 
-def remove_line_interval(input_file: str, line_from: int, line_to: int,
+def remove_line_interval(input_file: str, delete_line_from: int, delete_line_to: int,
                          output_file: str):
     r"""Remove a line interval.
 
     :parameter input_file: the file that needs to be read.
-    :parameter line_from: the line number from which start deleting.
-    :parameter line_to: the line number to which stop deleting.
+    :parameter delete_line_from: the line number from which start deleting.
+    :parameter delete_line_to: the line number to which stop deleting.
     :parameter output_file: the file that needs to be written without the
       selected lines.
     :type input_file: str
-    :type line_from: int
-    :type line_to: int
+    :type delete_line_from: int
+    :type delete_line_to: int
     :type output_file: str
     :returns: None
     :raises: LineOutOfFileBoundsError or the built-in exceptions.
 
     .. note:: It is possible to remove a single line only. This happens when
-        the parameters line_from and line_to are equal.
+        the parameters delete_line_from and delete_line_to are equal.
     """
     # At least one line must be deleted.
-    # Base case line_to - line_from == 0, corresponds to a single line.
-    assert line_to - line_from >= 0
-    assert line_from >= 1
-    assert line_to >= 1
+    # Base case delete_line_to - delete_line_from == 0, corresponds to a single line.
+    assert delete_line_to - delete_line_from >= 0
+    assert delete_line_from >= 1
+    assert delete_line_to >= 1
 
     with open(input_file, 'r') as f:
         lines = f.readlines()
 
-    total_lines = len(lines)
-
     # Raise an exception if we are trying to delete an invalid line.
-    if line_from > total_lines or line_to > total_lines:
+    if delete_line_from > len(lines) or delete_line_to > len(lines):
         raise LineOutOfFileBoundsError
 
-    put_at_line_number = 1
+    line_counter = 1
     # Rewrite the file without the string.
     with open(output_file, 'w') as f:
         for line in lines:
             # Ignore the line interval where the content to be deleted lies.
-            if put_at_line_number >= line_from and put_at_line_number <= line_to:
+            if line_counter >= delete_line_from and line_counter <= delete_line_to:
                 pass
             # Write the rest of the file.
             else:
                 f.write(line)
-            put_at_line_number += 1
+            line_counter += 1
 
 
 if __name__ == '__main__':
