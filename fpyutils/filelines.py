@@ -32,18 +32,18 @@ def get_line_matches(input_file: str,
     :parameter input_file: the file that needs to be read.
     :parameter pattern: the pattern that needs to be searched.
     :parameter max_occurrencies: the maximum number of expected occurrencies.
-      Defaults to ``0`` which means that all occurrencies will be matched.
+         Defaults to ``0`` which means that all occurrencies will be matched.
     :parameter loose_matching: ignore leading and trailing whitespace
-      characters for both pattern and matched strings. Defaults to ``True``.
+         characters for both pattern and matched strings. Defaults to ``True``.
     :type input_file: str
     :type pattern: str
     :type max_occurrencies: int
     :type loose_matching: bool
     :returns: occurrency_matches, A dictionary where each key corresponds
-      to the number of occurrencies and each value to the matched line number.
-      If no match was found for that particular occurrency, the key is not
-      set. This means means for example: if the first occurrency of pattern is at
-      line y then: x[1] = y.
+         to the number of occurrencies and each value to the matched line number.
+         If no match was found for that particular occurrency, the key is not
+         set. This means means for example: if the first occurrency of
+         pattern is at line y then: x[1] = y.
     :rtype: dict
     :raises: a built-in exception.
     """
@@ -85,12 +85,12 @@ def insert_string_at_line(input_file: str,
     :parameter string_to_be_inserted: the string that needs to be added.
     :parameter line_number: the line number on which to append the string.
     :parameter output_file: the file that needs to be written with the new
-      content.
+         content.
     :parameter append: decides whether to append or prepend the string at the
-      selected line. Defaults to ``True``.
+         selected line. Defaults to ``True``.
     :parameter newline_character: set the character used to fill the file
-      in case line_number is greater than the number of lines of
-      input_file. Defaults to ``\n``.
+         in case line_number is greater than the number of lines of
+         input_file. Defaults to ``\n``.
     :type input_file: str
     :type string_to_be_inserted: str
     :type line_number: int
@@ -167,7 +167,7 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     :parameter delete_line_from: the line number from which start deleting.
     :parameter delete_line_to: the line number to which stop deleting.
     :parameter output_file: the file that needs to be written without the
-      selected lines.
+         selected lines.
     :type input_file: str
     :type delete_line_from: int
     :type delete_line_to: int
@@ -175,11 +175,13 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     :returns: None
     :raises: LineOutOfFileBoundsError or the built-in exceptions.
 
-    .. note:: It is possible to remove a single line only. This happens when
-        the parameters delete_line_from and delete_line_to are equal.
+    .. note::
+         It is possible to remove a single line only. This happens when
+         the parameters delete_line_from and delete_line_to are equal.
     """
     # At least one line must be deleted.
-    # Base case delete_line_to - delete_line_from == 0, corresponds to a single line.
+    # Base case delete_line_to - delete_line_from == 0, corresponds to a
+    # single line.
     assert delete_line_to - delete_line_from >= 0
     assert delete_line_from >= 1
     assert delete_line_to >= 1
@@ -187,7 +189,7 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     with open(input_file, 'r') as f:
         lines = f.readlines()
 
-    # Raise an exception if we are trying to delete an invalid line.
+    # Invalid line range.
     if delete_line_from > len(lines) or delete_line_to > len(lines):
         raise LineOutOfFileBoundsError
 
