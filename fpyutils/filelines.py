@@ -25,18 +25,19 @@ from .exceptions import (LineOutOfFileBoundsError)
 
 def get_line_matches(input_file: str,
                      pattern: str,
-                     max_occurrencies: int,
+                     max_occurrencies: int = 0,
                      loose_matching: bool = True) -> dict:
     r"""Get the line numbers of matched patterns.
 
     :parameter input_file: the file that needs to be read.
     :parameter pattern: the pattern that needs to be searched.
     :parameter max_occurrencies: the maximum number of expected occurrencies.
+      Defaults to ``0`` which means that all occurrencies will be matched.
     :parameter loose_matching: ignore leading and trailing whitespace
       characters for both pattern and matched strings. Defaults to ``True``.
     :type input_file: str
     :type pattern: str
-    :type max_occurrencies: float
+    :type max_occurrencies: int
     :type loose_matching: bool
     :returns: occurrency_matches, A dictionary where each key corresponds
       to the number of occurrencies and each value to the matched line number.
@@ -45,12 +46,6 @@ def get_line_matches(input_file: str,
       line y then: x[1] = y.
     :rtype: dict
     :raises: a built-in exception.
-
-    .. warning:: The parameter max_occurrencies must be greater than
-        zero.
-
-    .. note:: To get all occurrencies of a pattern, the parameter
-        max_occurrencies must be set to ``0``.
     """
     assert max_occurrencies >= 0
 
@@ -104,9 +99,6 @@ def insert_string_at_line(input_file: str,
     :type newline_character: str
     :returns: None
     :raises: LineOutOfFileBoundsError or a built-in exception.
-
-    .. warning:: The parameter line_number must be greater than
-        zero.
     """
     assert put_at_line_number >= 1
 
@@ -184,17 +176,14 @@ def remove_line_interval(input_file: str, line_from: int, line_to: int,
     :returns: None
     :raises: LineOutOfFileBoundsError or the built-in exceptions.
 
-    .. warning:: The parameters line_from and line_to must be greater than
-        zero.
-
     .. note:: It is possible to remove a single line only. This happens when
         the parameters line_from and line_to are equal.
     """
     # At least one line must be deleted.
     # Base case line_to - line_from == 0, corresponds to a single line.
     assert line_to - line_from >= 0
-    assert line_from > 0
-    assert line_to > 0
+    assert line_from >= 1
+    assert line_to >= 1
 
     with open(input_file, 'r') as f:
         lines = f.readlines()
