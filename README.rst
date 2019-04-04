@@ -20,13 +20,6 @@ Documentation
 
 http://frnmst.github.io/fpyutils
 
-Conventions
------------
-
-- PEP.
-- For each module ``m.py`` it exists, if necessary, its utility file called ``_m.py``.
-- 4 space indentation.
-
 Workflow for implementing new modules
 -------------------------------------
 
@@ -44,8 +37,7 @@ if you think it's useful.
 License
 -------
 
-Copyright (C) 2017 frnmst (Franco Masotti) <franco.masotti@live.com>
-<franco.masotti@student.unife.it>
+Copyright (C) 2017-2019 frnmst (Franco Masotti) <franco.masotti@live.com>
 
 fpyutils is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
