@@ -22,7 +22,7 @@
 
 from fpyutils import (filelines, exceptions)
 import unittest
-from unittest.mock import patch, mock_open
+from unittest.mock import (patch, mock_open)
 
 # filelines module.
 FAKE_FILE_AS_STRING = '''\
