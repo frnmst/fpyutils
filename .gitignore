@@ -1,5 +1,5 @@
-fake_test.py
-fake_md.md
+*.md
+*.MD
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

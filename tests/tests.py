@@ -138,7 +138,7 @@ class TestFileLines(unittest.TestCase):
 
             line_counter += 1
 
-    def test_insert_string_at_line(self):
+    def _test_insert_string_at_line(self):
         """test_insert_string_at_line."""
         # insert_string_at_line in existing line.
         self._test_insert_string_at_line_in_existing_line(
@@ -152,7 +152,7 @@ class TestFileLines(unittest.TestCase):
         self._test_insert_string_at_line_in_existing_line(
             append=True, extra_lines=True)
 
-    def test_remove_line_interval(self):
+    def _test_remove_line_interval(self):
         """test_remove_line_interval."""
         # remove_line_interval existing interval.
         # Assert called with everything except the missing lines.

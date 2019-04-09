@@ -1,7 +1,7 @@
 #
 # setup.py
 #
-# Copyright (C) 2017 frnmst (Franco Masotti) <franco.masotti@live.com>
+# Copyright (C) 2017-2019 frnmst (Franco Masotti) <franco.masotti@live.com>
 #
 # This file is part of fpyutils.
 #
@@ -46,6 +46,6 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
     ],
-    install_requires=[],
+    install_requires=['atomicwrites==1.3.0'],
 )
 

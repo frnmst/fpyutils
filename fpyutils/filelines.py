@@ -21,6 +21,7 @@
 """Functions on reading and writing files by line."""
 
 from .exceptions import (LineOutOfFileBoundsError)
+from atomicwrites import atomic_write
 
 
 def get_line_matches(input_file: str,
@@ -110,7 +111,7 @@ def insert_string_at_line(input_file: str,
     loop = True
     extra_lines_done = False
     line_number_after_eof = len(lines) + 1
-    with open(output_file, 'w') as f:
+    with atomic_write(output_file, overwrite=True) as f:
         while loop:
             if put_at_line_number > len(
                     lines) and line_counter == line_number_after_eof:
@@ -193,7 +194,7 @@ def remove_line_interval(input_file: str, delete_line_from: int,
 
     line_counter = 1
     # Rewrite the file without the string.
-    with open(output_file, 'w') as f:
+    with atomic_write(output_file, overwrite=True) as f:
         for line in lines:
             # Ignore the line interval where the content to be deleted lies.
             if line_counter >= delete_line_from and line_counter <= delete_line_to:
