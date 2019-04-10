@@ -23,12 +23,14 @@
 from fpyutils import (filelines, exceptions)
 import unittest
 from unittest.mock import (patch, mock_open)
+import tempfile
 
 # filelines module.
 FAKE_FILE_AS_STRING = '''\
 # One\n\
 ## One.Two\n\
 '''
+
 FAKE_FILE_WITH_MATCHES_AS_STRING = '''\
 # One\n\
 ## One.Two\n\
@@ -86,71 +88,69 @@ class TestFileLines(unittest.TestCase):
         self.assertEqual(matches[2], 10)
         self.assertTrue(3 not in matches)
 
-    def _test_insert_string_at_line_in_existing_line(self, append,
-                                                     extra_lines):
-        """See the test_insert_string_at_line_in_existing_line function."""
-        string_to_be_inserted = "Some string_to_be_inserted"
+    def _test_helper_insert_string_at_line(self, append, buff,
+                                           string_to_be_inserted, line_no):
+        with tempfile.TemporaryDirectory() as d:
+            # Instead of '/' use a generic path component.
+            # FIXME.
+            filename = d + '/' + 'testing'
+            with open(filename, 'w') as f:
+                f.write(buff)
+                f.flush()
 
-        if extra_lines:
-            line_no = 2**5
-        else:
-            line_no = 2
+            filelines.insert_string_at_line(filename, string_to_be_inserted,
+                                            line_no, filename, append)
+
+            with open(filename, 'r') as f:
+                content = f.read()
+
+        return content
+
+    def test_insert_string_at_line(self):
+        """Test insert_string_at_line."""
+        string_to_be_inserted = "Some string_to_be_inserted"
         buff = FAKE_FILE_AS_STRING
 
-        with patch('builtins.open', mock_open(read_data=buff)) as m:
-            filelines.insert_string_at_line('foo.md', string_to_be_inserted,
-                                            line_no, 'foo_two.md', append)
+        # existing line.
+        line_no = 2
+        append = False
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no)
+        expected = buff.split('\n')[
+            0] + '\n' + string_to_be_inserted + buff.split('\n')[1] + '\n'
+        self.assertEqual(expected, result)
 
-        # Get a similar representation of what the readline function returns:
-        # separate each line and place it into a list.
-        lines = buff.split('\n')
+        line_no = 2
+        append = True
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no)
+        expected = buff.split('\n')[0] + '\n' + buff.split(
+            '\n')[1] + '\n' + string_to_be_inserted
+        self.assertEqual(expected, result)
 
-        # Strip the last list element which would result in an extra newline
-        # character. This exists because it is the result of separating an empty
-        # string. See
-        # https://docs.python.org/3.6/library/stdtypes.html#str.split
-        lines = lines[0:-1]
+        # non existing line.
+        line_no = 2**5
+        # We do not need to consider the last component of the buff.split() list.
+        number_of_newlines_after_last_existing_line = line_no - (
+            len(buff.split('\n')) - 1)
+        append = False
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no)
+        expected = buff.split('\n')[0] + '\n' + buff.split(
+            '\n'
+        )[1] + number_of_newlines_after_last_existing_line * '\n' + string_to_be_inserted
+        self.assertEqual(expected, result)
 
-        # Get the mock.
-        handle = m()
-
-        line_counter = 1
-        for line in lines:
-
-            # Put the newline character at the end of the line.
-            line = line + '\n'
-
-            if extra_lines and line_counter == len(lines) + 1:
-                handle.write.assert_called_with('\n')
-
-            if line_counter == line_no:
-                # At most one write operation can be done in this manner.
-                if append:
-                    handle.write.assert_called_with(line +
-                                                    string_to_be_inserted)
-                else:
-                    handle.write.assert_called_with(string_to_be_inserted +
-                                                    line)
-            else:
-                # The mock might not refer to the order of the insructions
-                # inside this loop
-                handle.write.assert_any_call(line)
-
-            line_counter += 1
-
-    def _test_insert_string_at_line(self):
-        """test_insert_string_at_line."""
-        # insert_string_at_line in existing line.
-        self._test_insert_string_at_line_in_existing_line(
-            append=False, extra_lines=False)
-        self._test_insert_string_at_line_in_existing_line(
-            append=True, extra_lines=False)
-
-        # insert_string_at_line in non existing line.
-        self._test_insert_string_at_line_in_existing_line(
-            append=False, extra_lines=True)
-        self._test_insert_string_at_line_in_existing_line(
-            append=True, extra_lines=True)
+        line_no = 2**5
+        number_of_newlines_after_last_existing_line = line_no - (
+            len(buff.split('\n')) - 1)
+        append = True
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no)
+        expected = buff.split('\n')[0] + '\n' + buff.split(
+            '\n'
+        )[1] + number_of_newlines_after_last_existing_line * '\n' + string_to_be_inserted
+        self.assertEqual(expected, result)
 
     def _test_remove_line_interval(self):
         """test_remove_line_interval."""
