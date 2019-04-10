@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fpyutils',
-    version='1.0.0',
+    version='1.0.1',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
