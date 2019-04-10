@@ -152,48 +152,45 @@ class TestFileLines(unittest.TestCase):
         )[1] + number_of_newlines_after_last_existing_line * '\n' + string_to_be_inserted
         self.assertEqual(expected, result)
 
-    def _test_remove_line_interval(self):
+    def _test_helper_remove_line_interval(self, buff, line_from, line_to):
+        with tempfile.TemporaryDirectory() as d:
+            # Instead of '/' use a generic path component.
+            # FIXME.
+            filename = d + '/' + 'testing'
+            with open(filename, 'w') as f:
+                f.write(buff)
+                f.flush()
+
+            filelines.remove_line_interval(filename, line_from, line_to,
+                                           filename)
+
+            with open(filename, 'r') as f:
+                content = f.read()
+
+        return content
+
+    def test_remove_line_interval(self):
         """test_remove_line_interval."""
         # remove_line_interval existing interval.
         # Assert called with everything except the missing lines.
         line_from = 5
         line_to = 9
         buff = FAKE_FILE_WITH_MATCHES_AS_STRING
-
-        with patch('builtins.open', mock_open(read_data=buff)) as m:
-            filelines.remove_line_interval('foo.md', line_from, line_to,
-                                           'foo.md')
-
-        handle = m()
-
-        lines = buff.split('\n')
-        lines = lines[0:-1]
-
-        line_counter = 1
-        for line in lines:
-
-            # Put the newline character at the end of the line.
-            line = line + '\n'
-
-            # Check that only the external part of the line interval would have
-            # been written.
-            if line_counter < line_from or line_counter > line_to:
-                handle.write.assert_any_call(line)
-            else:
-                self.assertTrue(line not in m.mock_calls)
-
-            line_counter += 1
+        result = self._test_helper_remove_line_interval(
+            buff, line_from, line_to)
+        # Also add missing newline after the join operation.
+        expected = '\n'.join(
+            buff.split('\n')[0:line_from - 1] +
+            buff.split('\n')[line_to:-1]) + '\n'
+        self.assertEqual(expected, result)
 
         # remove_line_interval non existing interval.
         # We simply have to check if the correct exception is raised.
         line_from = 1
         line_to = 4
-
+        buff = FAKE_FILE_AS_STRING
         with self.assertRaises(exceptions.LineOutOfFileBoundsError):
-            with patch('builtins.open',
-                       mock_open(read_data=FAKE_FILE_AS_STRING)):
-                filelines.remove_line_interval('foo.md', line_from, line_to,
-                                               'foo.md')
+            self._test_helper_remove_line_interval(buff, line_from, line_to)
 
 
 if __name__ == '__main__':
