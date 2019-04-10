@@ -84,7 +84,8 @@ def insert_string_at_line(input_file: str,
 
     :parameter input_file: the file that needs to be read.
     :parameter string_to_be_inserted: the string that needs to be added.
-    :parameter line_number: the line number on which to append the string.
+    :parameter put_at_line_number: the line number on which to append the
+         string.
     :parameter output_file: the file that needs to be written with the new
          content.
     :parameter append: decides whether to append or prepend the string at the
@@ -172,7 +173,7 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     :type delete_line_to: int
     :type output_file: str
     :returns: None
-    :raises: LineOutOfFileBoundsError or the built-in exceptions.
+    :raises: LineOutOfFileBoundsError or a built-in exception.
 
     .. note::
          It is possible to remove a single line only. This happens when
