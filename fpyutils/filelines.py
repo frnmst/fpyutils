@@ -181,11 +181,11 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     :raises: LineOutOfFileBoundsError or a built-in exception.
 
     .. note::
-         It is possible to remove a single line only. This happens when
-         the parameters delete_line_from and delete_line_to are equal.
+         Line numbers start from ``1``.
 
     .. note::
-         Line numbers start from ``1``.
+         It is possible to remove a single line only. This happens when
+         the parameters delete_line_from and delete_line_to are equal.
     """
     assert delete_line_from >= 1
     assert delete_line_to >= 1

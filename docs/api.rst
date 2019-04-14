@@ -20,4 +20,5 @@ Exceptions
 ----------
 
 .. autoexception:: LineOutOfFileBoundsError
+.. autoexception:: NegativeLineRangeError
 
