@@ -27,3 +27,7 @@ class LineOutOfFileBoundsError(Exception):
     Raises an exception if there was an attempt to access a non-existing line
     in a file.
     """
+
+
+class NegativeLineRangeError(Exception):
+    """Line range does not make sense."""

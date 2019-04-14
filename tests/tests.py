@@ -189,6 +189,13 @@ class TestFileLines(unittest.TestCase):
         with self.assertRaises(exceptions.LineOutOfFileBoundsError):
             self._test_helper_remove_line_interval(buff, line_from, line_to)
 
+        # Negative line range.
+        line_from = 4
+        line_to = 1
+        buff = FAKE_FILE_AS_STRING
+        with self.assertRaises(exceptions.NegativeLineRangeError):
+            self._test_helper_remove_line_interval(buff, line_from, line_to)
+
 
 if __name__ == '__main__':
     unittest.main()

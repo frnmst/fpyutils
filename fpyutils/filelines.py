@@ -20,7 +20,7 @@
 #
 """Functions on reading and writing files by line."""
 
-from .exceptions import (LineOutOfFileBoundsError)
+from .exceptions import (LineOutOfFileBoundsError, NegativeLineRangeError)
 from atomicwrites import atomic_write
 
 
@@ -47,6 +47,9 @@ def get_line_matches(input_file: str,
          pattern is at line y then: x[1] = y.
     :rtype: dict
     :raises: a built-in exception.
+
+    .. note::
+         Line numbers start from ``1``.
     """
     assert max_occurrencies >= 0
 
@@ -58,7 +61,7 @@ def get_line_matches(input_file: str,
     if loose_matching:
         pattern = pattern.strip()
 
-    put_at_line_number = 1
+    line_counter = 1
     with open(input_file, 'r') as f:
         line = f.readline()
         while line and occurrency_counter < max_occurrencies:
@@ -66,10 +69,9 @@ def get_line_matches(input_file: str,
                 line = line.strip()
             if line == pattern:
                 occurrency_counter += 1.0
-                occurrency_matches[int(
-                    occurrency_counter)] = put_at_line_number
+                occurrency_matches[int(occurrency_counter)] = line_counter
             line = f.readline()
-            put_at_line_number += 1
+            line_counter += 1
 
     return occurrency_matches
 
@@ -101,6 +103,9 @@ def insert_string_at_line(input_file: str,
     :type newline_character: str
     :returns: None
     :raises: LineOutOfFileBoundsError or a built-in exception.
+
+    .. note::
+         Line numbers start from ``1``.
     """
     assert put_at_line_number >= 1
 
@@ -178,18 +183,20 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     .. note::
          It is possible to remove a single line only. This happens when
          the parameters delete_line_from and delete_line_to are equal.
+
+    .. note::
+         Line numbers start from ``1``.
     """
-    # At least one line must be deleted.
-    # Base case delete_line_to - delete_line_from == 0, corresponds to a
-    # single line.
-    assert delete_line_to - delete_line_from >= 0
     assert delete_line_from >= 1
     assert delete_line_to >= 1
 
     with open(input_file, 'r') as f:
         lines = f.readlines()
 
-    # Invalid line range.
+    # Invalid line ranges.
+    # Base case delete_line_to - delete_line_from == 0: single line.
+    if delete_line_to - delete_line_from < 0:
+        raise NegativeLineRangeError
     if delete_line_from > len(lines) or delete_line_to > len(lines):
         raise LineOutOfFileBoundsError
 
