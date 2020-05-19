@@ -1,11 +1,40 @@
 fpyutils
 ========
 
+|pypiver|    |license|    |pyver|    |downloads|    |dependentrepos|    |buymeacoffee|
+
+.. |license| image:: https://img.shields.io/pypi/l/fpyutils.svg?color=blue
+               :alt: PyPI - License
+               :target: https://raw.githubusercontent.com/frnmst/fpyutils/master/LICENSE.txt
+
+.. |pyver| image:: https://img.shields.io/pypi/pyversions/fpyutils.svg
+             :alt: PyPI - Python Version
+
+.. |downloads| image:: https://pepy.tech/badge/fpyutils
+                 :alt: Downloads
+                 :target: https://pepy.tech/project/fpyutils
+
+.. |dependentrepos| image:: https://img.shields.io/librariesio/dependent-repos/pypi/fpyutils.svg
+                      :alt: Dependent repos (via libraries.io)
+
+.. |buymeacoffee| image:: assets/buy_me_a_coffee.svg
+                   :alt: Buy me a coffee
+                   :target: https://buymeacoff.ee/frnmst
+
 A collection of useful non-standard Python functions which aim to be simple to
 use, highly readable but not efficient.
 
+Documentation
+-------------
 
-An example:
+http://frnmst.github.io/fpyutils
+
+API examples
+------------
+
+
+::
+
 
     >>> from fpyutils import filelines
     >>> f = open('foo.txt')
@@ -15,29 +44,13 @@ An example:
     >>> fpyutils.get_line_matches('foo.txt','foo',5)
     {1: 3, 2: 8}
 
-Documentation
--------------
 
-http://frnmst.github.io/fpyutils
-
-Workflow for implementing new modules
--------------------------------------
-
-1. Define your idea
-2. Implement a unit test class
-3. Write the code
-4. Test it (run ``make test``)
-5. PEP standards compliancy (run ``make pep``)
-6. Update the documentation (run ``make doc``)
-7. Make a pull request
-
-You can also import existing code and adapt it for this library,
-if you think it's useful.
+.. _public API: https://frnmst.github.io/fpyutils/api.html
 
 License
 -------
 
-Copyright (C) 2017-2019 frnmst (Franco Masotti) <franco.masotti@live.com>
+Copyright (C) 2017-2020 frnmst (Franco Masotti) <franco.masotti@live.com>
 
 fpyutils is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

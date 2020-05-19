@@ -12,6 +12,7 @@ Welcome to fpyutils's documentation!
 
    install
    api
+   implementing_new_modules
    contributing
    source_code
    copyright_license
