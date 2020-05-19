@@ -19,6 +19,7 @@ fpyutils
 
 .. |dependentrepos| image:: https://img.shields.io/librariesio/dependent-repos/pypi/fpyutils.svg
                       :alt: Dependent repos (via libraries.io)
+                      :target: https://libraries.io/pypi/fpyutils/dependents
 
 .. |buymeacoffee| image:: assets/buy_me_a_coffee.svg
                    :alt: Buy me a coffee
