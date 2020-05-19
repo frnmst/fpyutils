@@ -3,8 +3,7 @@
 #
 # Makefile
 #
-# Copyright (C) 2017 frnmst (Franco Masotti) <franco.masotti@live.com>
-#                                            <franco.masotti@student.unife.it>
+# Copyright (C) 2017-2020 frnmst (Franco Masotti) <franco.masotti@live.com>
 #
 # This file is part of fpyutils.
 #
@@ -28,30 +27,36 @@ githook:
 	git config core.hooksPath .githooks
 
 pep:
-	yapf --style '{based_on_style: pep8; split_before_logical_operator: False}' -i fpyutils/*.py tests/*.py
-	flake8 --ignore=F401,E501,W503,W504,W605,E125 fpyutils/*.py tests/*.py
+	pipenv run yapf --style '{based_on_style: pep8; indent_width: 4; split_before_logical_operator: False}' -i fpyutils/*.py tests/*.py
+	pipenv run flake8 --ignore=F401,E501,W503,W504,W605,E125,E129 fpyutils/*.py tests/*.py
 
 doc:
-	$(MAKE) -C docs html
+	pipenv run $(MAKE) -C docs html
 
 install:
-	pip install .
-
-test:
-	python setup.py test
+	pip3 install .
 
 uninstall:
-	pip uninstall fpyutils
+	pip3 uninstall fpyutils
+
+install-dev:
+	pipenv install
+
+uninstall-dev:
+	pipenv --rm
+
+test:
+	pipenv run python setup.py test
 
 dist:
-	python setup.py sdist
-	python setup.py bdist_wheel
+	pipenv run python setup.py sdist
+	pipenv run python setup.py bdist_wheel
 
 upload:
-	twine upload dist/*
+	pipenv run twine upload dist/*
 
 clean:
 	rm -rf build dist *.egg-info
+	pipenv run $(MAKE) -C docs clean
 
 .PHONY:  default pep doc install test uninstall dist upload clean
-
