@@ -28,11 +28,12 @@ setup(
     license='GPL',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
     long_description=open('README.rst').read(),
+    long_description_content_type='text/x-rst',
     package_data={
         '': ['*.txt', '*.rst'],
     },
     author='Franco Masotti',
-    author_email='franco.masotti@student.unife.it',
+    author_email='franco.masotti@live.com',
     keywords='utilities',
     url='https://github.com/frnmst/fpyutils',
     python_requires='>=3',

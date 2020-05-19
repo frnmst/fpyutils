@@ -3,6 +3,9 @@ fpyutils
 
 |pypiver|    |license|    |pyver|    |downloads|    |dependentrepos|    |buymeacoffee|
 
+.. |pypiver| image:: https://img.shields.io/pypi/v/fpyutils.svg
+               :alt: PyPI fpyutils version
+
 .. |license| image:: https://img.shields.io/pypi/l/fpyutils.svg?color=blue
                :alt: PyPI - License
                :target: https://raw.githubusercontent.com/frnmst/fpyutils/master/LICENSE.txt
