@@ -13,6 +13,7 @@ Welcome to fpyutils's documentation!
    install
    api
    contributing
+   source_code
    copyright_license
 
 Indices and tables
