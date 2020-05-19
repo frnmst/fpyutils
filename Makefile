@@ -34,7 +34,7 @@ doc:
 	pipenv run $(MAKE) -C docs html
 
 install:
-	pip3 install .
+	pip3 install . --user
 
 uninstall:
 	pip3 uninstall fpyutils
