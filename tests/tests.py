@@ -20,7 +20,7 @@
 #
 """Tests."""
 
-from fpyutils import (filelines, exceptions)
+from fpyutils import (filelines, exceptions, shell, yaml)
 import unittest
 from unittest.mock import (patch, mock_open)
 import tempfile
@@ -195,6 +195,22 @@ class TestFileLines(unittest.TestCase):
         buff = FAKE_FILE_AS_STRING
         with self.assertRaises(exceptions.NegativeLineRangeError):
             self._test_helper_remove_line_interval(buff, line_from, line_to)
+
+
+class TestShell(unittest.TestCase):
+    """shell modules test."""
+
+    def test_execute_command_live_output(self):
+        """TODO."""
+        pass
+
+
+class TestYaml(unittest.TestCase):
+    """yaml modules test."""
+
+    def test_load_configuration(self):
+        """TODO."""
+        pass
 
 
 if __name__ == '__main__':

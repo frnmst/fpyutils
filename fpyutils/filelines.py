@@ -40,7 +40,7 @@ def get_line_matches(input_file: str,
     :type pattern: str
     :type max_occurrencies: int
     :type loose_matching: bool
-    :returns: occurrency_matches, A dictionary where each key corresponds
+    :returns: occurrency_matches, a dictionary where each key corresponds
          to the number of occurrencies and each value to the matched line number.
          If no match was found for that particular occurrency, the key is not
          set. This means means for example: if the first occurrency of

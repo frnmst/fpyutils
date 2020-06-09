@@ -25,4 +25,3 @@ make test && make pep && make doc
 if [ $? -ne 0 ]; then
     exit 1
 fi
-git add .
