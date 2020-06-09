@@ -24,14 +24,17 @@ import subprocess
 import sys
 
 
-def execute_command_live_output(command: str, shell: str = '/bin/bash') -> int:
+def execute_command_live_output(command: str, shell: str = '/bin/bash', dry_run: bool = False) -> int:
     r"""Execute and print the output of a command relatime.
 
     :parameter command: the shell commands that needs to be executed.
     :parameter shell: the shell binary that will be used to execute the command.
          Defaults to ``/bin/bash``.
+    :parameter dry_run: print the command instead of executing it.
+         Defaults to ``False``.
     :type command: str
     :type shell: str
+    :type dry_run: bool
     :returns: process.returncode, the return code of the executed command.
     :rtype: int
     :raises: a subprocess, sys or a built-in exception.
@@ -47,19 +50,24 @@ def execute_command_live_output(command: str, shell: str = '/bin/bash') -> int:
     # You should have received a copy of the license along with this
     # work. If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 
-    # See also https://stackoverflow.com/questions/7407667/python-subprocess-subshells-and-redirection/7407744
-    process = subprocess.Popen([shell, '-c', command], stderr=subprocess.PIPE)
+    if dry_run:
+        print (command)
+        retval = 0
+    else:
+        # See also https://stackoverflow.com/questions/7407667/python-subprocess-subshells-and-redirection/7407744
+        process = subprocess.Popen([shell, '-c', command], stderr=subprocess.PIPE)
 
-    go = True
-    while go:
-        out = process.stderr.readline().decode('UTF-8')
-        if out == str() and process.poll() is not None:
-            go = False
-        if go and out != str():
-            sys.stdout.write(out)
-            sys.stdout.flush()
+        go = True
+        while go:
+            out = process.stderr.readline().decode('UTF-8')
+            if out == str() and process.poll() is not None:
+                go = False
+            if go and out != str():
+                sys.stdout.write(out)
+                sys.stdout.flush()
+        retval = process.returncode
 
-    return process.returncode
+    return retval
 
 
 if __name__ == '__main__':
