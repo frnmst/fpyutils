@@ -15,6 +15,7 @@ input and output types.
 .. autofunction:: get_line_matches
 .. autofunction:: insert_string_at_line
 .. autofunction:: remove_line_interval
+.. autofunction:: execute_command_live_output
 
 Exceptions
 ----------
