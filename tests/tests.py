@@ -20,6 +20,7 @@
 #
 """Tests."""
 
+import io
 from fpyutils import (filelines, exceptions, shell, yaml)
 import unittest
 from unittest.mock import (patch, mock_open)
@@ -48,10 +49,10 @@ End of toc\n\
 
 
 class TestFileLines(unittest.TestCase):
-    """filelines modules test."""
+    r"""filelines modules test."""
 
     def test_get_line_matches(self):
-        """test_get_line_matches."""
+        r"""test_get_line_matches."""
         # Zero pattern matches.
         with patch('builtins.open', mock_open(read_data=FAKE_FILE_AS_STRING)):
             matches = filelines.get_line_matches(
@@ -106,7 +107,7 @@ class TestFileLines(unittest.TestCase):
         return content
 
     def test_insert_string_at_line(self):
-        """Test insert_string_at_line."""
+        r"""test_insert_string_at_line."""
         string_to_be_inserted = "Some string_to_be_inserted"
         buff = FAKE_FILE_AS_STRING
 
@@ -167,7 +168,7 @@ class TestFileLines(unittest.TestCase):
         return content
 
     def test_remove_line_interval(self):
-        """test_remove_line_interval."""
+        r"""test_remove_line_interval."""
         # remove_line_interval existing interval.
         # Assert called with everything except the missing lines.
         line_from = 5
@@ -200,16 +201,50 @@ class TestFileLines(unittest.TestCase):
 class TestShell(unittest.TestCase):
     """shell modules test."""
 
+    # See https://stackoverflow.com/a/46307456
+    # Check the output as well.
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdout(self, command, shell_command, dry_run,
+                      output_character_encoding, expected_output,
+                      expected_retval, capture):
+        r"""Run the assertions by capturing the standard output."""
+        retval = shell.execute_command_live_output(
+            command=command,
+            shell=shell_command,
+            dry_run=dry_run,
+            output_character_encoding=output_character_encoding)
+        self.assertEqual(expected_retval, retval)
+        self.assertEqual(expected_output, capture.getvalue())
+
     def test_execute_command_live_output(self):
-        """TODO."""
-        pass
+        r"""test_execute_command_live_output."""
+        self.assert_stdout('true', '/bin/bash', False, 'UTF-8', str(), 0)
+        self.assert_stdout('false', '/bin/bash', False, 'UTF-8', str(), 1)
+
+        # Dry runs should always have a return value of 0.
+        self.assert_stdout('true', '/bin/bash', True, 'UTF-8',
+                           '/bin/bash -c true\n', 0)
+        self.assert_stdout('false', '/bin/bash', True, 'UTF-8',
+                           '/bin/bash -c false\n', 0)
+
+        # Invalid shell.
+        with self.assertRaises(FileNotFoundError):
+            self.assert_stdout('false', '/bin/an/invalid/command', False,
+                               'UTF-8', '/bin/bash -c false\n', 0)
+        # No problems for dry runs.
+        self.assert_stdout('false', '/bin/an/invalid/command', True, 'UTF-8',
+                           '/bin/an/invalid/command -c false\n', 0)
+
+        # Invalid command.
+        self.assert_stdout('falsse', '/bin/bash', False, 'UTF-8',
+                           '/bin/bash: falsse: command not found\n', 127)
 
 
 class TestYaml(unittest.TestCase):
-    """yaml modules test."""
+    r"""yaml modules test."""
 
     def test_load_configuration(self):
-        """TODO."""
+        r"""TODO."""
         pass
 
 

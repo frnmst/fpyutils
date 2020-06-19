@@ -58,23 +58,24 @@ def execute_command_live_output(
     # work. If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 
     if dry_run:
-        print(command)
+        print(shell + ' -c ' + command)
         retval = 0
     else:
         # See also https://stackoverflow.com/questions/7407667/python-subprocess-subshells-and-redirection/7407744
-        process = subprocess.Popen([shell, '-c', command],
-                                   stderr=subprocess.PIPE)
+        # and https://stackoverflow.com/a/58696973
+        with subprocess.Popen([shell, '-c', command],
+                              stderr=subprocess.PIPE) as process:
 
-        go = True
-        while go:
-            output = process.stderr.readline().decode(
-                output_character_encoding)
-            if output == str() and process.poll() is not None:
-                go = False
-            if go and output != str():
-                sys.stdout.write(output)
-                sys.stdout.flush()
-        retval = process.returncode
+            go = True
+            while go:
+                output = process.stderr.readline().decode(
+                    output_character_encoding)
+                if output == str() and process.poll() is not None:
+                    go = False
+                if go and output != str():
+                    sys.stdout.write(output)
+                    sys.stdout.flush()
+            retval = process.returncode
 
     return retval
 
