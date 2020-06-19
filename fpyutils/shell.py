@@ -24,7 +24,11 @@ import subprocess
 import sys
 
 
-def execute_command_live_output(command: str, shell: str = '/bin/bash', dry_run: bool = False) -> int:
+def execute_command_live_output(
+        command: str,
+        shell: str = '/bin/bash',
+        dry_run: bool = False,
+        output_character_encoding: str = 'UTF-8') -> int:
     r"""Execute and print the output of a command relatime.
 
     :parameter command: the shell commands that needs to be executed.
@@ -32,9 +36,12 @@ def execute_command_live_output(command: str, shell: str = '/bin/bash', dry_run:
          Defaults to ``/bin/bash``.
     :parameter dry_run: print the command instead of executing it.
          Defaults to ``False``.
+    :parameter output_character_encoding: the character encoding of the output.
+         Defaults to ``UTF-8``.
     :type command: str
     :type shell: str
     :type dry_run: bool
+    :type output_character_encoding: str
     :returns: process.returncode, the return code of the executed command.
     :rtype: int
     :raises: a subprocess, sys or a built-in exception.
@@ -51,19 +58,21 @@ def execute_command_live_output(command: str, shell: str = '/bin/bash', dry_run:
     # work. If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 
     if dry_run:
-        print (command)
+        print(command)
         retval = 0
     else:
         # See also https://stackoverflow.com/questions/7407667/python-subprocess-subshells-and-redirection/7407744
-        process = subprocess.Popen([shell, '-c', command], stderr=subprocess.PIPE)
+        process = subprocess.Popen([shell, '-c', command],
+                                   stderr=subprocess.PIPE)
 
         go = True
         while go:
-            out = process.stderr.readline().decode('UTF-8')
-            if out == str() and process.poll() is not None:
+            output = process.stderr.readline().decode(
+                output_character_encoding)
+            if output == str() and process.poll() is not None:
                 go = False
-            if go and out != str():
-                sys.stdout.write(out)
+            if go and output != str():
+                sys.stdout.write(output)
                 sys.stdout.flush()
         retval = process.returncode
 
