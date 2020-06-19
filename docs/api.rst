@@ -12,14 +12,15 @@ input and output types.
 
 .. _type hints: https://docs.python.org/3/library/typing.html
 
-.. autofunction:: get_line_matches
-.. autofunction:: insert_string_at_line
-.. autofunction:: remove_line_interval
-.. autofunction:: execute_command_live_output
+.. autofunction:: fpyutils.filelines.get_line_matches
+.. autofunction:: fpyutils.filelines.insert_string_at_line
+.. autofunction:: fpyutils.filelines.remove_line_interval
+.. autofunction:: fpyutils.shell.execute_command_live_output
+.. autofunction:: fpyutils.yaml.load_configuration
+.. autofunction:: fpyutils.path.gen_pseudorandom_path
 
 Exceptions
 ----------
 
 .. autoexception:: LineOutOfFileBoundsError
 .. autoexception:: NegativeLineRangeError
-

@@ -23,17 +23,20 @@
 import yaml
 
 
-def load_configuration(configuration_file: str) -> dict:
+def load_configuration(configuration_file: str,
+                       loader: yaml.Loader = yaml.SafeLoader) -> dict:
     r"""Load YAML data from a configuration file.
 
     :parameter configuration_file: the file that needs to be read.
+    :parameter loader: the YAML loader. Defaults to ``yaml.SafeLoader``
     :type configuration_file: str
+    :type loader: yaml.Loader
     :returns: data, a dictionary corresponding to the YAML data.
     :rtype: dict
     :raises: a yaml or built-in exception.
     """
     with open(configuration_file, 'r') as f:
-        data = yaml.load(f, Loader=yaml.SafeLoader)
+        data = yaml.load(f, Loader=loader)
 
     return data
 

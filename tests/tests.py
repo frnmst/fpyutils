@@ -21,7 +21,7 @@
 """Tests."""
 
 import io
-from fpyutils import (filelines, exceptions, shell, yaml)
+from fpyutils import (filelines, exceptions, shell, yaml, path)
 import unittest
 from unittest.mock import (patch, mock_open)
 import tempfile
@@ -244,8 +244,40 @@ class TestYaml(unittest.TestCase):
     r"""yaml modules test."""
 
     def test_load_configuration(self):
-        r"""TODO."""
+        r"""Nothing to test."""
         pass
+
+
+class TestPath(unittest.TestCase):
+    r"""path modules test."""
+
+    def test_gen_pseudorandom_path(self):
+        r"""test_gen_pseudorandom_path."""
+        # We can only test the length since the output is not deterministic.
+        path_suffix = '1234567890'
+        component_separator = '_'
+        date_component_format = '%F'
+        total_length = 10 + 1 + 6 + 1 + 6 + 1 + len(path_suffix)
+        self.assertEqual(
+            total_length,
+            len(
+                path.gen_pseudorandom_path(
+                    path_suffix=path_suffix,
+                    date_component_format=date_component_format,
+                    component_separator=component_separator)))
+
+        # No path suffix.
+        path_suffix = str()
+        component_separator = '_'
+        date_component_format = '%F'
+        total_length = 10 + 1 + 6 + 1 + 6
+        self.assertEqual(
+            total_length,
+            len(
+                path.gen_pseudorandom_path(
+                    path_suffix=path_suffix,
+                    date_component_format=date_component_format,
+                    component_separator=component_separator)))
 
 
 if __name__ == '__main__':
