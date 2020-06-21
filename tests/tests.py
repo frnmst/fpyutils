@@ -279,6 +279,20 @@ class TestPath(unittest.TestCase):
                     date_component_format=date_component_format,
                     component_separator=component_separator)))
 
+    def test_add_trailing_slash(self):
+        r"""test_add_trailing_slash."""
+        # Empty string.
+        self.assertEqual(path.add_trailing_slash(str()), '/')
+
+        self.assertEqual(path.add_trailing_slash('/'), '/')
+        self.assertEqual(
+            path.add_trailing_slash('http://a b c/'), 'http://a b c/')
+        self.assertEqual(
+            path.add_trailing_slash('http://a b c'), 'http://a b c/')
+
+    def test_get_last_path_component_from_url(self):
+        r"""test_get_last_path_component_from_url."""
+
 
 if __name__ == '__main__':
     unittest.main()

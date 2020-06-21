@@ -21,7 +21,6 @@
 """Functions on paths."""
 
 import pathlib
-import re
 import urllib
 import datetime
 import secrets
@@ -33,22 +32,21 @@ def get_last_path_component_from_url(url: str) -> str:
     return pathlib.Path(urllib.parse.urlsplit(url).path).name
 
 
-def remove_component(element: str, pattern: str) -> str:
-    r"""Remove a pattern from an element."""
-    return re.split(pattern, element)[0]
+def add_trailing_slash(uri: str) -> str:
+    r"""Add a trailing slash when needed.
 
-
-def rebuild_uri(uri_base: str, path: str) -> str:
-    """Rebuild a URI by a trailing forward slash if necessary and a path.
-
-    ..note: see https://stackoverflow.com/a/59818095
+    :param uri: a string, usually an URI.
+    :type uri: str
+    :returns uri: the input string with a trailing slash.
+    :rtype: str
+    :raises: a built-in exception.
     """
-    if uri_base.endswith('/'):
-        uri_base = uri_base
+    if uri.endswith('/'):
+        uri = uri
     else:
-        uri_base = f"{uri_base}/"
+        uri = f"{uri}/"
 
-    return uri_base + path
+    return uri
 
 
 def gen_pseudorandom_path(path_suffix: str = str(),
