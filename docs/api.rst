@@ -17,6 +17,7 @@ input and output types.
 .. autofunction:: fpyutils.filelines.remove_line_interval
 .. autofunction:: fpyutils.shell.execute_command_live_output
 .. autofunction:: fpyutils.yaml.load_configuration
+.. autofunction:: fpyutils.path.add_trailing_slash
 .. autofunction:: fpyutils.path.gen_pseudorandom_path
 
 Exceptions
