@@ -67,8 +67,7 @@ def send_email(message: str, smtp_server: str, port: int, sender: str,
     msg['To'] = receiver
     msg['Date'] = formatdate(localtime=True)
     context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(
-            smtp_server, port, context=context) as conn:
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as conn:
         conn.login(user, password)
         conn.sendmail(sender, receiver, msg.as_string())
 
