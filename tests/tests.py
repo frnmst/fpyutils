@@ -291,5 +291,17 @@ class TestPath(unittest.TestCase):
             path.add_trailing_slash('http://a b c'), 'http://a b c/')
 
 
+class TestNotify(unittest.TestCase):
+    r"""notify modules test."""
+
+    def test_send_email(self):
+        r"""Nothing to test."""
+        pass
+
+    def test_send_gotify_message(self):
+        r"""Nothing to test."""
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()

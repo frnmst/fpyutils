@@ -47,6 +47,6 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
     ],
-    install_requires=['atomicwrites==1.4.0', 'PyYAML==5.3.1'],
+    install_requires=['atomicwrites==1.4.0', 'PyYAML==5.3.1', 'requests==2.24.0'],
 )
 

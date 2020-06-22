@@ -19,6 +19,9 @@ input and output types.
 .. autofunction:: fpyutils.yaml.load_configuration
 .. autofunction:: fpyutils.path.add_trailing_slash
 .. autofunction:: fpyutils.path.gen_pseudorandom_path
+.. autofunction:: fpyutils.notify.send_email
+.. autofunction:: fpyutils.notify.send_gotify_message
+
 
 Exceptions
 ----------

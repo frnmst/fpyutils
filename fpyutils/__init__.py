@@ -25,4 +25,5 @@ from .filelines import (insert_string_at_line, remove_line_interval,
 from .shell import (execute_command_live_output)
 from .yaml import (load_configuration)
 from .path import (add_trailing_slash, gen_pseudorandom_path)
+from .notify import (send_email, send_gotify_message)
 from .exceptions import (LineOutOfFileBoundsError, NegativeLineRangeError)
