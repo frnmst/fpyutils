@@ -290,9 +290,6 @@ class TestPath(unittest.TestCase):
         self.assertEqual(
             path.add_trailing_slash('http://a b c'), 'http://a b c/')
 
-    def test_get_last_path_component_from_url(self):
-        r"""test_get_last_path_component_from_url."""
-
 
 if __name__ == '__main__':
     unittest.main()
