@@ -27,11 +27,6 @@ import secrets
 import hashlib
 
 
-def get_last_path_component_from_url(url: str) -> str:
-    r"""Transform a string to a datetime object."""
-    return pathlib.Path(urllib.parse.urlsplit(url).path).name
-
-
 def add_trailing_slash(uri: str) -> str:
     r"""Add a trailing slash when needed.
 
@@ -55,9 +50,32 @@ def gen_pseudorandom_path(path_suffix: str = str(),
                           pseudorandom_component_bytes: int = 4,
                           hash_component_digest_size: int = 3,
                           character_encoding: str = 'UTF-8') -> str:
-    r"""Generate a string based on the current moment in time, a random token, a hash and some input.
+    r"""Generate a pseudorandom string useful for paths.
 
-    ..note:: this system minimises the risk of collisions for creating a path.
+    :param path_suffix: the final part of the string.
+        Defaults to ``str()``.
+    :param date_component_format: the format of the date component.
+        Defaults to ``%F_%H-%M-%S_%f``.
+    :param component_separator: an element that separates the various components.
+        Defaults to ``_``.
+    :param pseudorandom_component_bytes: the number of bytes of the pseudorandom components.
+        Defaults to ``4``.
+    :param hash_component_digest_size: the digest size of the hashed component.
+        Defaults to ``3``.
+    :param character_encoding: the character encoding of the hashed component.
+        Defaults to ``UTF-8``.
+    :type path_suffix: str
+    :type date_component_format: str
+    :type component_separator: str
+    :type pseudorandom_component_bytes: int
+    :type hash_component_digest_size: int
+    :type character_encoding: str
+    :returns:
+    :rtype: str
+    :raises: a built-in exception.
+
+    .. note::
+        This system minimises the risk of collisions for creating a path.
     """
     # 1. the current date.
     # call the fpyutils.datetime module.
