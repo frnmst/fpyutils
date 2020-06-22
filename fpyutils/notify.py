@@ -29,7 +29,7 @@ from .path import add_trailing_slash
 
 
 def send_email(message: str, smtp_server: str, port: int, sender: str,
-               user: str, password: str, receiver: str, subject: str):
+               user: str, password: str, receiver: str, subject: str) -> dict:
     r"""Send an email.
 
     :parameter message: the body of the message.
@@ -48,6 +48,8 @@ def send_email(message: str, smtp_server: str, port: int, sender: str,
     :type password: str
     :type receiver: str
     :type subject: str
+    :returns: an empty dictionary on no error, otherwise an exception is raised.
+    :rtype: dict
     :raises: a built-in exception.
     """
     # https://stackoverflow.com/questions/36832632/sending-mail-via-smtplib-loses-time
@@ -69,7 +71,9 @@ def send_email(message: str, smtp_server: str, port: int, sender: str,
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as conn:
         conn.login(user, password)
-        conn.sendmail(sender, receiver, msg.as_string())
+        result = conn.sendmail(sender, receiver, msg.as_string())
+
+    return result
 
 
 def send_gotify_message(url: str,
