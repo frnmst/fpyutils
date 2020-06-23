@@ -40,12 +40,11 @@ API examples
 ::
 
 
-    >>> from fpyutils import filelines
+    >>> import fpyutils
     >>> f = open('foo.txt')
     >>> f.read()
     "This is\nfoo.\nfoo\nThis is\nnot\nbar.\nAnd it's\n    foo\n\nBye!\n"
-    >>> import fpyutils
-    >>> fpyutils.get_line_matches('foo.txt','foo',5)
+    >>> fpyutils.filelines.get_line_matches('foo.txt','foo',5)
     {1: 3, 2: 8}
 
 
