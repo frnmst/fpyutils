@@ -10,8 +10,8 @@ license=('GPL3')
 depends=('python' 'python-atomicwrites=1.4.0' 'python-yaml=5.3.1' 'python-requests=2.24.0')
 makedepends=('python-setuptools')
 options=(!emptydirs)
-source=("${pkgname}.tar.gz::https://github.com/frnmst/fpyutils/archive/${pkgver}.tar.gz")
-sha256sums=('SKIP')
+source=("https://frnmst.gitlab.io/software/fpyutils-${pkgver}.tar.gz.sig" "https://frnmst.gitlab.io/software/fpyutils-${pkgver}.tar.gz")
+sha512sums=('SKIP' 'SKIP')
 
 check() {
   cd "${srcdir}"/fpyutils-"${pkgver}"
