@@ -4,7 +4,7 @@ Contributing
 Git branches
 ------------
 
-What follows is a table of the git branches used in fpyutils's repository.
+What follows is a table of the git branches used in this repository.
 
 .. important:: Open pull requests on the ``dev`` target branch.
                Use ``bugfix-${fix_name}`` or ``newfeature-${new_feature_name}`` as names.
