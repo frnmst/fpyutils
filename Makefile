@@ -1,5 +1,4 @@
 #!/usr/bin/env make
-
 #
 # Makefile
 #
@@ -21,14 +20,9 @@
 # along with fpyutils.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-default: pep doc test
+export PACKAGE_NAME=fpyutils
 
-githook:
-	git config core.hooksPath .githooks
-
-pep:
-	pipenv run yapf --style '{based_on_style: pep8; indent_width: 4; split_before_logical_operator: False}' -i fpyutils/*.py tests/*.py
-	pipenv run flake8 --ignore=F401,E501,W503,W504,W605,E125,E129 fpyutils/*.py tests/*.py
+default: doc
 
 doc:
 	pipenv run $(MAKE) -C docs html
@@ -37,10 +31,11 @@ install:
 	pip3 install . --user
 
 uninstall:
-	pip3 uninstall fpyutils
+	pip3 uninstall $(PACKAGE_NAME)
 
 install-dev:
-	pipenv install
+	pipenv install --dev
+	pipenv run pre-commit install
 
 uninstall-dev:
 	pipenv --rm
@@ -60,4 +55,4 @@ clean:
 	rm -rf build dist *.egg-info
 	pipenv run $(MAKE) -C docs clean
 
-.PHONY:  default pep doc install test uninstall dist upload clean
+.PHONY: default doc install uninstall install-dev uninstall-dev test clean

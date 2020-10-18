@@ -14,6 +14,7 @@ Welcome to fpyutils's documentation!
    api
    implementing_new_modules
    contributing
+   workflow
    source_code
    copyright_license
 
