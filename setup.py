@@ -18,12 +18,13 @@
 # You should have received a copy of the GNU General Public License
 # along with fpyutils.  If not, see <http://www.gnu.org/licenses/>.
 #
+"""setup.py."""
 
 from setuptools import setup, find_packages
 
 setup(
     name='fpyutils',
-    version='1.2.0',
+    version='1.2.1',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
@@ -47,6 +48,9 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
     ],
-    install_requires=['atomicwrites==1.4.0', 'PyYAML==5.3.1', 'requests==2.24.0'],
+    install_requires=[
+        'atomicwrites>=1.4,<1.5',
+        'PyYAML>=5.3<5.4',
+        'requests>=2.25,<2.26'
+    ],
 )
-

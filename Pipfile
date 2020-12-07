@@ -5,17 +5,17 @@ verify_ssl = true
 
 [dev-packages]
 # Documentation.
-Sphinx = "==3.2.1"
-sphinx-rtd-theme = '==0.5.0'
+Sphinx = "~=3.3"
+sphinx-rtd-theme = '~=0.5'
 
 # Tools.
-twine = "==3.1.1"
-pre-commit = "==2.7.1"
+twine = "~=3.2"
+pre-commit = "~=2.9"
 
 [packages]
-atomicwrites = "==1.4.0"
-PyYAML = "==5.3.1"
-requests = "==2.24.0"
+atomicwrites = "~=1.4"
+PyYAML = "~=5.3"
+requests = "~=2.25"
 
 [requires]
 python_version = "3.8"
