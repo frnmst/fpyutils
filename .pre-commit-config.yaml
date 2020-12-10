@@ -26,7 +26,7 @@ repos:
     rev: '1.6.2'  # Use the sha / tag you want to point at
     hooks:
     -   id: bandit
-        args: ['--skip', 'B404,B506,B410,B603', '--level', 'LOW']
+        args: ['--skip', 'B404,B506,B410,B603,B604', '--level', 'LOW']
 
 -   repo: https://github.com/twu/skjold
     rev: 'v0.1.5'

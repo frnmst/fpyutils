@@ -21,7 +21,7 @@
 """Tests."""
 
 import io
-from fpyutils import (filelines, exceptions, shell, yaml, path)
+from .. import (filelines, exceptions, shell, path)
 import unittest
 from unittest.mock import (patch, mock_open)
 import tempfile
