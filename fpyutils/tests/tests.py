@@ -204,40 +204,45 @@ class TestShell(unittest.TestCase):
     # See https://stackoverflow.com/a/46307456
     # Check the output as well.
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-    def assert_stdout(self, command, shell_command, dry_run,
-                      output_character_encoding, expected_output,
-                      expected_retval, capture):
-        r"""Run the assertions by capturing the standard output."""
+    def assert_stdout(self, command: str, shell_command: str, dry_run: bool,
+                      output_character_encoding: str, expected_outputs: list,
+                      expected_retvals: list, file_descriptor):
+        r"""Run the assertions by capturing the standard output.
+
+        file_description is an argument passed by mock.
+        """
         retval = shell.execute_command_live_output(
             command=command,
             shell=shell_command,
             dry_run=dry_run,
             output_character_encoding=output_character_encoding)
-        self.assertEqual(expected_retval, retval)
-        self.assertEqual(expected_output, capture.getvalue())
+
+        output = file_descriptor.getvalue()
+        self.assertTrue(retval in expected_retvals)
+        self.assertTrue(output in expected_outputs)
 
     def test_execute_command_live_output(self):
         r"""test_execute_command_live_output."""
-        self.assert_stdout('true', '/bin/bash', False, 'UTF-8', str(), 0)
-        self.assert_stdout('false', '/bin/bash', False, 'UTF-8', str(), 1)
+        self.assert_stdout('true', '/bin/bash', False, 'UTF-8', [str()], [0])
+        self.assert_stdout('false', '/bin/bash', False, 'UTF-8', [str()], [1])
 
         # Dry runs should always have a return value of 0.
         self.assert_stdout('true', '/bin/bash', True, 'UTF-8',
-                           '/bin/bash -c true\n', 0)
+                           ['/bin/bash -c true\n'], [0])
         self.assert_stdout('false', '/bin/bash', True, 'UTF-8',
-                           '/bin/bash -c false\n', 0)
+                           ['/bin/bash -c false\n'], [0])
 
         # Invalid shell.
         with self.assertRaises(FileNotFoundError):
             self.assert_stdout('false', '/bin/an/invalid/command', False,
-                               'UTF-8', '/bin/bash -c false\n', 0)
+                               'UTF-8', ['/bin/bash -c false\n'], [0])
         # No problems for dry runs.
         self.assert_stdout('false', '/bin/an/invalid/command', True, 'UTF-8',
-                           '/bin/an/invalid/command -c false\n', 0)
+                           ['/bin/an/invalid/command -c false\n'], [0])
 
         # Invalid command.
         self.assert_stdout('falsse', '/bin/bash', False, 'UTF-8',
-                           '/bin/bash: falsse: command not found\n', 127)
+                           ['/bin/bash: falsse: command not found\n', '/bin/bash: line 1: falsse: command not found\n'], [127])
 
 
 class TestYaml(unittest.TestCase):
