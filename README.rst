@@ -5,6 +5,7 @@ fpyutils
 
 .. |pypiver| image:: https://img.shields.io/pypi/v/fpyutils.svg
                :alt: PyPI fpyutils version
+               :target: https://pypi.org/project/fpyutils/
 
 .. |license| image:: https://img.shields.io/pypi/l/fpyutils.svg?color=blue
                :alt: PyPI - License
