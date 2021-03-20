@@ -50,7 +50,7 @@ setup(
     ],
     install_requires=[
         'atomicwrites>=1.4,<1.5',
-        'PyYAML>=5.3<5.4',
+        'PyYAML>=5.4<5.5',
         'requests>=2.25,<2.26'
     ],
 )
