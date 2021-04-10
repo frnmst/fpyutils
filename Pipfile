@@ -10,7 +10,7 @@ sphinx-rtd-theme = '~=0.5'
 
 # Tools.
 twine = "~=3.4"
-pre-commit = "~=2.11"
+pre-commit = "~=2.12"
 
 [packages]
 atomicwrites = "~=1.4"

@@ -1,4 +1,4 @@
 Source code
 ===========
 
-https://github.com/frnmst/fpyutils
+https://software.franco.net.eu.org/frnmst/fpydocs

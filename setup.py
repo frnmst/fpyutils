@@ -24,7 +24,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fpyutils',
-    version='1.2.2',
+    version='1.2.3',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
@@ -36,7 +36,7 @@ setup(
     author='Franco Masotti',
     author_email='franco.masotti@live.com',
     keywords='utilities',
-    url='https://github.com/frnmst/fpyutils',
+    url='https://blog.franco.net.eu.org/software/#fpyutils',
     python_requires='>=3',
     # This part was inspired by:
     # https://chriswarrick.com/blog/2014/09/15/python-apps-the-right-way-entry_points-and-scripts/

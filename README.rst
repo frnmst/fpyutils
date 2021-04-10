@@ -32,7 +32,7 @@ use, highly readable but not efficient.
 Documentation
 -------------
 
-http://frnmst.github.io/fpyutils
+https://docs.franco.net.eu.org/fpyutils/
 
 API examples
 ------------
@@ -54,7 +54,7 @@ API examples
 License
 -------
 
-Copyright (C) 2017-2020 frnmst (Franco Masotti) <franco.masotti@live.com>
+Copyright (C) 2017-2021 frnmst (Franco Masotti) <franco.masotti@live.com>
 
 fpyutils is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -74,4 +74,4 @@ Trusted source
 
 You can check the authenticity of new releases using my public key.
 
-Instructions, sources and keys can be found at `frnmst.gitlab.io/software <https://frnmst.gitlab.io/software/>`_.
+Instructions, sources and keys can be found at `blog.franco.net.eu.org/software <https://blog.franco.net.eu.org/software/>`_.
