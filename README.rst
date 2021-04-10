@@ -49,7 +49,7 @@ API examples
     {1: 3, 2: 8}
 
 
-.. _public API: https://frnmst.github.io/fpyutils/api.html
+.. _public API: https://docs.franco.net.eu.org/fpyutils/api.html
 
 License
 -------
