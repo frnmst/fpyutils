@@ -53,7 +53,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'fpyutils'
-copyright = '2017-2020, Franco Masotti'
+copyright = '2017-2021, Franco Masotti'
 author = 'Franco Masotti'
 
 # The version info for the project you're documenting, acts as replacement for
