@@ -245,14 +245,6 @@ class TestShell(unittest.TestCase):
                            ['/bin/bash: falsse: command not found\n', '/bin/bash: line 1: falsse: command not found\n'], [127])
 
 
-class TestYaml(unittest.TestCase):
-    r"""yaml modules test."""
-
-    def test_load_configuration(self):
-        r"""Nothing to test."""
-        pass
-
-
 class TestPath(unittest.TestCase):
     r"""path modules test."""
 

@@ -7,7 +7,7 @@ Main Interface
 --------------
 
 Examples for the most relevant api functions can be viewed in the test
-file. fpyutils's API uses `type hints`_ instead of assertions to check 
+file. fpyutils's API uses `type hints`_ instead of assertions to check
 input and output types.
 
 .. _type hints: https://docs.python.org/3/library/typing.html
@@ -16,7 +16,6 @@ input and output types.
 .. autofunction:: fpyutils.filelines.insert_string_at_line
 .. autofunction:: fpyutils.filelines.remove_line_interval
 .. autofunction:: fpyutils.shell.execute_command_live_output
-.. autofunction:: fpyutils.yaml.load_configuration
 .. autofunction:: fpyutils.path.add_trailing_slash
 .. autofunction:: fpyutils.path.gen_pseudorandom_path
 .. autofunction:: fpyutils.notify.send_email

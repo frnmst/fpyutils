@@ -14,7 +14,6 @@ pre-commit = "~=2.12"
 
 [packages]
 atomicwrites = "~=1.4"
-PyYAML = "~=5.4"
 requests = "~=2.25"
 
 [requires]
