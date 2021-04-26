@@ -17,4 +17,4 @@ atomicwrites = "~=1.4"
 requests = "~=2.25"
 
 [requires]
-python_version = "3.9"
+python_version = "*"

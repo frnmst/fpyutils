@@ -1,7 +1,7 @@
 # Maintainer: Franco Masotti <franco dot masotti at live dot com>
 # Contributor: Franco Masotti <franco dot masotti at live dot com>
 pkgname=python-fpyutils
-pkgver=1.2.3
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="A collection of useful non-standard Python functions which aim to be simple to use"
 arch=('any')

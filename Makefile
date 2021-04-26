@@ -41,7 +41,7 @@ uninstall-dev:
 	pipenv --rm
 
 test:
-	python -m unittest fpyutils.tests.tests --failfast --locals --verbose
+	pipenv run python -m unittest fpyutils.tests.tests --failfast --locals --verbose
 
 dist:
 	pipenv run python setup.py sdist
