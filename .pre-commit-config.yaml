@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.0.1
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -16,7 +16,7 @@ repos:
         args: ['--style', '{based_on_style: pep8; indent_width: 4}']
 
 -   repo: https://gitlab.com/pycqa/flake8
-    rev: '3.9.1'  # Use the sha / tag you want to point at
+    rev: '3.9.2'  # Use the sha / tag you want to point at
     hooks:
     -   id: flake8
         args: ['--ignore=E501,W503,W504,F401']
