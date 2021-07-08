@@ -22,9 +22,11 @@
 
 import smtplib
 import ssl
-from email.utils import formatdate
 from email.mime.text import MIMEText
+from email.utils import formatdate
+
 import requests
+
 from .path import add_trailing_slash
 
 

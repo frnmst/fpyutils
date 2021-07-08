@@ -20,9 +20,9 @@
 #
 """Exposed API."""
 
-from .filelines import (insert_string_at_line, remove_line_interval,
-                        get_line_matches)
-from .shell import (execute_command_live_output)
-from .path import (add_trailing_slash, gen_pseudorandom_path)
-from .notify import (send_email, send_gotify_message)
-from .exceptions import (LineOutOfFileBoundsError, NegativeLineRangeError)
+from .exceptions import LineOutOfFileBoundsError, NegativeLineRangeError
+from .filelines import (get_line_matches, insert_string_at_line,
+                        remove_line_interval)
+from .notify import send_email, send_gotify_message
+from .path import add_trailing_slash, gen_pseudorandom_path
+from .shell import execute_command_live_output

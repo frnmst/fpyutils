@@ -20,11 +20,11 @@
 #
 """Functions on paths."""
 
-import pathlib
-import urllib
 import datetime
-import secrets
 import hashlib
+import pathlib
+import secrets
+import urllib
 
 
 def add_trailing_slash(uri: str) -> str:

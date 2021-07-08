@@ -20,8 +20,9 @@
 #
 """Functions on reading and writing files by line."""
 
-from .exceptions import (LineOutOfFileBoundsError, NegativeLineRangeError)
 from atomicwrites import atomic_write
+
+from .exceptions import LineOutOfFileBoundsError, NegativeLineRangeError
 
 
 def get_line_matches(input_file: str,
@@ -51,7 +52,8 @@ def get_line_matches(input_file: str,
     .. note::
          Line numbers start from ``1``.
     """
-    assert max_occurrencies >= 0
+    if max_occurrencies < 0:
+        raise ValueError
 
     occurrency_counter = 0.0
     occurrency_matches = dict()
@@ -107,7 +109,8 @@ def insert_string_at_line(input_file: str,
     .. note::
          Line numbers start from ``1``.
     """
-    assert put_at_line_number >= 1
+    if put_at_line_number < 1:
+        raise ValueError
 
     with open(input_file, 'r') as f:
         lines = f.readlines()
@@ -187,8 +190,10 @@ def remove_line_interval(input_file: str, delete_line_from: int,
          It is possible to remove a single line only. This happens when
          the parameters delete_line_from and delete_line_to are equal.
     """
-    assert delete_line_from >= 1
-    assert delete_line_to >= 1
+    if delete_line_from < 1:
+        raise ValueError
+    if delete_line_to < 1:
+        raise ValueError
 
     with open(input_file, 'r') as f:
         lines = f.readlines()

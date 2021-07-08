@@ -21,11 +21,12 @@
 """Tests."""
 
 import io
-from .. import (filelines, exceptions, shell, path)
-import unittest
-from unittest.mock import (patch, mock_open)
-import tempfile
 import pathlib
+import tempfile
+import unittest
+from unittest.mock import mock_open, patch
+
+from .. import exceptions, filelines, path, shell
 
 # filelines module.
 FAKE_FILE_AS_STRING = '''\
