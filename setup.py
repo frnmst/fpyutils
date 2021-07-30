@@ -24,7 +24,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='fpyutils',
-    version='2.0.0',
+    version='2.0.1',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
@@ -50,6 +50,6 @@ setup(
     ],
     install_requires=[
         'atomicwrites>=1.4,<1.5',
-        'requests>=2.25,<2.26'
+        'requests>=2.26,<2.27'
     ],
 )
