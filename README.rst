@@ -69,7 +69,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with fpyutils.  If not, see <http://www.gnu.org/licenses/>.
 
-Changelog and Trusted source
+Changelog and trusted source
 ----------------------------
 
 You can check the authenticity of new releases using my public key.
