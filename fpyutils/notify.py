@@ -1,7 +1,7 @@
 #
 # notify.py
 #
-# Copyright (C) 2017-2020 frnmst (Franco Masotti) <franco.masotti@live.com>
+# Copyright (C) 2017-2020 frnmst (Franco Masotti) <franco.masotti@tutanota.com>
 #
 # This file is part of fpyutils.
 #
@@ -58,7 +58,7 @@ def send_email(message: str, smtp_server: str, port: int, sender: str,
     #
     # Copyright (C) 2016 tfv @ Stack Overflow (https://stackoverflow.com/a/36834904)
     # Copyright (C) 2017 recolic @ Stack Overflow (https://stackoverflow.com/a/36834904)
-    # Copyright (C) 2020 Franco Masotti <franco.masotti@live.com>
+    # Copyright (C) 2020 Franco Masotti <franco.masotti@tutanota.com>
     #
     # This script is licensed under a
     # Creative Commons Attribution-ShareAlike 4.0 International License.
