@@ -31,17 +31,23 @@ install:
 	pip3 install . --user
 
 uninstall:
-	pip3 uninstall --yes $(PACKAGE_NAME)
+	pip3 uninstall --verbose --yes $(PACKAGE_NAME)
 
 install-dev:
 	pipenv install --dev
 	pipenv run pre-commit install
+	pipenv graph
+	pipenv check
 
 uninstall-dev:
+	rm -f Pipfile.lock
 	pipenv --rm
 
+update: install-dev
+	pipenv run pre-commit autoupdate
+
 test:
-	pipenv run python -m unittest fpyutils.tests.tests --failfast --locals --verbose
+	pipenv run python -m unittest $(PACKAGE_NAME).tests.tests --failfast --locals --verbose
 
 dist:
 	pipenv run python setup.py sdist
@@ -62,4 +68,4 @@ clean:
 	rm -rf build dist *.egg-info
 	pipenv run $(MAKE) -C docs clean
 
-.PHONY: default doc install uninstall install-dev uninstall-dev test clean
+.PHONY: default doc install uninstall install-dev uninstall-dev update test clean

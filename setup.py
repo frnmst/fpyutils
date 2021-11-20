@@ -34,7 +34,7 @@ setup(
         '': ['*.txt', '*.rst'],
     },
     author='Franco Masotti',
-    author_email='franco.masotti@live.com',
+    author_email='franco.masotti@tutanota.com',
     keywords='utilities',
     url='https://blog.franco.net.eu.org/software/#fpyutils',
     python_requires='>=3',
@@ -49,7 +49,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     install_requires=[
-        'atomicwrites>=1.4,<1.5',
-        'requests>=2.26,<2.27'
+        'atomicwrites>=1,<2',
+        'requests>=2,<3'
     ],
 )
