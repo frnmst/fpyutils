@@ -54,7 +54,7 @@ API examples
 License
 -------
 
-Copyright (C) 2017-2021 frnmst (Franco Masotti) <franco.masotti@live.com>
+Copyright (C) 2017-2021 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
 
 fpyutils is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -1,7 +1,7 @@
 #
 # __init__.py
 #
-# Copyright (C) 2017-2019 frnmst (Franco Masotti) <franco.masotti@live.com>
+# Copyright (C) 2017-2019 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
 #
 # This file is part of fpyutils.
 #

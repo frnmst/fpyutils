@@ -1,7 +1,7 @@
 #
 # shell.py
 #
-# Copyright (C) 2017-2020 frnmst (Franco Masotti) <franco.masotti@tutanota.com>
+# Copyright (C) 2017-2020 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
 #
 # This file is part of fpyutils.
 #
@@ -49,7 +49,7 @@ def execute_command_live_output(
     # See https://stackoverflow.com/a/53811881
     #
     # Copyright (C) 2018 Tom Hale @ Stack Exchange (https://stackoverflow.com/a/53811881)
-    # Copyright (C) 2020 Franco Masotti <franco.masotti@tutanota.com>
+    # Copyright (C) 2020 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
     #
     # This script is licensed under a
     # Creative Commons Attribution-ShareAlike 4.0 International License.
