@@ -34,6 +34,22 @@ FAKE_FILE_AS_STRING = '''\
 ## One.Two\n\
 '''
 
+FAKE_FILE_AS_STRING_PREPEND_NEWLINE = '''\
+\n\
+# One\n\
+## One.Two\n\
+'''
+
+FAKE_FILE_AS_STRING_R_AS_NEWLINE = '''\
+# One\r\
+## One.Two\r\
+'''
+
+FAKE_FILE_AS_STRING_RN_AS_NEWLINE = '''\
+# One\r\n\
+## One.Two\r\n\
+'''
+
 FAKE_FILE_WITH_MATCHES_AS_STRING = '''\
 # One\n\
 ## One.Two\n\
@@ -92,44 +108,105 @@ class TestFileLines(unittest.TestCase):
         self.assertTrue(3 not in matches)
 
     def _test_helper_insert_string_at_line(self, append, buff,
-                                           string_to_be_inserted, line_no):
+                                           string_to_be_inserted, line_no, newline_character: str = '\n'):
+        r"""Text mode helper."""
         with tempfile.TemporaryDirectory() as d:
             filename = str(pathlib.PurePath(d, 'testing'))
-            with open(filename, 'w') as f:
-                f.write(buff)
+            with open(filename, 'wb') as f:
+                f.write(bytes(buff, 'UTF-8'))
                 f.flush()
 
             filelines.insert_string_at_line(filename, string_to_be_inserted,
-                                            line_no, filename, append)
+                                            line_no, filename, append, newline_character)
 
-            with open(filename, 'r') as f:
+            # Open the file in binary mode to read the newlines as-is.
+            with open(filename, 'rb') as f:
                 content = f.read()
+            content = content.decode('UTF-8')
 
         return content
 
     def test_insert_string_at_line(self):
         r"""test_insert_string_at_line."""
         string_to_be_inserted = "Some string_to_be_inserted"
-        buff = FAKE_FILE_AS_STRING
 
-        # existing line.
+        # Existing line.
+        buff = FAKE_FILE_AS_STRING
         line_no = 2
         append = False
+        newline = '\n'
         result = self._test_helper_insert_string_at_line(
-            append, buff, string_to_be_inserted, line_no)
+            append, buff, string_to_be_inserted, line_no, newline)
         expected = buff.split('\n')[
             0] + '\n' + string_to_be_inserted + buff.split('\n')[1] + '\n'
         self.assertEqual(expected, result)
 
+        # Existing line. Use '\r\n' as newline.
+        buff = FAKE_FILE_AS_STRING
         line_no = 2
-        append = True
+        append = False
+        newline = '\r\n'
         result = self._test_helper_insert_string_at_line(
-            append, buff, string_to_be_inserted, line_no)
-        expected = buff.split('\n')[0] + '\n' + buff.split(
-            '\n')[1] + '\n' + string_to_be_inserted
+            append, buff, string_to_be_inserted, line_no, newline)
+        expected = buff.split('\n')[
+            0] + '\r\n' + string_to_be_inserted + buff.split('\n')[1] + '\r\n'
         self.assertEqual(expected, result)
 
-        # non existing line.
+        # Existing line. Use '\r' as newline.
+        buff = FAKE_FILE_AS_STRING
+        line_no = 2
+        append = False
+        newline = '\r'
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no, newline)
+        expected = buff.split('\n')[
+            0] + '\r' + string_to_be_inserted + buff.split('\n')[1] + '\r'
+        self.assertEqual(expected, result)
+
+        # Existing line with '\n' as prefix.
+        buff = FAKE_FILE_AS_STRING_PREPEND_NEWLINE
+        line_no = 3
+        append = False
+        newline = '\n'
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no, newline)
+        expected = '\n' + buff.split('\n')[
+            1] + '\n' + string_to_be_inserted + buff.split('\n')[2] + '\n'
+        self.assertEqual(expected, result)
+
+        # Work with '\r\n' instead of '\n'.
+        buff = FAKE_FILE_AS_STRING_RN_AS_NEWLINE
+        line_no = 2
+        append = True
+        newline = '\r\n'
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no, newline)
+        expected = buff.split('\r\n')[0] + '\r\n' + buff.split(
+            '\r\n')[1] + '\r\n' + string_to_be_inserted
+        self.assertEqual(expected, result)
+
+        # Work with '\r' instead of '\n'.
+        buff = FAKE_FILE_AS_STRING_R_AS_NEWLINE
+        line_no = 2
+        append = True
+        newline = '\r'
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no, newline)
+        expected = buff.split('\r')[0] + '\r' + buff.split(
+            '\r')[1] + '\r' + string_to_be_inserted
+        self.assertEqual(expected, result)
+
+        # Work with '\z', an illegal value for newline, instead of '\n'.
+        buff = FAKE_FILE_AS_STRING_R_AS_NEWLINE
+        line_no = 2
+        append = True
+        newline = r'\z'
+        with self.assertRaises(ValueError):
+            self._test_helper_insert_string_at_line(
+                append, buff, string_to_be_inserted, line_no, newline)
+
+        # Non existing line.
+        buff = FAKE_FILE_AS_STRING
         line_no = 2**5
         # We do not need to consider the last component of the buff.split() list.
         number_of_newlines_after_last_existing_line = line_no - (
@@ -143,6 +220,7 @@ class TestFileLines(unittest.TestCase):
         self.assertEqual(expected, result)
 
         line_no = 2**5
+        buff = FAKE_FILE_AS_STRING
         number_of_newlines_after_last_existing_line = line_no - (
             len(buff.split('\n')) - 1)
         append = True

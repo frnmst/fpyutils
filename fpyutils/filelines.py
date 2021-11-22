@@ -19,7 +19,9 @@
 # along with fpyutils.  If not, see <http://www.gnu.org/licenses/>.
 #
 """Functions on reading and writing files by line."""
+import os
 
+import atomicwrites
 from atomicwrites import atomic_write
 
 from .exceptions import LineOutOfFileBoundsError, NegativeLineRangeError
@@ -83,7 +85,7 @@ def insert_string_at_line(input_file: str,
                           put_at_line_number: int,
                           output_file: str,
                           append: bool = True,
-                          newline_character: str = '\n'):
+                          newline_character: str = os.linesep):
     r"""Write a string at the specified line.
 
     :parameter input_file: the file that needs to be read.
@@ -96,7 +98,7 @@ def insert_string_at_line(input_file: str,
          selected line. Defaults to ``True``.
     :parameter newline_character: set the character used to fill the file
          in case line_number is greater than the number of lines of
-         input_file. Defaults to ``\n``.
+         input_file. Defaults to the default platform newline.
     :type input_file: str
     :type string_to_be_inserted: str
     :type line_number: int
@@ -108,6 +110,10 @@ def insert_string_at_line(input_file: str,
 
     .. note::
          Line numbers start from ``1``.
+
+    .. note::
+         Exsisting line endings of the input file are changed to
+         ``newline_character``.
     """
     if put_at_line_number < 1:
         raise ValueError
@@ -120,17 +126,23 @@ def insert_string_at_line(input_file: str,
     loop = True
     extra_lines_done = False
     line_number_after_eof = len(lines) + 1
-    with atomic_write(output_file, overwrite=True) as f:
+
+    # Atomicwrites does not support the newline argument so
+    # all the file writing is done in binary mode.
+    c = atomicwrites.AtomicWriter(output_file, 'w', overwrite=True, newline=newline_character)
+    with c.open() as f:
         while loop:
+
             if put_at_line_number > len(
                     lines) and line_counter == line_number_after_eof:
                 # There are extra lines to write.
                 line = str()
             else:
                 line = lines[i]
+
             # It is ok if the position of line to be written is greater
             # than the last line number of the input file. We just need to add
-            # the appropriate number of new line characters which will fill
+            # the appropriate number of newline characters which will fill
             # the non existing lines of the output file.
             if put_at_line_number > len(
                     lines) and line_counter == line_number_after_eof:
