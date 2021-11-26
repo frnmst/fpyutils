@@ -98,7 +98,8 @@ def insert_string_at_line(input_file: str,
          selected line. Defaults to ``True``.
     :parameter newline_character: set the character used to fill the file
          in case line_number is greater than the number of lines of
-         input_file. Defaults to the default platform newline.
+         input_file. Defaults to the default platform newline,
+         i.e: ``os.linesep``.
     :type input_file: str
     :type string_to_be_inserted: str
     :type line_number: int

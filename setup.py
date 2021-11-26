@@ -24,7 +24,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='fpyutils',
-    version='2.0.1',
+    version='2.1.0',
     packages=find_packages(exclude=['*tests*']),
     license='GPL',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
