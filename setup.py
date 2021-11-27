@@ -26,7 +26,7 @@ setup(
     name='fpyutils',
     version='2.1.0',
     packages=find_packages(exclude=['*tests*']),
-    license='GPL',
+    license='GPLv3+',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
     long_description=open('README.rst').read(),
     long_description_content_type='text/x-rst',
