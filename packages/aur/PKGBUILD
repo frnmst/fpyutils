@@ -2,7 +2,7 @@
 # Contributor: Franco Masotti <franco dot masotti at live dot com>
 pkgname=python-fpyutils
 pkgver=2.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A collection of useful non-standard Python functions which aim to be simple to use"
 arch=('any')
 url="https://blog.franco.net.eu.org/software/#fpyutils"
