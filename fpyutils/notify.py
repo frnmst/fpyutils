@@ -100,9 +100,9 @@ def send_gotify_message(url: str,
     :type priority: int
     :raises: a requests or a built-in exception.
     """
-    full_url = add_trailing_slash(url) + 'message?token=' + token
+    full_url: str = add_trailing_slash(url) + 'message?token=' + token
 
-    payload = {
+    payload: dict = {
         'title': title,
         'message': message,
         'priority': priority,

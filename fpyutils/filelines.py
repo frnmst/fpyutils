@@ -224,13 +224,14 @@ def remove_line_interval(input_file: str, delete_line_from: int,
         raise ValueError
 
     with open(input_file, 'r') as f:
-        lines = f.readlines()
+        lines: str = f.readlines()
+    lines_length: int = len(lines)
 
     # Invalid line ranges.
     # Base case delete_line_to - delete_line_from == 0: single line.
     if delete_line_to - delete_line_from < 0:
         raise NegativeLineRangeError
-    if delete_line_from > len(lines) or delete_line_to > len(lines):
+    if delete_line_from > lines_length or delete_line_to > lines_length:
         raise LineOutOfFileBoundsError
 
     line_counter: int = 1

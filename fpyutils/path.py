@@ -37,9 +37,9 @@ def add_trailing_slash(uri: str) -> str:
     :raises: a built-in exception.
     """
     if uri.endswith('/'):
-        uri = uri
+        uri: str = uri
     else:
-        uri = f"{uri}/"
+        uri: str = f"{uri}/"
 
     return uri
 
@@ -79,18 +79,18 @@ def gen_pseudorandom_path(path_suffix: str = str(),
     """
     # 1. the current date.
     # call the fpyutils.datetime module.
-    date_component = datetime.date.strftime(datetime.datetime.now(),
-                                            date_component_format)
+    date_component: str = datetime.date.strftime(datetime.datetime.now(),
+                                                 date_component_format)
 
     # 2. a pseudorandom component.
-    pseudorandom_component = secrets.token_urlsafe(
+    pseudorandom_component: str = secrets.token_urlsafe(
         nbytes=pseudorandom_component_bytes)
 
     # 3. a hash of path_suffix. This will be equal to
     #    'cec7ea' using blake2b and a digest size of 3.
     m = hashlib.blake2b(digest_size=hash_component_digest_size)
     m.update(path_suffix.encode(character_encoding))
-    hashed_component = m.hexdigest()
+    hashed_component: str = m.hexdigest()
 
     # 4. the path suffix, if present.
     if path_suffix != str():

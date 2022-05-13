@@ -57,6 +57,7 @@ def execute_command_live_output(
     # You should have received a copy of the license along with this
     # work. If not, see <http://creativecommons.org/licenses/by-sa/4.0/>.
 
+    retval: int
     if dry_run:
         print(shell + ' -c ' + command)
         retval = 0
@@ -66,9 +67,9 @@ def execute_command_live_output(
         with subprocess.Popen([shell, '-c', command],
                               stderr=subprocess.PIPE) as process:
 
-            go = True
+            go: bool = True
             while go:
-                output = process.stderr.readline().decode(
+                output: str = process.stderr.readline().decode(
                     output_character_encoding)
                 if output == str() and process.poll() is not None:
                     go = False
