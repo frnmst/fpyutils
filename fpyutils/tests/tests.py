@@ -72,39 +72,52 @@ class TestFileLines(unittest.TestCase):
         r"""test_get_line_matches."""
         # Zero pattern matches.
         with patch('builtins.open', mock_open(read_data=FAKE_FILE_AS_STRING)):
-            matches = filelines.get_line_matches(
+            matches, lines = filelines.get_line_matches(
                 input_file='foo.md', pattern='[](TOC)', max_occurrencies=1)
         self.assertTrue(1 not in matches)
+        self.assertEqual(lines, str())
 
-        # More than zero pattern matches.
+        # One pattern matches.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
-            matches = filelines.get_line_matches(
+            matches, lines = filelines.get_line_matches(
+                input_file='foo.md', pattern='[](TOC)', max_occurrencies=1)
+        self.assertEqual(matches[1], 4)
+        self.assertEqual(lines, '[](TOC)\n')
+        self.assertTrue(2 not in matches)
+
+        # More than one pattern matches.
+        with patch('builtins.open',
+                   mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
+            matches, lines = filelines.get_line_matches(
                 input_file='foo.md', pattern='[](TOC)', max_occurrencies=0)
         self.assertEqual(matches[1], 4)
         self.assertEqual(matches[2], 10)
+        self.assertEqual(lines, '[](TOC)\n[](TOC)\n')
         self.assertTrue(3 not in matches)
 
         # Zero pattern matches with loose matching disabled.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
-            matches = filelines.get_line_matches(
+            matches, lines = filelines.get_line_matches(
                 input_file='foo.md',
                 pattern='[](TOC)',
                 max_occurrencies=0,
                 loose_matching=False)
+        self.assertEqual(lines, str())
         self.assertTrue(1 not in matches)
 
         # More than zero pattern matches with loose matching disabled.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
-            matches = filelines.get_line_matches(
+            matches, lines = filelines.get_line_matches(
                 input_file='foo.md',
                 pattern='[](TOC)\n',
                 max_occurrencies=0,
                 loose_matching=False)
         self.assertEqual(matches[1], 4)
         self.assertEqual(matches[2], 10)
+        self.assertEqual(lines, '[](TOC)\n[](TOC)\n')
         self.assertTrue(3 not in matches)
 
     def _test_helper_insert_string_at_line(self, append, buff,

@@ -30,8 +30,8 @@ from .exceptions import LineOutOfFileBoundsError, NegativeLineRangeError
 def get_line_matches(input_file: str,
                      pattern: str,
                      max_occurrencies: int = 0,
-                     loose_matching: bool = True) -> dict:
-    r"""Get the line numbers of matched patterns.
+                     loose_matching: bool = True) -> tuple:
+    r"""Get the line numbers of matched patterns and the matched string itself.
 
     :parameter input_file: the file that needs to be read.
     :parameter pattern: the pattern that needs to be searched.
@@ -47,8 +47,9 @@ def get_line_matches(input_file: str,
          to the number of occurrencies and each value to the matched line number.
          If no match was found for that particular occurrency, the key is not
          set. This means means for example: if the first occurrency of
-         pattern is at line y then: x[1] = y.
-    :rtype: dict
+         pattern is at line y then: x[1] = y. Also returnes lines,
+         a string corresponding to the matched lines.
+    :rtype: tuple
     :raises: a built-in exception.
 
     .. note::
@@ -57,27 +58,33 @@ def get_line_matches(input_file: str,
     if max_occurrencies < 0:
         raise ValueError
 
-    occurrency_counter = 0.0
-    occurrency_matches = dict()
+    occurrency_counter: float = 0.0
+    occurrency_matches: dict = dict()
+    lines: list = list()
+    line_original: str
 
     if max_occurrencies == 0:
         max_occurrencies = float('inf')
     if loose_matching:
         pattern = pattern.strip()
 
-    line_counter = 1
+    line_counter: int = 1
     with open(input_file, 'r') as f:
         line = f.readline()
         while line and occurrency_counter < max_occurrencies:
+            line_original = line
             if loose_matching:
                 line = line.strip()
             if line == pattern:
                 occurrency_counter += 1.0
                 occurrency_matches[int(occurrency_counter)] = line_counter
+                lines.append(line_original)
             line = f.readline()
             line_counter += 1
 
-    return occurrency_matches
+    lines = ''.join(lines)
+
+    return occurrency_matches, lines
 
 
 def insert_string_at_line(input_file: str,
@@ -120,13 +127,14 @@ def insert_string_at_line(input_file: str,
         raise ValueError
 
     with open(input_file, 'r') as f:
-        lines = f.readlines()
+        lines: str = f.readlines()
 
-    line_counter = 1
-    i = 0
-    loop = True
-    extra_lines_done = False
-    line_number_after_eof = len(lines) + 1
+    line_counter: int = 1
+    lines_length: int = len(lines)
+    i: int = 0
+    loop: bool = True
+    extra_lines_done: bool = False
+    line_number_after_eof: int = len(lines) + 1
 
     # Atomicwrites does not support the newline argument so
     # all the file writing is done in binary mode.
@@ -145,8 +153,8 @@ def insert_string_at_line(input_file: str,
             # than the last line number of the input file. We just need to add
             # the appropriate number of newline characters which will fill
             # the non existing lines of the output file.
-            if put_at_line_number > len(
-                    lines) and line_counter == line_number_after_eof:
+            if (put_at_line_number > lines_length
+               and line_counter == line_number_after_eof):
                 for additional_newlines in range(
                         0, put_at_line_number - len(lines) - 1):
                     # Skip the newline in the line where we need to insert
@@ -169,10 +177,10 @@ def insert_string_at_line(input_file: str,
             line_counter += 1
             i += 1
             # Quit the loop if there is nothing more to write.
-            if i >= len(lines):
+            if i >= lines_length:
                 loop = False
             # Continue looping if there are still extra lines to write.
-            if put_at_line_number > len(lines) and not extra_lines_done:
+            if put_at_line_number > lines_length and not extra_lines_done:
                 loop = True
 
         # endwhile
@@ -218,7 +226,7 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     if delete_line_from > len(lines) or delete_line_to > len(lines):
         raise LineOutOfFileBoundsError
 
-    line_counter = 1
+    line_counter: int = 1
     # Rewrite the file without the string.
     with atomic_write(output_file, overwrite=True) as f:
         for line in lines:
