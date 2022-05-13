@@ -30,7 +30,8 @@ from .exceptions import LineOutOfFileBoundsError, NegativeLineRangeError
 def get_line_matches(input_file: str,
                      pattern: str,
                      max_occurrencies: int = 0,
-                     loose_matching: bool = True) -> tuple:
+                     loose_matching: bool = True,
+                     keep_all_lines: bool = False) -> tuple:
     r"""Get the line numbers of matched patterns and the matched string itself.
 
     :parameter input_file: the file that needs to be read.
@@ -39,6 +40,8 @@ def get_line_matches(input_file: str,
          Defaults to ``0`` which means that all occurrencies will be matched.
     :parameter loose_matching: ignore leading and trailing whitespace
          characters for both pattern and matched strings. Defaults to ``True``.
+    :parameter keep_all_lines: if set to ``True`` returns the whole file content
+         as a string. Defaults to ``False``.
     :type input_file: str
     :type pattern: str
     :type max_occurrencies: int
@@ -47,8 +50,8 @@ def get_line_matches(input_file: str,
          to the number of occurrencies and each value to the matched line number.
          If no match was found for that particular occurrency, the key is not
          set. This means means for example: if the first occurrency of
-         pattern is at line y then: x[1] = y. Also returnes lines,
-         a string corresponding to the matched lines.
+         pattern is at line y then: x[1] = y. Also returns lines,
+         a string corresponding to the matched lines or the whole file.
     :rtype: tuple
     :raises: a built-in exception.
 
@@ -71,14 +74,18 @@ def get_line_matches(input_file: str,
     line_counter: int = 1
     with open(input_file, 'r') as f:
         line = f.readline()
-        while line and occurrency_counter < max_occurrencies:
+        while line and (keep_all_lines or occurrency_counter < max_occurrencies):
             line_original = line
             if loose_matching:
                 line = line.strip()
-            if line == pattern:
+
+            if line == pattern and occurrency_counter < max_occurrencies:
                 occurrency_counter += 1.0
                 occurrency_matches[int(occurrency_counter)] = line_counter
                 lines.append(line_original)
+            elif keep_all_lines:
+                lines.append(line_original)
+
             line = f.readline()
             line_counter += 1
 

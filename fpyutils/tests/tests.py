@@ -86,6 +86,15 @@ class TestFileLines(unittest.TestCase):
         self.assertEqual(lines, '[](TOC)\n')
         self.assertTrue(2 not in matches)
 
+        # One pattern matches and keep all lines.
+        with patch('builtins.open',
+                   mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
+            matches, lines = filelines.get_line_matches(
+                input_file='foo.md', pattern='[](TOC)', max_occurrencies=1, keep_all_lines=True)
+        self.assertEqual(matches[1], 4)
+        self.assertEqual(lines, FAKE_FILE_WITH_MATCHES_AS_STRING)
+        self.assertTrue(2 not in matches)
+
         # More than one pattern matches.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
