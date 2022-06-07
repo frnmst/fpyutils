@@ -12,6 +12,15 @@ simple to use, highly readable but not efficient.
 
 <!--TOC-->
 
+- [fpyutils](#fpyutils)
+  - [Documentation](#documentation)
+  - [API examples](#api-examples)
+  - [License](#license)
+  - [Changelog and trusted source](#changelog-and-trusted-source)
+  - [Crypto donations](#crypto-donations)
+
+<!--TOC-->
+
 ## Documentation
 
 <https://docs.franco.net.eu.org/fpyutils/>
