@@ -2,7 +2,7 @@
 #
 # Makefile
 #
-# Copyright (C) 2017-2020 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
+# Copyright (C) 2017-2022 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
 #
 # This file is part of fpyutils.
 #

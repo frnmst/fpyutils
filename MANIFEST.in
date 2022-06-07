@@ -1,6 +1,6 @@
 global-include LICENSE.txt
-global-include README.rst
-global-include CONTRIBUTING.rst
+global-include README.md
+global-include CONTRIBUTING.md
 exclude *.yaml
 exclude *.yml
 recursive-exclude assets *
