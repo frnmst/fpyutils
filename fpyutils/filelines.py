@@ -46,12 +46,15 @@ def get_line_matches(input_file: str,
     :type pattern: str
     :type max_occurrencies: int
     :type loose_matching: bool
+    :type keep_all_lines: bool
     :returns: occurrency_matches, a dictionary where each key corresponds
          to the number of occurrencies and each value to the matched line number.
          If no match was found for that particular occurrency, the key is not
          set. This means means for example: if the first occurrency of
-         pattern is at line y then: x[1] = y. Also returns lines,
-         a string corresponding to the matched lines or the whole file.
+         pattern is at line y then: x[1] = y, with x being the dictionary.
+
+         lines, a string corresponding to the matched lines or the whole file
+         (see ``keep_all_lines`` argument).
     :rtype: tuple
     :raises: a built-in exception.
 
