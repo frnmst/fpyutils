@@ -144,9 +144,9 @@ class TestFileLines(unittest.TestCase):
             # Open the file in binary mode to read the newlines as-is.
             with open(filename, 'rb') as f:
                 content = f.read()
-            content = content.decode('UTF-8')
+            cnt = content.decode('UTF-8')
 
-        return content
+        return cnt
 
     def test_insert_string_at_line(self):
         r"""test_insert_string_at_line."""

@@ -37,9 +37,9 @@ def add_trailing_slash(uri: str) -> str:
     :raises: a built-in exception.
     """
     if uri.endswith('/'):
-        uri: str = uri
+        uri = uri
     else:
-        uri: str = f"{uri}/"
+        uri = f"{uri}/"
 
     return uri
 

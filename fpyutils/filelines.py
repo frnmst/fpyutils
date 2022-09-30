@@ -20,6 +20,7 @@
 #
 """Functions on reading and writing files by line."""
 import os
+import sys
 
 import atomicwrites
 from atomicwrites import atomic_write
@@ -61,16 +62,19 @@ def get_line_matches(input_file: str,
     .. note::
          Line numbers start from ``1``.
     """
-    if max_occurrencies < 0:
+    if max_occurrencies < 0 or max_occurrencies > sys.maxsize:
         raise ValueError
 
     occurrency_counter: float = 0.0
     occurrency_matches: dict = dict()
     lines: list = list()
+    lns: str
     line_original: str
 
     if max_occurrencies == 0:
-        max_occurrencies = float('inf')
+        # See
+        # https://docs.python.org/3/whatsnew/3.0.html#integers
+        max_occurrencies = sys.maxsize
     if loose_matching:
         pattern = pattern.strip()
 
@@ -92,9 +96,9 @@ def get_line_matches(input_file: str,
             line = f.readline()
             line_counter += 1
 
-    lines = ''.join(lines)
+    lns = ''.join(lines)
 
-    return occurrency_matches, lines
+    return occurrency_matches, lns
 
 
 def insert_string_at_line(input_file: str,
@@ -137,7 +141,7 @@ def insert_string_at_line(input_file: str,
         raise ValueError
 
     with open(input_file, 'r') as f:
-        lines: str = f.readlines()
+        lines: list = f.readlines()
 
     line_counter: int = 1
     lines_length: int = len(lines)
@@ -227,7 +231,7 @@ def remove_line_interval(input_file: str, delete_line_from: int,
         raise ValueError
 
     with open(input_file, 'r') as f:
-        lines: str = f.readlines()
+        lines: list = f.readlines()
     lines_length: int = len(lines)
 
     # Invalid line ranges.
