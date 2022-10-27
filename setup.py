@@ -28,7 +28,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='fpyutils',
-    version='2.2.0',
+    version='2.2.1',
     packages=find_packages(exclude=['*tests*']),
     license='GPLv3+',
     description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',

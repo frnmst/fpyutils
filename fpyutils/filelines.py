@@ -40,6 +40,7 @@ def get_line_matches(input_file: str,
     :parameter pattern: the pattern that needs to be searched.
     :parameter max_occurrencies: the maximum number of expected occurrencies.
          Defaults to ``0`` which means that all occurrencies will be matched.
+         This parameter is limited by the platform (``sys.maxsize``).
     :parameter loose_matching: ignore leading and trailing whitespace
          characters for both pattern and matched strings. Defaults to ``True``.
     :parameter keep_all_lines: if set to ``True`` returns the whole file content
