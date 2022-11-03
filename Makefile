@@ -38,7 +38,6 @@ install-dev:
 	pipenv run pre-commit install
 	pipenv run pre-commit install --hook-type commit-msg
 	pipenv graph
-	pipenv check
 
 uninstall-dev:
 	rm -f Pipfile.lock
