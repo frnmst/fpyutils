@@ -83,7 +83,8 @@ def get_line_matches(input_file: str,
     line_counter: int = 1
     with open(input_file, 'r') as f:
         line = f.readline()
-        while line and (keep_all_lines or occurrency_counter < max_occurrencies):
+        while line and (keep_all_lines
+                        or occurrency_counter < max_occurrencies):
             line_original = line
             if loose_matching:
                 line = line.strip()
@@ -154,7 +155,10 @@ def insert_string_at_line(input_file: str,
 
     # Atomicwrites does not support the newline argument so
     # all the file writing is done in binary mode.
-    c = atomicwrites.AtomicWriter(output_file, 'w', overwrite=True, newline=newline_character)
+    c = atomicwrites.AtomicWriter(output_file,
+                                  'w',
+                                  overwrite=True,
+                                  newline=newline_character)
     with c.open() as f:
         while loop:
 
@@ -170,7 +174,7 @@ def insert_string_at_line(input_file: str,
             # the appropriate number of newline characters which will fill
             # the non existing lines of the output file.
             if (put_at_line_number > lines_length
-               and line_counter == line_number_after_eof):
+                    and line_counter == line_number_after_eof):
                 for additional_newlines in range(
                         0, put_at_line_number - len(lines) - 1):
                     # Skip the newline in the line where we need to insert
@@ -181,6 +185,7 @@ def insert_string_at_line(input_file: str,
                 extra_lines_done = True
 
             if line_counter == put_at_line_number:
+                # FIXME TODO: use ''.join([line, string_to_be_inserted])
                 # A very simple append operation: if the original line ends
                 # with a '\n' character, the string will be added on the next
                 # line...

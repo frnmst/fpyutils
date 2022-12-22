@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # fpyutils documentation build configuration file, created by
@@ -50,8 +49,7 @@ release = '2.2.1'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.coverage',
-    'sphinx_rtd_theme',
-    'sphinx.ext.githubpages',
+    'sphinx_copybutton',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -78,56 +76,25 @@ language = None
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-# The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
-
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
-
 
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
-
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-#
-html_theme_options = {
-    'github_user': 'frnmst',
-    'github_repo': 'fpyutils',
-    'github_banner': True,
-}
+html_theme = 'sphinx_book_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-# Custom sidebar templates, must be a dictionary that maps document names
-# to template names.
-#
-# This is required for the alabaster theme
-# refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
-html_sidebars = {
-    '**': [
-        'about.html',
-        'navigation.html',
-        'relations.html',  # needs 'show_related': True theme option to display
-        'searchbox.html',
-        'donate.html',
-    ]
-}
-
-
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'fpyutilsdoc'
-
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -153,20 +120,15 @@ latex_elements: dict = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'fpyutils.tex', 'fpyutils Documentation',
-     'Franco Masotti', 'manual'),
+    (master_doc, 'fpyutils.tex', 'fpyutils Documentation', 'Franco Masotti',
+     'manual'),
 ]
-
 
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'fpyutils', 'fpyutils Documentation',
-     [author], 1)
-]
-
+man_pages = [(master_doc, 'fpyutils', 'fpyutils Documentation', [author], 1)]
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -174,23 +136,30 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'fpyutils', 'fpyutils Documentation',
-     author, 'fpyutils', 'One line description of project.',
-     'Miscellaneous'),
+    (master_doc, 'fpyutils', 'fpyutils Documentation', author, 'fpyutils',
+     'One line description of project.', 'Miscellaneous'),
 ]
 
-
 html_theme_options = {
-    'canonical_url': '',
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': False,
-    'style_nav_header_background': 'light-blue',
-    # Toc options
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-    'navigation_depth': 6,
-    'includehidden': True,
-    'titles_only': False
+    'repository_url': 'https://software.franco.net.eu.org/frnmst/fpyutils',
+    'use_repository_button': True,
+    'use_download_button': True,
+    'use_issues_button': True,
 }
+
+html_baseurl = 'https://docs.franco.net.eu.org/fpyutils/'
+
+pygments_style = 'default'
+html_last_updated_fmt = '%Y-%m-%d %H:%M:%S %z'
+copybutton_line_continuation_character = '\\'
+
+# Epub.
+epub_theme = 'epub'
+epub_author = 'Franco Masotti'
+epub_theme_options = {
+    "relbar1": False,
+    "footer": False,
+}
+epub_css_style = [
+    'css/epub.css',
+]

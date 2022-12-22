@@ -19,41 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with fpyutils.  If not, see <http://www.gnu.org/licenses/>.
 #
-"""setup.py."""
+r"""setup.py."""
 
-from setuptools import find_packages, setup
+import pkg_resources
+import setuptools
 
-with open('README.md', 'r', encoding='utf-8') as f:
-    readme = f.read()
-
-setup(
-    name='fpyutils',
-    version='2.2.1',
-    packages=find_packages(exclude=['*tests*']),
-    license='GPLv3+',
-    description='A collection of useful non-standard Python functions which aim to be simple to use, highly readable but not efficient.',
-    long_description=readme,
-    long_description_content_type='text/markdown',
-    package_data={
-        '': ['*.txt', '*.rst'],
-    },
-    author='Franco Masotti',
-    author_email='franco.masotti@tutanota.com',
-    keywords='utilities',
-    url='https://blog.franco.net.eu.org/software/#fpyutils',
-    python_requires='>=3',
-    # This part was inspired by:
-    # https://chriswarrick.com/blog/2014/09/15/python-apps-the-right-way-entry_points-and-scripts/
-    test_suite='tests',
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Libraries',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
-        'Programming Language :: Python :: 3',
-    ],
-    install_requires=[
-        'atomicwrites>=1,<2',
-        'requests>=2,<3'
-    ],
-)
+pkg_resources.require('setuptools>=39.2.0')
+setuptools.setup()

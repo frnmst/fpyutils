@@ -73,16 +73,18 @@ class TestFileLines(unittest.TestCase):
         r"""test_get_line_matches."""
         # Zero pattern matches.
         with patch('builtins.open', mock_open(read_data=FAKE_FILE_AS_STRING)):
-            matches, lines = filelines.get_line_matches(
-                input_file='foo.md', pattern='[](TOC)', max_occurrencies=1)
+            matches, lines = filelines.get_line_matches(input_file='foo.md',
+                                                        pattern='[](TOC)',
+                                                        max_occurrencies=1)
         self.assertTrue(1 not in matches)
         self.assertEqual(lines, str())
 
         # One pattern matches.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
-            matches, lines = filelines.get_line_matches(
-                input_file='foo.md', pattern='[](TOC)', max_occurrencies=1)
+            matches, lines = filelines.get_line_matches(input_file='foo.md',
+                                                        pattern='[](TOC)',
+                                                        max_occurrencies=1)
         self.assertEqual(matches[1], 4)
         self.assertEqual(lines, '[](TOC)\n')
         self.assertTrue(2 not in matches)
@@ -90,8 +92,10 @@ class TestFileLines(unittest.TestCase):
         # One pattern matches and keep all lines.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
-            matches, lines = filelines.get_line_matches(
-                input_file='foo.md', pattern='[](TOC)', max_occurrencies=1, keep_all_lines=True)
+            matches, lines = filelines.get_line_matches(input_file='foo.md',
+                                                        pattern='[](TOC)',
+                                                        max_occurrencies=1,
+                                                        keep_all_lines=True)
         self.assertEqual(matches[1], 4)
         self.assertEqual(lines, FAKE_FILE_WITH_MATCHES_AS_STRING)
         self.assertTrue(2 not in matches)
@@ -99,8 +103,9 @@ class TestFileLines(unittest.TestCase):
         # More than one pattern matches.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
-            matches, lines = filelines.get_line_matches(
-                input_file='foo.md', pattern='[](TOC)', max_occurrencies=0)
+            matches, lines = filelines.get_line_matches(input_file='foo.md',
+                                                        pattern='[](TOC)',
+                                                        max_occurrencies=0)
         self.assertEqual(matches[1], 4)
         self.assertEqual(matches[2], 10)
         self.assertEqual(lines, '[](TOC)\n[](TOC)\n')
@@ -109,29 +114,31 @@ class TestFileLines(unittest.TestCase):
         # Zero pattern matches with loose matching disabled.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
-            matches, lines = filelines.get_line_matches(
-                input_file='foo.md',
-                pattern='[](TOC)',
-                max_occurrencies=0,
-                loose_matching=False)
+            matches, lines = filelines.get_line_matches(input_file='foo.md',
+                                                        pattern='[](TOC)',
+                                                        max_occurrencies=0,
+                                                        loose_matching=False)
         self.assertEqual(lines, str())
         self.assertTrue(1 not in matches)
 
         # More than zero pattern matches with loose matching disabled.
         with patch('builtins.open',
                    mock_open(read_data=FAKE_FILE_WITH_MATCHES_AS_STRING)):
-            matches, lines = filelines.get_line_matches(
-                input_file='foo.md',
-                pattern='[](TOC)\n',
-                max_occurrencies=0,
-                loose_matching=False)
+            matches, lines = filelines.get_line_matches(input_file='foo.md',
+                                                        pattern='[](TOC)\n',
+                                                        max_occurrencies=0,
+                                                        loose_matching=False)
         self.assertEqual(matches[1], 4)
         self.assertEqual(matches[2], 10)
         self.assertEqual(lines, '[](TOC)\n[](TOC)\n')
         self.assertTrue(3 not in matches)
 
-    def _test_helper_insert_string_at_line(self, append, buff,
-                                           string_to_be_inserted, line_no, newline_character: str = '\n'):
+    def _test_helper_insert_string_at_line(self,
+                                           append,
+                                           buff,
+                                           string_to_be_inserted,
+                                           line_no,
+                                           newline_character: str = '\n'):
         r"""Text mode helper."""
         with tempfile.TemporaryDirectory() as d:
             filename = str(pathlib.PurePath(d, 'testing'))
@@ -140,7 +147,8 @@ class TestFileLines(unittest.TestCase):
                 f.flush()
 
             filelines.insert_string_at_line(filename, string_to_be_inserted,
-                                            line_no, filename, append, newline_character)
+                                            line_no, filename, append,
+                                            newline_character)
 
             # Open the file in binary mode to read the newlines as-is.
             with open(filename, 'rb') as f:
@@ -225,8 +233,9 @@ class TestFileLines(unittest.TestCase):
         append = True
         newline = r'\z'
         with self.assertRaises(ValueError):
-            self._test_helper_insert_string_at_line(
-                append, buff, string_to_be_inserted, line_no, newline)
+            self._test_helper_insert_string_at_line(append, buff,
+                                                    string_to_be_inserted,
+                                                    line_no, newline)
 
         # Non existing line.
         buff = FAKE_FILE_AS_STRING
@@ -343,8 +352,10 @@ class TestShell(unittest.TestCase):
                            ['/bin/an/invalid/command -c false\n'], [0])
 
         # Invalid command.
-        self.assert_stdout('falsse', '/bin/bash', False, 'UTF-8',
-                           ['/bin/bash: falsse: command not found\n', '/bin/bash: line 1: falsse: command not found\n'], [127])
+        self.assert_stdout('falsse', '/bin/bash', False, 'UTF-8', [
+            '/bin/bash: falsse: command not found\n',
+            '/bin/bash: line 1: falsse: command not found\n'
+        ], [127])
 
 
 class TestPath(unittest.TestCase):
@@ -384,10 +395,10 @@ class TestPath(unittest.TestCase):
         self.assertEqual(path.add_trailing_slash(str()), '/')
 
         self.assertEqual(path.add_trailing_slash('/'), '/')
-        self.assertEqual(
-            path.add_trailing_slash('http://a b c/'), 'http://a b c/')
-        self.assertEqual(
-            path.add_trailing_slash('http://a b c'), 'http://a b c/')
+        self.assertEqual(path.add_trailing_slash('http://a b c/'),
+                         'http://a b c/')
+        self.assertEqual(path.add_trailing_slash('http://a b c'),
+                         'http://a b c/')
 
 
 class TestNotify(unittest.TestCase):

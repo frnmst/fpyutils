@@ -1,4 +1,3 @@
-#!/usr/bin/env make
 #
 # Makefile
 #
@@ -44,7 +43,15 @@ uninstall-dev:
 	pipenv --rm
 
 update: install-dev
-	pipenv run pre-commit autoupdate
+	pipenv run pre-commit autoupdate \
+		--repo https://github.com/pre-commit/pre-commit-hooks \
+		--repo https://github.com/PyCQA/bandit \
+		--repo https://github.com/pycqa/isort \
+		--repo https://codeberg.org/frnmst/licheck \
+		--repo https://codeberg.org/frnmst/md-toc \
+		--repo https://github.com/mgedmin/check-manifest \
+		--repo https://github.com/jorisroovers/gitlint
+		# --repo https://github.com/pre-commit/mirrors-mypy \
 
 test:
 	pipenv run python -m unittest $(PACKAGE_NAME).tests.tests --failfast --locals --verbose
@@ -65,7 +72,9 @@ upload:
 	pipenv run twine upload dist/*
 
 clean:
-	rm -rf build dist *.egg-info
+	rm -rf build dist *.egg-info tests/benchmark-results
+	# Remove all markdown files except the readme.
+	find -regex ".*\.[mM][dD]" ! -name 'README.md' ! -name 'CONTRIBUTING.md' -type f -exec rm -f {} +
 	pipenv run $(MAKE) -C docs clean
 
-.PHONY: default doc install uninstall install-dev uninstall-dev update test clean
+.PHONY: default doc install uninstall install-dev uninstall-dev update test clean demo

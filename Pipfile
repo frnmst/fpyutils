@@ -25,8 +25,8 @@ verify_ssl = true
 
 [dev-packages]
 # Documentation.
-Sphinx = ">=4,<5"
-sphinx-rtd-theme = '>=1,<2'
+sphinx-book-theme = '>=0.3.3,<0.4'
+sphinx-copybutton = '>=0.5,<0.6'
 
 # Tools.
 twine = ">=3,<4"

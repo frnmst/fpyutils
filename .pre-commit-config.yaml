@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: 'v4.4.0'
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -14,18 +14,25 @@ repos:
     -   id: check-case-conflict
     -   id: debug-statements
     -   id: fix-encoding-pragma
+    -   id: forbid-submodules
+    -   id: check-symlinks
+    -   id: check-shebang-scripts-are-executable
+    -   id: check-case-conflict
+    -   id: check-added-large-files
+        args: ['--maxkb=4096']
+    -   id: destroyed-symlinks
 
+# YAPF and flake8 need to remain pinned.
 -   repo: https://github.com/pre-commit/mirrors-yapf
-    rev: 'v0.32.0'  # Use the sha / tag you want to point at
+    rev: 'v0.32.0' # frozen: v0.32.0
     hooks:
     -   id: yapf
-        args: ['--style', '{based_on_style: pep8; indent_width: 4}']
+        additional_dependencies: [toml]
 
 -   repo: https://github.com/pycqa/flake8
-    rev: '5.0.4'  # Use the sha / tag you want to point at
+    rev: '6.0.0' # frozen: 6.0.0
     hooks:
     -   id: flake8
-        args: ['--ignore=E501,W503,W504,F401']
         additional_dependencies: [flake8-docstrings]
 
 -   repo: https://github.com/PyCQA/bandit
@@ -34,34 +41,33 @@ repos:
     -   id: bandit
         args: ['--skip', 'B404,B506,B410,B603,B604', '--level', 'LOW']
 
-#-   repo: https://github.com/pre-commit/mirrors-mypy
-#    rev: 'v0.971'
-#    hooks:
-#    -   id: mypy
-#        args: ['--no-strict-optional', '--ignore-missing-imports', '--show-error-context', '--show-error-codes', '--follow-imports', 'silent']
+#   -   repo: https://github.com/pre-commit/mirrors-mypy
+#       rev: 'v0.991'
+#       hooks:
+#       -      id: mypy
+#              args: ['--no-strict-optional', '--ignore-missing-imports', '--show-error-context', '--show-error-codes', '--follow-imports', 'silent']
 
 -   repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+    rev: 'v5.11.3'
     hooks:
     -   id: isort
 
 -   repo: https://codeberg.org/frnmst/licheck
-    rev: 1.0.0
+    rev: '1.0.0'
     hooks:
     -   id: licheck
         args: ['--configuration-file', '.allowed_licenses.yml']
 
 -   repo: https://codeberg.org/frnmst/md-toc
-    rev: '8.1.5'  # or a specific git tag from md-toc
+    rev: '8.1.6'  # or a specific git tag from md-toc
     hooks:
     -    id: md-toc
          args: [-p, 'cmark', '-l6']  # CLI options
 
 -   repo: https://github.com/mgedmin/check-manifest
-    rev: "0.48"
+    rev: '0.49'
     hooks:
     -   id: check-manifest
-        args: ['--ignore','docs/*,docs/assets/*,Pipfile,Makefile,fpyutils/tests/*,packages/aur/*']
 
 -   repo: local
     hooks:
@@ -81,6 +87,6 @@ repos:
         pass_filenames: false
 
 -   repo: https://github.com/jorisroovers/gitlint
-    rev: 'v0.17.0'
+    rev: 'v0.18.0'
     hooks:
     -   id: gitlint
