@@ -232,7 +232,8 @@ class TestFileLines(unittest.TestCase):
         line_no = 2
         append = True
         newline = r'\z'
-        with self.assertRaises(ValueError):
+        # Both exceptions are raised.
+        with self.assertRaises((ValueError, OSError)):
             self._test_helper_insert_string_at_line(append, buff,
                                                     string_to_be_inserted,
                                                     line_no, newline)

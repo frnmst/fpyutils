@@ -2,7 +2,7 @@
 #
 # filelines.py
 #
-# Copyright (C) 2017-2020 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
+# Copyright (C) 2017-2022 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
 #
 # This file is part of fpyutils.
 #
@@ -22,9 +22,7 @@
 """Functions on reading and writing files by line."""
 import os
 import sys
-
-import atomicwrites
-from atomicwrites import atomic_write
+import tempfile
 
 from .exceptions import LineOutOfFileBoundsError, NegativeLineRangeError
 
@@ -67,7 +65,7 @@ def get_line_matches(input_file: str,
     if max_occurrencies < 0 or max_occurrencies > sys.maxsize:
         raise ValueError
 
-    occurrency_counter: float = 0.0
+    occurrency_counter: int = 0
     occurrency_matches: dict = dict()
     lines: list = list()
     lns: str
@@ -90,7 +88,7 @@ def get_line_matches(input_file: str,
                 line = line.strip()
 
             if line == pattern and occurrency_counter < max_occurrencies:
-                occurrency_counter += 1.0
+                occurrency_counter += 1
                 occurrency_matches[int(occurrency_counter)] = line_counter
                 lines.append(line_original)
             elif keep_all_lines:
@@ -147,66 +145,69 @@ def insert_string_at_line(input_file: str,
         lines: list = f.readlines()
 
     line_counter: int = 1
-    lines_length: int = len(lines)
     i: int = 0
     loop: bool = True
     extra_lines_done: bool = False
     line_number_after_eof: int = len(lines) + 1
+    line_to_write: list = list()
 
-    # Atomicwrites does not support the newline argument so
-    # all the file writing is done in binary mode.
-    c = atomicwrites.AtomicWriter(output_file,
-                                  'w',
-                                  overwrite=True,
-                                  newline=newline_character)
-    with c.open() as f:
-        while loop:
+    while loop:
 
-            if put_at_line_number > len(
-                    lines) and line_counter == line_number_after_eof:
-                # There are extra lines to write.
-                line = str()
+        if put_at_line_number > len(
+                lines) and line_counter == line_number_after_eof:
+            # There are extra lines to write.
+            line = str()
+        else:
+            line = lines[i]
+
+        # It is ok if the position of line to be written is greater
+        # than the last line number of the input file. We just need to add
+        # the appropriate number of newline characters which will fill
+        # the non existing lines of the output file.
+        if (put_at_line_number > len(lines)
+                and line_counter == line_number_after_eof):
+            for additional_newlines in range(
+                    0, put_at_line_number - len(lines) - 1):
+                # Skip the newline in the line where we need to insert
+                # the new string.
+                line_to_write.append(newline_character)
+                line_counter += 1
+                i += 1
+            extra_lines_done = True
+
+        if line_counter == put_at_line_number:
+            # A very simple append operation: if the original line ends
+            # with a '\n' character, the string will be added on the next
+            # line...
+            if append:
+                # line = line + string_to_be_inserted
+                line = ''.join([line, string_to_be_inserted])
+            # ...otherwise the string is prepended.
             else:
-                line = lines[i]
+                # line = string_to_be_inserted + line
+                line = ''.join([string_to_be_inserted, line])
+        line_to_write.append(line)
+        line_counter += 1
+        i += 1
+        # Quit the loop if there is nothing more to write.
+        if i >= len(lines):
+            loop = False
+        # Continue looping if there are still extra lines to write.
+        if put_at_line_number > len(lines) and not extra_lines_done:
+            loop = True
 
-            # It is ok if the position of line to be written is greater
-            # than the last line number of the input file. We just need to add
-            # the appropriate number of newline characters which will fill
-            # the non existing lines of the output file.
-            if (put_at_line_number > lines_length
-                    and line_counter == line_number_after_eof):
-                for additional_newlines in range(
-                        0, put_at_line_number - len(lines) - 1):
-                    # Skip the newline in the line where we need to insert
-                    # the new string.
-                    f.write(newline_character)
-                    line_counter += 1
-                    i += 1
-                extra_lines_done = True
+    # endwhile
 
-            if line_counter == put_at_line_number:
-                # FIXME TODO: use ''.join([line, string_to_be_inserted])
-                # A very simple append operation: if the original line ends
-                # with a '\n' character, the string will be added on the next
-                # line...
-                if append:
-                    line = line + string_to_be_inserted
-                # ...otherwise the string is prepended.
-                else:
-                    line = string_to_be_inserted + line
-            f.write(line)
-            line_counter += 1
-            i += 1
-            # Quit the loop if there is nothing more to write.
-            if i >= lines_length:
-                loop = False
-            # Continue looping if there are still extra lines to write.
-            if put_at_line_number > lines_length and not extra_lines_done:
-                loop = True
+    final_line: str = ''.join(line_to_write)
 
-        # endwhile
-
-    # endwith
+    # Atomic write.
+    # See
+    # https://stupidpythonideas.blogspot.com/2014/07/getting-atomic-writes-right.html
+    with tempfile.NamedTemporaryFile('w',
+                                     newline=newline_character,
+                                     delete=False) as f:
+        f.write(final_line)
+    os.replace(f.name, output_file)
 
 
 def remove_line_interval(input_file: str, delete_line_from: int,
@@ -239,26 +240,35 @@ def remove_line_interval(input_file: str, delete_line_from: int,
 
     with open(input_file, 'r') as f:
         lines: list = f.readlines()
-    lines_length: int = len(lines)
 
     # Invalid line ranges.
     # Base case delete_line_to - delete_line_from == 0: single line.
     if delete_line_to - delete_line_from < 0:
         raise NegativeLineRangeError
-    if delete_line_from > lines_length or delete_line_to > lines_length:
+    if delete_line_from > len(lines) or delete_line_to > len(lines):
         raise LineOutOfFileBoundsError
 
     line_counter: int = 1
+    line_to_write: list = list()
+
     # Rewrite the file without the string.
-    with atomic_write(output_file, overwrite=True) as f:
-        for line in lines:
-            # Ignore the line interval where the content to be deleted lies.
-            if line_counter >= delete_line_from and line_counter <= delete_line_to:
-                pass
-            # Write the rest of the file.
-            else:
-                f.write(line)
-            line_counter += 1
+    for line in lines:
+        # Ignore the line interval where the content to be deleted lies.
+        if line_counter >= delete_line_from and line_counter <= delete_line_to:
+            pass
+        # Write the rest of the file.
+        else:
+            line_to_write.append(line)
+        line_counter += 1
+
+    final_line: str = ''.join(line_to_write)
+
+    # Atomic write.
+    # See
+    # https://stupidpythonideas.blogspot.com/2014/07/getting-atomic-writes-right.html
+    with tempfile.NamedTemporaryFile('w', delete=False) as f:
+        f.write(final_line)
+    os.replace(f.name, output_file)
 
 
 if __name__ == '__main__':

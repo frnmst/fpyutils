@@ -21,3 +21,4 @@ Dependencies
 ------------
 
 - Python >= 3.5
+- Requests >= 2, < 3
