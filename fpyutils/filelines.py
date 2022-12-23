@@ -89,7 +89,7 @@ def get_line_matches(input_file: str,
 
             if line == pattern and occurrency_counter < max_occurrencies:
                 occurrency_counter += 1
-                occurrency_matches[int(occurrency_counter)] = line_counter
+                occurrency_matches[occurrency_counter] = line_counter
                 lines.append(line_original)
             elif keep_all_lines:
                 lines.append(line_original)
@@ -129,7 +129,7 @@ def insert_string_at_line(input_file: str,
     :type append: bool
     :type newline_character: str
     :returns: None
-    :raises: LineOutOfFileBoundsError or a built-in exception.
+    :raises: a built-in exception.
 
     .. note::
          Line numbers start from ``1``.
@@ -224,7 +224,8 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     :type delete_line_to: int
     :type output_file: str
     :returns: None
-    :raises: LineOutOfFileBoundsError or a built-in exception.
+    :raises: NegativeLineRangeError, LineOutOfFileBoundsError
+         or a built-in exception.
 
     .. note::
          Line numbers start from ``1``.
@@ -238,28 +239,31 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     if delete_line_to < 1:
         raise ValueError
 
-    with open(input_file, 'r') as f:
-        lines: list = f.readlines()
-
-    # Invalid line ranges.
+    # Invalid line range.
     # Base case delete_line_to - delete_line_from == 0: single line.
     if delete_line_to - delete_line_from < 0:
         raise NegativeLineRangeError
-    if delete_line_from > len(lines) or delete_line_to > len(lines):
-        raise LineOutOfFileBoundsError
 
     line_counter: int = 1
     line_to_write: list = list()
+    line: str
 
     # Rewrite the file without the string.
-    for line in lines:
-        # Ignore the line interval where the content to be deleted lies.
-        if line_counter >= delete_line_from and line_counter <= delete_line_to:
-            pass
-        # Write the rest of the file.
-        else:
-            line_to_write.append(line)
-        line_counter += 1
+    with open(input_file, 'r') as f:
+        line = f.readline()
+        while line:
+            # Ignore the line interval where the content to be deleted lies.
+            if line_counter >= delete_line_from and line_counter <= delete_line_to:
+                pass
+            # Write the rest of the file.
+            else:
+                line_to_write.append(line)
+            line_counter += 1
+            line = f.readline()
+
+    # Invalid line range.
+    if delete_line_from > line_counter or delete_line_to > line_counter:
+        raise LineOutOfFileBoundsError
 
     final_line: str = ''.join(line_to_write)
 
