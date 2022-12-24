@@ -99,7 +99,7 @@ def send_gotify_message(url: str,
     :type message: str
     :type title: str
     :type priority: int
-    :returns: a ``urllib.request`` object
+    :returns: a ``http.client.HTTPResponse`` object
     :raises: ValueError or a built-in exception.
     """
     # All URLs for a gotify server must start with 'http'.
