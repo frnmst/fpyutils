@@ -33,4 +33,3 @@ twine = ">=3,<4"
 pre-commit = ">=2,<3"
 
 [packages]
-requests = ">=2,<3"

@@ -21,12 +21,12 @@
 #
 """Functions on notifications."""
 
+import json
 import smtplib
 import ssl
+import urllib.request
 from email.mime.text import MIMEText
 from email.utils import formatdate
-
-import requests
 
 from .path import add_trailing_slash
 
@@ -99,17 +99,27 @@ def send_gotify_message(url: str,
     :type message: str
     :type title: str
     :type priority: int
-    :raises: a requests or a built-in exception.
+    :returns: a ``urllib.request`` object
+    :raises: ValueError or a built-in exception.
     """
-    full_url: str = add_trailing_slash(url) + 'message?token=' + token
+    # All URLs for a gotify server must start with 'http'.
+    if not url.lower().startswith('http'):
+        raise ValueError
 
+    full_url: str = add_trailing_slash(url) + 'message?token=' + token
     payload: dict = {
         'title': title,
         'message': message,
         'priority': priority,
     }
+    data: str = json.dumps(payload)
 
-    return requests.post(full_url, json=payload)
+    req = urllib.request.Request(url=full_url,
+                                 data=bytes(data.encode('UTF-8')),
+                                 method='POST')
+    req.add_header('Content-type', 'application/json; charset=UTF-8')
+
+    return urllib.request.urlopen(req)
 
 
 if __name__ == '__main__':

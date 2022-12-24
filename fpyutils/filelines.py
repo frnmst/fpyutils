@@ -186,6 +186,7 @@ def insert_string_at_line(input_file: str,
             else:
                 # line = string_to_be_inserted + line
                 line = ''.join([string_to_be_inserted, line])
+
         line_to_write.append(line)
         line_counter += 1
         i += 1
@@ -234,12 +235,11 @@ def remove_line_interval(input_file: str, delete_line_from: int,
          It is possible to remove a single line only. This happens when
          the parameters delete_line_from and delete_line_to are equal.
     """
+    # Invalid line ranges.
     if delete_line_from < 1:
         raise ValueError
     if delete_line_to < 1:
         raise ValueError
-
-    # Invalid line range.
     # Base case delete_line_to - delete_line_from == 0: single line.
     if delete_line_to - delete_line_from < 0:
         raise NegativeLineRangeError
