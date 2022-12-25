@@ -23,8 +23,10 @@ export PACKAGE_NAME=fpyutils
 
 default: doc
 
-doc: clean
-	pipenv run $(MAKE) -C docs html
+doc:
+	. .venv/bin/activate \
+		&& $(MAKE) -C docs html \
+		&& deactivate
 
 install:
 	pip3 install . --user
@@ -33,48 +35,65 @@ uninstall:
 	pip3 uninstall --verbose --yes $(PACKAGE_NAME)
 
 install-dev:
-	pipenv install --dev
-	pipenv run pre-commit install
-	pipenv run pre-commit install --hook-type commit-msg
-	pipenv graph
+	python3 -m venv .venv
+	. .venv/bin/activate \
+		&& pip install --requirement requirements.txt --requirement requirements-dev.txt \
+		&& deactivate
+	. .venv/bin/activate \
+		&& pre-commit install \
+		&& deactivate
+	. .venv/bin/activate \
+		&& pre-commit install --hook-type commit-msg \
+		&& deactivate
 
 uninstall-dev:
-	rm -f Pipfile.lock
-	pipenv --rm
+	rm -rf .venv
 
 update: install-dev
-	pipenv run pre-commit autoupdate \
+	. .venv/bin/activate && pre-commit autoupdate \
 		--repo https://github.com/pre-commit/pre-commit-hooks \
 		--repo https://github.com/PyCQA/bandit \
 		--repo https://github.com/pycqa/isort \
 		--repo https://codeberg.org/frnmst/licheck \
 		--repo https://codeberg.org/frnmst/md-toc \
 		--repo https://github.com/mgedmin/check-manifest \
-		--repo https://github.com/jorisroovers/gitlint
+		--repo https://github.com/jorisroovers/gitlint \
+		&& deactivate
 		# --repo https://github.com/pre-commit/mirrors-mypy \
 
 test:
-	pipenv run python -m unittest $(PACKAGE_NAME).tests.tests --failfast --locals --verbose
+	. .venv/bin/activate \
+		&& python -m unittest $(PACKAGE_NAME).tests.tests --failfast --locals --verbose \
+		&& deactivate
+
+pre-commit:
+	. .venv/bin/activate \
+		&& pre-commit run --all \
+		&& deactivate
 
 dist:
-	pipenv run python setup.py sdist
-	# Create a reproducible archve at least on the wheel.
+	# Create a reproducible archive at least on the wheel.
 	# See
 	# https://bugs.python.org/issue31526
 	# https://bugs.python.org/issue38727
 	# https://github.com/pypa/setuptools/issues/1468
 	# https://github.com/pypa/setuptools/issues/2133
 	# https://reproducible-builds.org/docs/source-date-epoch/
-	SOURCE_DATE_EPOCH=$$(git -c log.showSignature='false' log -1 --pretty=%ct) pipenv run python setup.py bdist_wheel
-	pipenv run twine check dist/*
+	. .venv/bin/activate &&	SOURCE_DATE_EPOCH=$$(git -c log.showSignature='false' log -1 --pretty=%ct) \
+		python -m build \
+		&& deactivate
+	. .venv/bin/activate && twine check --strict dist/* \
+		&& deactivate
 
 upload:
 	pipenv run twine upload dist/*
 
 clean:
 	rm -rf build dist *.egg-info tests/benchmark-results
-	# Remove all markdown files except the readme.
+	# Remove all markdown files except the readmes.
 	find -regex ".*\.[mM][dD]" ! -name 'README.md' ! -name 'CONTRIBUTING.md' -type f -exec rm -f {} +
-	pipenv run $(MAKE) -C docs clean
+	. .venv/bin/activate \
+		&& $(MAKE) -C docs clean \
+		&& deactivate
 
 .PHONY: default doc install uninstall install-dev uninstall-dev update test clean demo

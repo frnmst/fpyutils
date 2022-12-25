@@ -1,8 +1,7 @@
 allowed licenses: []
 
 files to check:
-    - Pipfile
-    - setup.py
+    - setup.cfg
 
 language: python
 

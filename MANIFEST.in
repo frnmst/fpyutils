@@ -2,3 +2,10 @@ global-include LICENSE.txt
 global-include README.md
 global-include CONTRIBUTING.md
 global-exclude *.txt
+prune assets
+prune fpyutils/tests
+prune docs
+prune .venv
+prune packages
+exclude *.yml *.yaml
+exclude Makefile
