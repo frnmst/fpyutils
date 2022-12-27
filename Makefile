@@ -21,10 +21,14 @@
 
 export PACKAGE_NAME=fpyutils
 
-default: doc
+# See
+# https://docs.python.org/3/library/venv.html#how-venvs-work
+export VENV_CMD=. .venv/bin/activate
+
+default: install-dev
 
 doc:
-	. .venv/bin/activate \
+	$(VENV_CMD) \
 		&& $(MAKE) -C docs html \
 		&& deactivate
 
@@ -36,7 +40,7 @@ uninstall:
 
 install-dev:
 	python3 -m venv .venv
-	. .venv/bin/activate \
+	$(VENV_CMD) \
 		&& pip install --requirement requirements.txt --requirement requirements-dev.txt \
 		&& deactivate
 	. .venv/bin/activate \
@@ -50,24 +54,25 @@ uninstall-dev:
 	rm -rf .venv
 
 update: install-dev
-	. .venv/bin/activate && pre-commit autoupdate \
-		--repo https://github.com/pre-commit/pre-commit-hooks \
-		--repo https://github.com/PyCQA/bandit \
-		--repo https://github.com/pycqa/isort \
-		--repo https://codeberg.org/frnmst/licheck \
-		--repo https://codeberg.org/frnmst/md-toc \
-		--repo https://github.com/mgedmin/check-manifest \
-		--repo https://github.com/jorisroovers/gitlint \
+	$(VENV_CMD) \
+		&& pre-commit autoupdate \
+			--repo https://github.com/pre-commit/pre-commit-hooks \
+			--repo https://github.com/PyCQA/bandit \
+			--repo https://github.com/pycqa/isort \
+			--repo https://codeberg.org/frnmst/licheck \
+			--repo https://codeberg.org/frnmst/md-toc \
+			--repo https://github.com/mgedmin/check-manifest \
+			--repo https://github.com/jorisroovers/gitlint \
 		&& deactivate
 		# --repo https://github.com/pre-commit/mirrors-mypy \
 
 test:
-	. .venv/bin/activate \
+	$(VENV_CMD) \
 		&& python -m unittest $(PACKAGE_NAME).tests.tests --failfast --locals --verbose \
 		&& deactivate
 
 pre-commit:
-	. .venv/bin/activate \
+	$(VENV_CMD) \
 		&& pre-commit run --all \
 		&& deactivate
 
@@ -79,20 +84,24 @@ dist:
 	# https://github.com/pypa/setuptools/issues/1468
 	# https://github.com/pypa/setuptools/issues/2133
 	# https://reproducible-builds.org/docs/source-date-epoch/
-	. .venv/bin/activate &&	SOURCE_DATE_EPOCH=$$(git -c log.showSignature='false' log -1 --pretty=%ct) \
+	$(VENV_CMD) \
+		&& SOURCE_DATE_EPOCH=$$(git -c log.showSignature='false' log -1 --pretty=%ct) \
 		python -m build \
 		&& deactivate
-	. .venv/bin/activate && twine check --strict dist/* \
+	$(VENV_CMD) \
+		&& twine check --strict dist/* \
 		&& deactivate
 
 upload:
-	pipenv run twine upload dist/*
+	$(VENV_CMD) \
+		&& twine upload dist/* \
+		&& deactivate
 
 clean:
 	rm -rf build dist *.egg-info tests/benchmark-results
 	# Remove all markdown files except the readmes.
 	find -regex ".*\.[mM][dD]" ! -name 'README.md' ! -name 'CONTRIBUTING.md' -type f -exec rm -f {} +
-	. .venv/bin/activate \
+	$(VENV_CMD) \
 		&& $(MAKE) -C docs clean \
 		&& deactivate
 
