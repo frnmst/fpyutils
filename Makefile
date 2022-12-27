@@ -43,10 +43,10 @@ install-dev:
 	$(VENV_CMD) \
 		&& pip install --requirement requirements.txt --requirement requirements-dev.txt \
 		&& deactivate
-	. .venv/bin/activate \
+	$(VENV_CMD) \
 		&& pre-commit install \
 		&& deactivate
-	. .venv/bin/activate \
+	$(VENV_CMD) \
 		&& pre-commit install --hook-type commit-msg \
 		&& deactivate
 
