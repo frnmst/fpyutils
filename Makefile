@@ -105,4 +105,4 @@ clean:
 		&& $(MAKE) -C docs clean \
 		&& deactivate
 
-.PHONY: default doc install uninstall install-dev uninstall-dev update test clean demo
+.PHONY: default doc install uninstall install-dev uninstall-dev update test clean demo pre-comit
