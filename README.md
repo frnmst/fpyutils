@@ -58,7 +58,7 @@ with fpyutils. If not, see <http://www.gnu.org/licenses/>.
 You can check the authenticity of new releases using my public key.
 
 Changelogs, instructions, sources and keys can be found at
-[blog.franco.net.eu.org/software](https://blog.franco.net.eu.org/software/).
+[blog.franco.net.eu.org/software](https://blog.franco.net.eu.org/software/#fpyutils).
 
 ## Crypto donations
 
