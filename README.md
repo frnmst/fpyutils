@@ -1,8 +1,9 @@
 # fpyutils
 
 [![PyPI fpyutils version](https://img.shields.io/pypi/v/fpyutils.svg)](https://pypi.org/project/fpyutils/)
-[![PyPI - License](https://img.shields.io/pypi/l/fpyutils.svg?color=blue)](https://raw.githubusercontent.com/frnmst/fpyutils/master/LICENSE.txt)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/fpyutils.svg)
+[![Debian 12 package](https://repology.org/badge/version-for-repo/debian_12/fpyutils.svg)](https://repology.org/project/fpyutils/versions)
+[![nixpkgs unstable package](https://repology.org/badge/version-for-repo/nix_unstable/python:fpyutils.svg)](https://repology.org/project/python:fpyutils/versions)
+[![Anaconda.org](https://anaconda.org/conda-forge/fpyutils/badges/version.svg)](https://anaconda.org/conda-forge/fpyutils)
 [![Downloads](https://pepy.tech/badge/fpyutils)](https://pepy.tech/project/fpyutils)
 [![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/pypi/fpyutils.svg)](https://libraries.io/pypi/fpyutils/dependents)
 [![Buy me a coffee](assets/buy_me_a_coffee.svg)](https://buymeacoff.ee/frnmst)
