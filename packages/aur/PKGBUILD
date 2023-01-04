@@ -1,5 +1,5 @@
-# Maintainer: Franco Masotti <franco dot masotti at live dot com>
-# Contributor: Franco Masotti <franco dot masotti at live dot com>
+# Maintainer: Franco Masotti <franco dot masotti at tutanota dot com>
+# Contributor: Franco Masotti <franco dot masotti at tutanota dot com>
 pkgname=python-fpyutils
 pkgver=3.0.0
 pkgrel=1
@@ -8,17 +8,24 @@ arch=('any')
 url="https://blog.franco.net.eu.org/software/#fpyutils"
 license=('GPL3')
 depends=('python')
-makedepends=('python-setuptools')
+makedepends=('python-build'
+             'python-installer'
+             'python-wheel')
 options=(!emptydirs)
 source=("https://blog.franco.net.eu.org/software/fpyutils-${pkgver}/fpyutils-${pkgver}.tar.gz.sig" "https://blog.franco.net.eu.org/software/fpyutils-${pkgver}/fpyutils-${pkgver}.tar.gz")
 sha512sums=('SKIP' 'SKIP')
 
 check() {
-  cd "${srcdir}"/fpyutils-"${pkgver}"
-  python -m unittest discover --failfast --locals --verbose
+    cd "${srcdir}"/fpyutils-"${pkgver}"
+    python -m unittest discover --failfast --locals --verbose
+}
+
+build() {
+    cd "${srcdir}"/fpyutils-"${pkgver}"
+    python -m build --wheel --no-isolation
 }
 
 package() {
-  cd "${srcdir}"/fpyutils-"${pkgver}"
-  python setup.py install --root="${pkgdir}/" --optimize=1
+    cd "${srcdir}"/fpyutils-"${pkgver}"
+    python -m installer --destdir="${pkgdir}" dist/*.whl
 }
