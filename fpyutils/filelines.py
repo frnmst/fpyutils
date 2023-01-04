@@ -21,6 +21,7 @@
 #
 """Functions on reading and writing files by line."""
 import os
+import shutil
 import sys
 import tempfile
 
@@ -204,11 +205,14 @@ def insert_string_at_line(input_file: str,
     # Atomic write.
     # See
     # https://stupidpythonideas.blogspot.com/2014/07/getting-atomic-writes-right.html
+    # https://docs.python.org/3/library/os.html#os.fsync
     with tempfile.NamedTemporaryFile('w',
                                      newline=newline_character,
                                      delete=False) as f:
+        f.flush()
+        os.fsync(f.fileno())
         f.write(final_line)
-    os.replace(f.name, output_file)
+    shutil.move(f.name, output_file)
 
 
 def remove_line_interval(input_file: str, delete_line_from: int,
@@ -270,9 +274,12 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     # Atomic write.
     # See
     # https://stupidpythonideas.blogspot.com/2014/07/getting-atomic-writes-right.html
+    # https://docs.python.org/3/library/os.html#os.fsync
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
+        f.flush()
+        os.fsync(f.fileno())
         f.write(final_line)
-    os.replace(f.name, output_file)
+    shutil.move(f.name, output_file)
 
 
 if __name__ == '__main__':
