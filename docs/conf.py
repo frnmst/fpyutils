@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # General information about the project.
 project = 'fpyutils'
-copyright = '2017-2022, Franco Masotti'
+copyright = '2017-2023, Franco Masotti'
 author = 'Franco Masotti'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -35,9 +35,9 @@ author = 'Franco Masotti'
 # built documents.
 #
 # The short X.Y version.
-version = '3.0.0'
+version = '3.0.1'
 # The full version, including alpha/beta/rc tags.
-release = '3.0.0'
+release = '3.0.1'
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
