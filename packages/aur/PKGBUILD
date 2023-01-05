@@ -10,7 +10,8 @@ license=('GPL3')
 depends=('python')
 makedepends=('python-build'
              'python-installer'
-             'python-wheel')
+             'python-wheel'
+             'python-setuptools')
 options=(!emptydirs)
 source=("https://blog.franco.net.eu.org/software/fpyutils-${pkgver}/fpyutils-${pkgver}.tar.gz.sig" "https://blog.franco.net.eu.org/software/fpyutils-${pkgver}/fpyutils-${pkgver}.tar.gz")
 sha512sums=('SKIP' 'SKIP')
