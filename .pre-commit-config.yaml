@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 'v4.4.0'
+    rev: 'v4.5.0'
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -36,7 +36,7 @@ repos:
         additional_dependencies: [flake8-docstrings]
 
 -   repo: https://github.com/PyCQA/bandit
-    rev: '1.7.4'  # Use the sha / tag you want to point at
+    rev: '1.7.5'  # Use the sha / tag you want to point at
     hooks:
     -   id: bandit
         args: ['--skip', 'B404,B506,B410,B603,B604,B310', '--level', 'LOW']
@@ -48,7 +48,7 @@ repos:
 #              args: ['--no-strict-optional', '--ignore-missing-imports', '--show-error-context', '--show-error-codes', '--follow-imports', 'silent']
 
 -   repo: https://github.com/pycqa/isort
-    rev: '5.11.4'
+    rev: '5.12.0'
     hooks:
     -   id: isort
 
@@ -59,7 +59,7 @@ repos:
 #        args: ['--configuration-file', '.allowed_licenses.yml']
 
 -   repo: https://codeberg.org/frnmst/md-toc
-    rev: '8.1.6'  # or a specific git tag from md-toc
+    rev: '8.2.0'  # or a specific git tag from md-toc
     hooks:
     -    id: md-toc
          args: [-p, 'cmark', '-l6']  # CLI options
@@ -87,6 +87,6 @@ repos:
         pass_filenames: false
 
 -   repo: https://github.com/jorisroovers/gitlint
-    rev: 'v0.18.0'
+    rev: 'v0.19.1'
     hooks:
     -   id: gitlint

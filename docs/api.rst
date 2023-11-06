@@ -25,5 +25,5 @@ input and output types.
 Exceptions
 ----------
 
-.. autoexception:: LineOutOfFileBoundsError
-.. autoexception:: NegativeLineRangeError
+.. autoexception:: fpyutils.exceptions.LineOutOfFileBoundsError
+.. autoexception:: fpyutils.exceptions.NegativeLineRangeError

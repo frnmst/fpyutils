@@ -2,7 +2,7 @@
 #
 # __init__.py
 #
-# Copyright (C) 2017-2021 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
+# Copyright (C) 2017-2023 Franco Masotti (see /README.md)
 #
 # This file is part of fpyutils.
 #
@@ -21,12 +21,4 @@
 #
 """Exposed API."""
 
-from .exceptions import LineOutOfFileBoundsError, NegativeLineRangeError
-from .filelines import (
-    get_line_matches,
-    insert_string_at_line,
-    remove_line_interval,
-)
-from .notify import send_email, send_gotify_message
-from .path import add_trailing_slash, gen_pseudorandom_path
-from .shell import execute_command_live_output
+from . import exceptions, filelines, notify, path, shell

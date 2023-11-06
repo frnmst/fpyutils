@@ -33,10 +33,16 @@ doc:
 		&& deactivate
 
 install:
-	pip3 install . --user
+	# pip 23 introduced the '--break-system-packages' option.
+	python3 -c 'import pip; import sys; sys.exit(0) if int(pip.__version__.split(".")[0]) >= 23 else sys.exit(1)' \
+		&& pip3 install --break-system-packages . --user \
+		|| pip3 install . --user
 
 uninstall:
-	pip3 uninstall --verbose --yes $(PACKAGE_NAME)
+	# pip 23 introduced the '--break-system-packages' option.
+	python3 -c 'import pip; import sys; sys.exit(0) if int(pip.__version__.split(".")[0]) >= 23 else sys.exit(1)' \
+		&& pip3 uninstall --break-system-packages --verbose --yes $(PACKAGE_NAME) \
+		|| pip3 uninstall --verbose --yes $(PACKAGE_NAME)
 
 install-dev:
 	python3 -m venv .venv
@@ -66,12 +72,10 @@ update: install-dev
 			--repo https://github.com/pre-commit/pre-commit-hooks \
 			--repo https://github.com/PyCQA/bandit \
 			--repo https://github.com/pycqa/isort \
-			--repo https://codeberg.org/frnmst/licheck \
 			--repo https://codeberg.org/frnmst/md-toc \
 			--repo https://github.com/mgedmin/check-manifest \
 			--repo https://github.com/jorisroovers/gitlint \
 		&& deactivate
-		# --repo https://github.com/pre-commit/mirrors-mypy \
 
 test:
 	$(VENV_CMD) \

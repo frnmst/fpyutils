@@ -2,7 +2,7 @@
 #
 # path.py
 #
-# Copyright (C) 2017-2020 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
+# Copyright (C) 2017-2020 Franco Masotti (see /README.md)
 #
 # This file is part of fpyutils.
 #
@@ -89,9 +89,9 @@ def gen_pseudorandom_path(path_suffix: str = str(),
 
     # 3. a hash of path_suffix. This will be equal to
     #    'cec7ea' using blake2b and a digest size of 3.
-    m = hashlib.blake2b(digest_size=hash_component_digest_size)
-    m.update(path_suffix.encode(character_encoding))
-    hashed_component: str = m.hexdigest()
+    hashed_component: str = (hashlib.blake2b(
+        path_suffix.encode(character_encoding),
+        digest_size=hash_component_digest_size).hexdigest())
 
     # 4. the path suffix, if present.
     if path_suffix != str():

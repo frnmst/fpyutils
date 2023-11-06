@@ -2,7 +2,7 @@
 #
 # filelines.py
 #
-# Copyright (C) 2017-2023 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
+# Copyright (C) 2017-2023 Franco Masotti (see /README.md)
 #
 # This file is part of fpyutils.
 #
@@ -28,11 +28,12 @@ import tempfile
 from .exceptions import LineOutOfFileBoundsError, NegativeLineRangeError
 
 
-def get_line_matches(input_file: str,
-                     pattern: str,
-                     max_occurrencies: int = 0,
-                     loose_matching: bool = True,
-                     keep_all_lines: bool = False) -> tuple:
+def get_line_matches(
+        input_file: str,
+        pattern: str,
+        max_occurrencies: int = 0,
+        loose_matching: bool = True,
+        keep_all_lines: bool = False) -> tuple[dict[int, int], str]:
     r"""Get the line numbers of matched patterns and the matched string itself.
 
     :parameter input_file: the file that needs to be read.
@@ -57,7 +58,7 @@ def get_line_matches(input_file: str,
 
          lines, a string corresponding to the matched lines or the whole file
          (see ``keep_all_lines`` argument).
-    :rtype: tuple
+    :rtype: tuple[dict[int, int], str]
     :raises: a built-in exception.
 
     .. note::
@@ -67,9 +68,8 @@ def get_line_matches(input_file: str,
         raise ValueError
 
     occurrency_counter: int = 0
-    occurrency_matches: dict = dict()
-    lines: list = list()
-    lns: str
+    occurrency_matches: dict[int, int] = dict()
+    lines: list[str] = list()
     line_original: str
 
     if max_occurrencies == 0:
@@ -98,9 +98,7 @@ def get_line_matches(input_file: str,
             line = f.readline()
             line_counter += 1
 
-    lns = ''.join(lines)
-
-    return occurrency_matches, lns
+    return occurrency_matches, ''.join(lines)
 
 
 def insert_string_at_line(input_file: str,
@@ -136,71 +134,51 @@ def insert_string_at_line(input_file: str,
          Line numbers start from ``1``.
 
     .. note::
-         Exsisting line endings of the input file are changed to
+         Existing line endings of the input file are changed to
          ``newline_character``.
     """
     if put_at_line_number < 1:
         raise ValueError
 
-    with open(input_file, 'r') as f:
-        lines: list = f.readlines()
-
     line_counter: int = 1
-    i: int = 0
     loop: bool = True
-    extra_lines_done: bool = False
-    line_number_after_eof: int = len(lines) + 1
-    line_to_write: list = list()
-
-    while loop:
-
-        if put_at_line_number > len(
-                lines) and line_counter == line_number_after_eof:
-            # There are extra lines to write.
-            line = str()
-        else:
-            line = lines[i]
-
-        # It is ok if the position of line to be written is greater
-        # than the last line number of the input file. We just need to add
-        # the appropriate number of newline characters which will fill
-        # the non existing lines of the output file.
-        if (put_at_line_number > len(lines)
-                and line_counter == line_number_after_eof):
-            for additional_newlines in range(
-                    0, put_at_line_number - len(lines) - 1):
-                # Skip the newline in the line where we need to insert
-                # the new string.
-                line_to_write.append(newline_character)
+    subst_done: bool = False
+    final_string: list[str] = list()
+    with open(input_file, 'r') as f:
+        while loop:
+            current_line: str = f.readline()
+            while current_line:
+                # Lines match.
+                if line_counter == put_at_line_number:
+                    subst_done = True
+                    if append:
+                        # Append.
+                        final_string.append(current_line)
+                        final_string.append(string_to_be_inserted)
+                    else:
+                        # Prepend.
+                        final_string.append(string_to_be_inserted)
+                        final_string.append(current_line)
+                else:
+                    # No match, generic line.
+                    final_string.append(current_line)
+                current_line = f.readline()
                 line_counter += 1
-                i += 1
-            extra_lines_done = True
-
-        if line_counter == put_at_line_number:
-            # A very simple append operation: if the original line ends
-            # with a '\n' character, the string will be added on the next
-            # line...
-            if append:
-                # line = line + string_to_be_inserted
-                line = ''.join([line, string_to_be_inserted])
-            # ...otherwise the string is prepended.
-            else:
-                # line = string_to_be_inserted + line
-                line = ''.join([string_to_be_inserted, line])
-
-        line_to_write.append(line)
-        line_counter += 1
-        i += 1
-        # Quit the loop if there is nothing more to write.
-        if i >= len(lines):
-            loop = False
-        # Continue looping if there are still extra lines to write.
-        if put_at_line_number > len(lines) and not extra_lines_done:
-            loop = True
-
-    # endwhile
-
-    final_line: str = ''.join(line_to_write)
+            while not current_line and line_counter < put_at_line_number:
+                # Out of file bounds.
+                final_string.append(newline_character)
+                line_counter += 1
+                if line_counter == put_at_line_number:
+                    final_string.append(string_to_be_inserted)
+                    # Prepend does not make sense here since we are out of the
+                    # file bounds so the `string_to_be_inserted` will always
+                    # be the last string inserted in the file.
+            if not current_line or (line_counter > put_at_line_number
+                                    and subst_done):
+                # All the file has been iterated by this point and the
+                # substitution has been done either in or out of the file
+                # bounds.
+                loop = False
 
     # Atomic write.
     # See
@@ -211,7 +189,7 @@ def insert_string_at_line(input_file: str,
                                      delete=False) as f:
         f.flush()
         os.fsync(f.fileno())
-        f.write(final_line)
+        f.write(''.join(final_string))
     shutil.move(f.name, output_file)
 
 
@@ -240,16 +218,14 @@ def remove_line_interval(input_file: str, delete_line_from: int,
          the parameters delete_line_from and delete_line_to are equal.
     """
     # Invalid line ranges.
-    if delete_line_from < 1:
-        raise ValueError
-    if delete_line_to < 1:
+    if delete_line_from < 1 or delete_line_to < 1:
         raise ValueError
     # Base case delete_line_to - delete_line_from == 0: single line.
     if delete_line_to - delete_line_from < 0:
         raise NegativeLineRangeError
 
     line_counter: int = 1
-    line_to_write: list = list()
+    line_to_write: list[str] = list()
     line: str
 
     # Rewrite the file without the string.
@@ -269,8 +245,6 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     if delete_line_from > line_counter or delete_line_to > line_counter:
         raise LineOutOfFileBoundsError
 
-    final_line: str = ''.join(line_to_write)
-
     # Atomic write.
     # See
     # https://stupidpythonideas.blogspot.com/2014/07/getting-atomic-writes-right.html
@@ -278,7 +252,7 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         f.flush()
         os.fsync(f.fileno())
-        f.write(final_line)
+        f.write(''.join(line_to_write))
     shutil.move(f.name, output_file)
 
 

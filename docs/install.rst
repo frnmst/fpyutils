@@ -20,4 +20,4 @@ Distribution packages
 Dependencies
 ------------
 
-- Python >= 3.5
+See the ``./setup.cfg`` file.
