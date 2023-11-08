@@ -59,7 +59,7 @@ def send_email(message: str, smtp_server: str, port: int, sender: str,
     #
     # Copyright (C) 2016 tfv @ Stack Overflow (https://stackoverflow.com/a/36834904)
     # Copyright (C) 2017 recolic @ Stack Overflow (https://stackoverflow.com/a/36834904)
-    # Copyright (C) 2020 Franco Masotti (franco \D\o\T masotti {-A-T-} tutanota \D\o\T com)
+    # Copyright (C) 2020 Franco Masotti (see /README.md)
     #
     # This script is licensed under a
     # Creative Commons Attribution-ShareAlike 4.0 International License.
