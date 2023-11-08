@@ -238,7 +238,48 @@ class TestFileLines(unittest.TestCase):
                                                     string_to_be_inserted,
                                                     line_no, newline)
 
-        # Non existing line.
+        # Last line of a file, append.
+        buff = FAKE_FILE_AS_STRING
+        line_no = 2
+        append = True
+        newline = '\n'
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no)
+        expected = buff + string_to_be_inserted
+        self.assertEqual(expected, result)
+
+        # Last line of a file, prepend.
+        buff = FAKE_FILE_AS_STRING
+        line_no = 2
+        append = False
+        newline = '\n'
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no)
+        expected = buff.split('\n')[
+            0] + '\n' + string_to_be_inserted + buff.split('\n')[1] + '\n'
+        self.assertEqual(expected, result)
+
+        # Last line + 1 of a file, append.
+        buff = FAKE_FILE_AS_STRING
+        line_no = 3
+        append = True
+        newline = '\n'
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no)
+        expected = buff + string_to_be_inserted
+        self.assertEqual(expected, result)
+
+        # Last line + 1 of a file, prepend.
+        buff = FAKE_FILE_AS_STRING
+        line_no = 3
+        append = False
+        newline = '\n'
+        result = self._test_helper_insert_string_at_line(
+            append, buff, string_to_be_inserted, line_no)
+        expected = buff + string_to_be_inserted
+        self.assertEqual(expected, result)
+
+        # Non existing line, prepend.
         buff = FAKE_FILE_AS_STRING
         line_no = 2**5
         # We do not need to consider the last component of the buff.split() list.
@@ -252,6 +293,7 @@ class TestFileLines(unittest.TestCase):
         )[1] + number_of_newlines_after_last_existing_line * '\n' + string_to_be_inserted
         self.assertEqual(expected, result)
 
+        # Non existing line, append.
         line_no = 2**5
         buff = FAKE_FILE_AS_STRING
         number_of_newlines_after_last_existing_line = line_no - (

@@ -21,6 +21,7 @@
 #
 """Functions on reading and writing files by line."""
 from __future__ import annotations
+
 import os
 import shutil
 import sys
@@ -165,15 +166,18 @@ def insert_string_at_line(input_file: str,
                     final_string.append(current_line)
                 current_line = f.readline()
                 line_counter += 1
-            while not current_line and line_counter < put_at_line_number:
+            while not current_line and line_counter <= put_at_line_number:
                 # Out of file bounds.
-                final_string.append(newline_character)
-                line_counter += 1
                 if line_counter == put_at_line_number:
                     final_string.append(string_to_be_inserted)
+                    line_counter += 1
                     # Prepend does not make sense here since we are out of the
                     # file bounds so the `string_to_be_inserted` will always
                     # be the last string inserted in the file.
+                else:
+                    final_string.append(newline_character)
+                    line_counter += 1
+
             if not current_line or (line_counter > put_at_line_number
                                     and subst_done):
                 # All the file has been iterated by this point and the
