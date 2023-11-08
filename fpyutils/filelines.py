@@ -20,6 +20,7 @@
 # along with fpyutils.  If not, see <http://www.gnu.org/licenses/>.
 #
 """Functions on reading and writing files by line."""
+from __future__ import annotations
 import os
 import shutil
 import sys
