@@ -1,5 +1,26 @@
+Meta
+====
+
+Source code
+-----------
+
+- https://software.franco.net.eu.org/frnmst/fpyutils
+- https://codeberg.org/frnmst/fpyutils
+- https://framagit.org/frnmst/fpyutils
+- https://github.com/frnmst/fpyutils
+
+Workflow
+--------
+
+See `Python workflow <https://docs.franco.net.eu.org/ftutorials/en/content/programming/python/workflow.html>`_
+
+Contributing
+------------
+
+See `Python contributing <https://docs.franco.net.eu.org/ftutorials/en/content/programming/python/contributing.html>`_
+
 Copyright and License
-=====================
+---------------------
 
 Copyright (C) 2017-2023 Franco Masotti (see /README.md)
 

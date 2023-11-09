@@ -13,10 +13,7 @@ Welcome to fpyutils's documentation!
    install
    api
    implementing_new_modules
-   contributing
-   workflow
-   source_code
-   copyright_license
+   meta
 
 Indices and tables
 ==================
