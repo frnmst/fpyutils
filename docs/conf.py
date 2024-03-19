@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # fpyutils documentation build configuration file, created by
 # sphinx-quickstart on Sat Nov 18 14:35:00 2017.
@@ -160,8 +159,8 @@ copybutton_line_continuation_character = '\\'
 epub_theme = 'epub'
 epub_author = 'Franco Masotti'
 epub_theme_options = {
-    "relbar1": False,
-    "footer": False,
+    'relbar1': False,
+    'footer': False,
 }
 epub_css_style = [
     'css/epub.css',

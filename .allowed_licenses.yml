@@ -1,9 +1,0 @@
-allowed licenses: []
-
-files to check:
-    - setup.cfg
-
-language: python
-
-include:
-    - https://codeberg.org/frnmst/licheck/raw/branch/master/examples/python_gpl_compatible.yml

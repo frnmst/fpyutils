@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # filelines.py
 #
@@ -22,6 +21,7 @@
 """Functions on reading and writing files by line."""
 from __future__ import annotations
 
+import logging
 import os
 import shutil
 import sys
@@ -70,8 +70,8 @@ def get_line_matches(
         raise ValueError
 
     occurrency_counter: int = 0
-    occurrency_matches: dict[int, int] = dict()
-    lines: list[str] = list()
+    occurrency_matches: dict[int, int] = {}
+    lines: list[str] = []
     line_original: str
 
     if max_occurrencies == 0:
@@ -82,8 +82,15 @@ def get_line_matches(
         pattern = pattern.strip()
 
     line_counter: int = 1
-    with open(input_file, 'r') as f:
-        line = f.readline()
+    with open(input_file) as f:
+        try:
+            line = f.readline()
+        except UnicodeDecodeError:
+            line = ''
+            lines = []
+            logging.warning(
+                'returning empty structure because of unicode decode error')
+
         while line and (keep_all_lines
                         or occurrency_counter < max_occurrencies):
             line_original = line
@@ -97,7 +104,16 @@ def get_line_matches(
             elif keep_all_lines:
                 lines.append(line_original)
 
-            line = f.readline()
+            try:
+                line = f.readline()
+            except UnicodeDecodeError:
+                line = ''
+                occurrency_matches = {}
+                lines = []
+                logging.warning(
+                    'returning empty structure because of unicode decode error'
+                )
+
             line_counter += 1
 
     return occurrency_matches, ''.join(lines)
@@ -146,7 +162,7 @@ def insert_string_at_line(input_file: str,
     loop: bool = True
     subst_done: bool = False
     final_string: list[str] = list()
-    with open(input_file, 'r') as f:
+    with open(input_file) as f:
         while loop:
             current_line: str = f.readline()
             while current_line:
@@ -234,7 +250,7 @@ def remove_line_interval(input_file: str, delete_line_from: int,
     line: str
 
     # Rewrite the file without the string.
-    with open(input_file, 'r') as f:
+    with open(input_file) as f:
         line = f.readline()
         while line:
             # Ignore the line interval where the content to be deleted lies.

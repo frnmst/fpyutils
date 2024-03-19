@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # shell.py
 #
@@ -72,9 +71,9 @@ def execute_command_live_output(
             while go:
                 output: str = process.stderr.readline().decode(
                     output_character_encoding)
-                if output == str() and process.poll() is not None:
+                if output == '' and process.poll() is not None:
                     go = False
-                if go and output != str():
+                if go and output != '':
                     sys.stdout.write(output)
                     sys.stdout.flush()
             retval = process.returncode

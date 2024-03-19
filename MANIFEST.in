@@ -8,4 +8,4 @@ prune docs
 prune .venv
 prune packages
 exclude *.yml *.yaml
-exclude Makefile
+exclude Makefile .project.mk

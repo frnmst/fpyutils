@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # path.py
 #
@@ -40,12 +39,12 @@ def add_trailing_slash(uri: str) -> str:
     if uri.endswith('/'):
         uri = uri
     else:
-        uri = f"{uri}/"
+        uri = f'{uri}/'
 
     return uri
 
 
-def gen_pseudorandom_path(path_suffix: str = str(),
+def gen_pseudorandom_path(path_suffix: str = '',
                           date_component_format: str = '%F_%H-%M-%S_%f',
                           component_separator: str = '_',
                           pseudorandom_component_bytes: int = 4,
@@ -94,7 +93,7 @@ def gen_pseudorandom_path(path_suffix: str = str(),
         digest_size=hash_component_digest_size).hexdigest())
 
     # 4. the path suffix, if present.
-    if path_suffix != str():
+    if path_suffix != '':
         path_suffix = component_separator + path_suffix
 
     return (date_component + component_separator + pseudorandom_component +

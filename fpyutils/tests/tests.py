@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # tests.py
 #
@@ -22,6 +21,7 @@
 """Tests."""
 
 import io
+import logging
 import pathlib
 import tempfile
 import unittest
@@ -69,6 +69,26 @@ End of toc\n\
 class TestFileLines(unittest.TestCase):
     r"""filelines modules test."""
 
+    def _test_helper_get_line_matches(self, data: bytes):
+        # All invalid unicode data nullifies the whole result for safety.
+        with tempfile.TemporaryDirectory() as d:
+            filename = str(pathlib.PurePath(d, 'testing'))
+            with open(filename, 'wb') as f:
+                f.write(data)
+                f.flush()
+
+            with self.assertLogs(logger=None, level='WARN') as cm:
+                matches, lines = filelines.get_line_matches(
+                    input_file=filename,
+                    pattern='[](TOC)\n',
+                    max_occurrencies=1)
+
+            self.assertEqual(lines, '')
+            self.assertEqual(matches, {})
+            self.assertEqual(cm.output, [
+                'WARNING:root:returning empty structure because of unicode decode error'
+            ])
+
     def test_get_line_matches(self):
         r"""test_get_line_matches."""
         # Zero pattern matches.
@@ -77,7 +97,7 @@ class TestFileLines(unittest.TestCase):
                                                         pattern='[](TOC)',
                                                         max_occurrencies=1)
         self.assertTrue(1 not in matches)
-        self.assertEqual(lines, str())
+        self.assertEqual(lines, '')
 
         # One pattern matches.
         with patch('builtins.open',
@@ -118,7 +138,7 @@ class TestFileLines(unittest.TestCase):
                                                         pattern='[](TOC)',
                                                         max_occurrencies=0,
                                                         loose_matching=False)
-        self.assertEqual(lines, str())
+        self.assertEqual(lines, '')
         self.assertTrue(1 not in matches)
 
         # More than zero pattern matches with loose matching disabled.
@@ -132,6 +152,15 @@ class TestFileLines(unittest.TestCase):
         self.assertEqual(matches[2], 10)
         self.assertEqual(lines, '[](TOC)\n[](TOC)\n')
         self.assertTrue(3 not in matches)
+
+        # Unicode warning using invalid unicode data.
+        self._test_helper_get_line_matches(data=b'\xff\x00')
+
+        # Unicode warning using invalid unicode data and valid data later.
+        self._test_helper_get_line_matches(data=b'\xff\x00\n[](TOC)\n')
+
+        # Unicode warning using valid data before and invalid unicode data later.
+        self._test_helper_get_line_matches(data=b'[](TOC)\n\xff\x00\n')
 
     def _test_helper_insert_string_at_line(self,
                                            append,
@@ -159,7 +188,7 @@ class TestFileLines(unittest.TestCase):
 
     def test_insert_string_at_line(self):
         r"""test_insert_string_at_line."""
-        string_to_be_inserted = "Some string_to_be_inserted"
+        string_to_be_inserted = 'Some string_to_be_inserted'
 
         # Existing line.
         buff = FAKE_FILE_AS_STRING
@@ -316,7 +345,7 @@ class TestFileLines(unittest.TestCase):
             filelines.remove_line_interval(filename, line_from, line_to,
                                            filename)
 
-            with open(filename, 'r') as f:
+            with open(filename) as f:
                 content = f.read()
 
         return content
@@ -377,8 +406,8 @@ class TestShell(unittest.TestCase):
 
     def test_execute_command_live_output(self):
         r"""test_execute_command_live_output."""
-        self.assert_stdout('true', '/bin/bash', False, 'UTF-8', [str()], [0])
-        self.assert_stdout('false', '/bin/bash', False, 'UTF-8', [str()], [1])
+        self.assert_stdout('true', '/bin/bash', False, 'UTF-8', [''], [0])
+        self.assert_stdout('false', '/bin/bash', False, 'UTF-8', [''], [1])
 
         # Dry runs should always have a return value of 0.
         self.assert_stdout('true', '/bin/bash', True, 'UTF-8',
@@ -420,7 +449,7 @@ class TestPath(unittest.TestCase):
                     component_separator=component_separator)))
 
         # No path suffix.
-        path_suffix = str()
+        path_suffix = ''
         component_separator = '_'
         date_component_format = '%F'
         total_length = 10 + 1 + 6 + 1 + 6
@@ -435,7 +464,7 @@ class TestPath(unittest.TestCase):
     def test_add_trailing_slash(self):
         r"""test_add_trailing_slash."""
         # Empty string.
-        self.assertEqual(path.add_trailing_slash(str()), '/')
+        self.assertEqual(path.add_trailing_slash(''), '/')
 
         self.assertEqual(path.add_trailing_slash('/'), '/')
         self.assertEqual(path.add_trailing_slash('http://a b c/'),
